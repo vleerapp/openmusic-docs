@@ -1,0 +1,8 @@
+{
+  "title": "OpenMusic API",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index"
+  ]
+}
