@@ -1,0 +1,363 @@
+openapi: 3.1.0
+info:
+  title: OpenMusic FS API
+  description: A file system-based music streaming API
+  version: 1.0.0
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+  - url: https://api.example.com
+    description: Production server
+
+paths:
+  /:
+    get:
+      summary: API Information
+      description: Returns information about the API including branding and details
+      operationId: getInfo
+      tags:
+        - Info
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  branding:
+                    type: object
+                    description: Branding configuration
+                  details:
+                    type: object
+                    description: API details
+
+  /song/{id}:
+    get:
+      summary: Song Details
+      description: Retrieve detailed information about a song
+      operationId: getSong
+      tags:
+        - Songs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the song
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Song found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        '404':
+          description: Song not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /song/{id}/stream:
+    get:
+      summary: Stream Audio
+      description: Stream the audio file of a song
+      operationId: streamSong
+      tags:
+        - Songs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the song
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audio stream
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+            audio/flac:
+              schema:
+                type: string
+                format: binary
+            audio/ogg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Song file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /song/{id}/art:
+    get:
+      summary: Cover Art
+      description: Retrieve the cover art image for a song
+      operationId: getSongArt
+      tags:
+        - Songs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the song
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cover art found
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Cover art not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /songs:
+    get:
+      summary: List All Songs
+      description: Retrieve a list of all available songs
+      operationId: listSongs
+      tags:
+        - Songs
+      responses:
+        '200':
+          description: List of songs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Song'
+
+  /songs/search:
+    get:
+      summary: Search Songs
+      description: Search for songs by title, artist, or other metadata
+      operationId: searchSongs
+      tags:
+        - Songs
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Search query string
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Song'
+
+  /songs/random:
+    get:
+      summary: Random Song
+      description: Retrieve a random song from the library
+      operationId: getRandomSong
+      tags:
+        - Songs
+      responses:
+        '200':
+          description: Random song
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        '404':
+          description: No songs found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Song:
+      type: object
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the song
+        title:
+          type: string
+          description: Title of the song
+        artistName:
+          type: string
+          description: Name of the artist
+          nullable: true
+        albumName:
+          type: string
+          description: Name of the album
+          nullable: true
+        genre:
+          type: string
+          description: Genre of the song
+          nullable: true
+        releaseYear:
+          type: integer
+          description: Year the song was released
+          nullable: true
+        track:
+          type: integer
+          description: Track number on the album
+          nullable: true
+        trackTotal:
+          type: integer
+          description: Total number of tracks on the album
+          nullable: true
+        disc:
+          type: integer
+          description: Disc number (for multi-disc albums)
+          nullable: true
+        discTotal:
+          type: integer
+          description: Total number of discs (for multi-disc albums)
+          nullable: true
+        coverURL:
+          type: string
+          format: uri
+          description: URL to the cover art image
+          nullable: true
+        lyrics:
+          type: string
+          description: Song lyrics
+          nullable: true
+
+    Album:
+      type: object
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the album
+        title:
+          type: string
+          description: Title of the album
+        artistName:
+          type: string
+          description: Name of the artist
+          nullable: true
+        artistID:
+          type: integer
+          description: Artist ID
+          nullable: true
+        genre:
+          type: string
+          description: Genre of the album
+          nullable: true
+        releaseYear:
+          type: integer
+          description: Year the album was released
+          nullable: true
+        trackCount:
+          type: integer
+          description: Number of tracks on the album
+          nullable: true
+        coverURL:
+          type: string
+          format: uri
+          description: URL to the cover art image
+          nullable: true
+
+    Artist:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the artist
+        name:
+          type: string
+          description: Name of the artist
+        genre:
+          type: string
+          description: Primary genre of the artist
+          nullable: true
+        imageURL:
+          type: string
+          format: uri
+          description: URL to the artist image
+          nullable: true
+
+    Playlist:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the playlist
+        name:
+          type: string
+          description: Name of the playlist
+        description:
+          type: string
+          description: Description of the playlist
+          nullable: true
+        imageURL:
+          type: string
+          format: uri
+          description: URL to the playlist cover image
+          nullable: true
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+          nullable: true

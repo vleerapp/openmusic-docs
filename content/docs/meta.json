@@ -3,7 +3,15 @@
   "root": true,
   "pages": [
     "---Introduction---",
-    "index",
-    "explanation"
+    "introduction/documentation",
+    "introduction/explanation",
+    "---API Spec---",
+    "api/getInfo",
+    "api/getSong",
+    "api/streamSong",
+    "api/getSongArt",
+    "api/listSongs",
+    "api/searchSongs",
+    "api/getRandomSong"
   ]
 }
