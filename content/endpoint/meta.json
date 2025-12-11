@@ -1,0 +1,13 @@
+{
+  "title": "Endpoints",
+  "icon": "pixelarticons:map",
+  "pages": [
+    "getInfo",
+    "getSong",
+    "streamSong",
+    "getSongArt",
+    "listSongs",
+    "searchSongs",
+    "streamSongs"
+  ]
+}

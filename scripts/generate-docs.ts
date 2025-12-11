@@ -3,6 +3,6 @@ import { openapi } from "@/src/lib/source";
 
 void generateFiles({
   input: openapi,
-  output: "./content/docs/api",
+  output: "./content/docs/endpoints",
   includeDescription: true,
 });

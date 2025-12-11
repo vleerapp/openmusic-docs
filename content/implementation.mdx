@@ -1,0 +1,182 @@
+---
+title: Implementation
+description: How to implement the OpenMusic API Spec
+icon: pixelarticons:power
+---
+
+import { GithubInfo } from "fumadocs-ui/components/github-info";
+
+We have implemented the Spec as a refernce but also production ready local filesystem adapter **openmusic-fs** in Go.
+
+<GithubInfo owner="vleerapp" repo="openmusic-fs" />
+
+This will always be our official refernce implementation and is what helps us develop the OpenMusic API Spec.
+
+## Get Started
+
+To get started on implementing your own server take a look at what capabilities are and why you should implement as much of them as possible.
+
+## Capabilities
+
+Capabilities are a way for a server to communicate to the client what information it provides. As you can see here the 4 required ones are info, search, song and stream. All the others are optional but have to be implemented on the client.
+
+<Callout title="Info" type="info">
+  Each capability has its own respecting API endpoint.
+</Callout>
+
+| Feature                           | Type     | Description                                                                                                         |
+| --------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| [`info`](/endpoint/getInfo)       | Required | Info about the server                                                                                               |
+| [`search`](/endpoint/searchSongs) | Required | Search songs by string                                                                                              |
+| [`song`](/endpoint/getSong)       | Required | Fetch metadata for song by id                                                                                       |
+| [`stream`](/endpoint/streamSong)  | Required | Stream song in xxx format                                                                                           |
+| `filter`                          | Optional | Advanced filtering for search (like release date, genre etc.)                                                       |
+| `artists`                         | Optional | Search and get artists                                                                                              |
+| `albums`                          | Optional | Search and get albums                                                                                               |
+| `playlists`                        | Optional | Search and get playlists                                                                                            |
+| `lyrics`                          | Optional | Lyrics                                                                                                              |
+| `popular`                         | Optional | Get similar songs from entities with basic filters like genre                                                       |
+| `similar`                         | Optional | Get similar songs from entities                                                                                     |
+| `omm`                             | Optional | OpenMusicMetadata compatibility                                                                                     |
+| `radio`                           | Optional | Radio stream                                                                                                        |
+| `random`                          | Optional | Get completely unbiased random song (maybe)                                                                         |
+| `authentication`                  | Optional | Authenticate with a token for private, premium or protected instances                                               |
+| `list`                            | Optional | List all available songs (can also be sorted in folders)                                                            |
+| `upload`                          | Optional | Upload new songs (only allow on private instances with authentication if you don't exactly know what you are doing) |
+
+## Endpoints
+
+This is the list of the current to be implemented endpoints. This is subject to change at any point.
+
+```yml lineNumbers
+/api:
+  /:
+  /song/:id:
+  /song/:id/stream:
+  /song/:id/art:
+  /songs:
+  /songs/search:
+  /songs/random:
+```
+
+### Info
+
+The return should be branding information as well as the capabilites the server has.
+
+```json lineNumbers
+{
+  "branding": {
+    "name": "My Music Service",
+    "email": "contact@example.com",
+    "short": "MMS",
+    "logo": "https://example.com/logo.png",
+    "theme": "#0066cc",
+    "links": {
+      "homepage": "https://example.com",
+      "privacyStatement": "https://example.com/privacy",
+      "donate": null
+    }
+  },
+  "details": {
+    "version": "1.0.0",
+    "capabilities": {
+      "search": true,
+      "songs": true,
+      "streaming": true,
+      "filters": false,
+      "artists": true,
+      "albums": false,
+      "playlists": false,
+      "lyrics": false,
+      "popular": false,
+      "similar": false,
+      "open_music_metadata": false,
+      "radio": false,
+      "random": false,
+      "list": false,
+      "upload": false,
+      "favorite": false,
+      "rate": false,
+      "edit": false
+    }
+  }
+}
+```
+
+### Song
+
+The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
+
+```json lineNumbers
+{
+  "id": "abc123def456",
+  "title": "Example Song Title",
+  "artistName": "Example Artist",
+  "releaseYear": 2024,
+  "coverURL": "/song/abc123def456/art"
+}
+```
+
+### Stream
+
+The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
+
+The return is a file directly streamed in the native format it was saved in using 206 Partial Content responses with the byte range.
+
+```yml lineNumbers
+Accept-Ranges: bytes
+Content-Length: 6272474
+Content-Type: audio/mpeg
+```
+
+### Cover
+
+The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
+
+The return should be a square jpeg downscaled to 512x512 to ensure fast loading speeds with high enough quality.
+
+```yml lineNumbers
+Content-Type: image/jpeg
+Content-Length: 73618
+```
+
+### Songs
+
+The return should be a list of all songs the server serves this may optionally have multiple pages.
+
+```json lineNumbers
+[
+  {
+    "id": "abc123def456",
+    "title": "Example Song Title",
+    "artistName": "Example Artist",
+    "releaseYear": 2024,
+    "coverURL": "/song/abc123def456/art"
+  },
+  {
+    "id": "xyz789ghi012",
+    "title": "Another Song Example",
+    "artistName": "Another Artist",
+    "releaseYear": 2023,
+    "coverURL": "/song/xyz789ghi012/art"
+  }
+]
+```
+
+### Search
+
+The input should be a string.
+
+The return is a list of all matching results from the input query string. The results are matched based on the title and artist.
+
+```json lineNumbers
+[
+  {
+    "id": "abc123def456",
+    "title": "Example Song Title",
+    "artistName": "Example Artist",
+    "releaseYear": 2024,
+    "coverURL": "/song/abc123def456/art"
+  }
+]
+```
