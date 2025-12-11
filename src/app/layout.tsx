@@ -2,7 +2,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import "./global.css";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import CustomSearchDialog from "@/components/search";
+import DefaultSearchDialog from "../components/search";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,8 +21,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
       <body className="flex flex-col min-h-screen">
         <RootProvider
           theme={{ forcedTheme: "dark" }}
-          search={{ SearchDialog: CustomSearchDialog }}
-        >
+          search={{ SearchDialog: DefaultSearchDialog }}>
           {children}
         </RootProvider>
       </body>

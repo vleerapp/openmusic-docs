@@ -1,7 +1,7 @@
-import { source } from "@/lib/source";
+import { source } from "@/src/lib/source";
 import { Image } from "fumadocs-core/framework";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { BaseLayoutProps } from "fumadocs-ui/layouts/links";
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 const baseOptions: BaseLayoutProps = {
   nav: {
