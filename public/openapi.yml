@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: OpenMusic API
-  description: A file system-based music streaming API
+  description: The Open standard for music service comunication
   version: 1.0.0
   license:
-    name: MIT
+    name: AGPL-3.0
 
 servers:
   - url: http://localhost:8080/api
