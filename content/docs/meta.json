@@ -3,7 +3,7 @@
   "root": true,
   "pages": [
     "---Introduction---",
-    "introduction/documentation",
+    "index",
     "introduction/explanation",
     "---API Spec---",
     "api/getInfo",
