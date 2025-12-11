@@ -1,43 +1,99 @@
 openapi: 3.1.0
 info:
-  title: OpenMusic FS API
+  title: OpenMusic API
   description: A file system-based music streaming API
   version: 1.0.0
   license:
     name: MIT
 
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
     description: Development server
-  - url: https://api.example.com
+  - url: https://api.example.com/api
     description: Production server
 
 paths:
   /:
     get:
-      summary: API Information
+      summary: Info
       description: Returns information about the API including branding and details
       operationId: getInfo
       tags:
         - Info
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
                 type: object
+                required:
+                  - branding
+                  - details
                 properties:
                   branding:
                     type: object
                     description: Branding configuration
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      short:
+                        type: string
+                      logo:
+                        type: string
+                        format: uri
+                      theme:
+                        type: string
+                      links:
+                        type: object
                   details:
                     type: object
                     description: API details
+                    properties:
+                      version:
+                        type: string
+                      capabilities:
+                        type: object
+              examples:
+                success:
+                  value:
+                    branding:
+                      name: "My Music Service"
+                      email: "contact@example.com"
+                      short: "MMS"
+                      logo: "https://example.com/logo.png"
+                      theme: "#0066cc"
+                      links:
+                        homepage: "https://example.com"
+                        privacyStatement: "https://example.com/privacy"
+                        donate: null
+                    details:
+                      version: "1.0.0"
+                      capabilities:
+                        search: true
+                        songs: true
+                        streaming: true
+                        filters: false
+                        artists: true
+                        albums: false
+                        playlists: false
+                        lyrics: false
+                        popular: false
+                        similar: false
+                        open_music_metadata: false
+                        radio: false
+                        random: false
+                        list: false
+                        upload: false
+                        favorite: false
+                        rate: false
+                        edit: false
 
   /song/{id}:
     get:
-      summary: Song Details
+      summary: Song
       description: Retrieve detailed information about a song
       operationId: getSong
       tags:
@@ -50,22 +106,30 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Song found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Song'
-        '404':
+                $ref: "#/components/schemas/Song"
+              examples:
+                success:
+                  value:
+                    id: "abc123def456"
+                    title: "Example Song Title"
+                    artistName: "Example Artist"
+                    releaseYear: 2024
+                    coverURL: "/song/abc123def456/art"
+        "404":
           description: Song not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /song/{id}/stream:
     get:
-      summary: Stream Audio
+      summary: Stream
       description: Stream the audio file of a song
       operationId: streamSong
       tags:
@@ -78,7 +142,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Audio stream
           content:
             audio/mpeg:
@@ -93,22 +157,35 @@ paths:
               schema:
                 type: string
                 format: binary
-        '404':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: "audio/mpeg"
+            Content-Length:
+              schema:
+                type: integer
+                example: 6272474
+            Accept-Ranges:
+              schema:
+                type: string
+                example: "bytes"
+        "404":
           description: Song file not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /song/{id}/art:
     get:
-      summary: Cover Art
+      summary: Cover
       description: Retrieve the cover art image for a song
       operationId: getSongArt
       tags:
@@ -121,7 +198,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Cover art found
           content:
             image/jpeg:
@@ -136,39 +213,55 @@ paths:
               schema:
                 type: string
                 format: binary
-        '404':
+        "404":
           description: Cover art not found
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                type: string
+              examples:
+                not_found:
+                  value: "404 page not found"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /songs:
     get:
-      summary: List All Songs
+      summary: Songs
       description: Retrieve a list of all available songs
       operationId: listSongs
       tags:
         - Songs
       responses:
-        '200':
+        "200":
           description: List of songs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Song'
+                  $ref: "#/components/schemas/Song"
+              examples:
+                success:
+                  value:
+                    - id: "abc123def456"
+                      title: "Example Song Title"
+                      artistName: "Example Artist"
+                      releaseYear: 2024
+                      coverURL: "/song/abc123def456/art"
+                    - id: "xyz789ghi012"
+                      title: "Another Song Example"
+                      artistName: "Another Artist"
+                      releaseYear: 2023
+                      coverURL: "/song/xyz789ghi012/art"
 
   /songs/search:
     get:
-      summary: Search Songs
+      summary: Search
       description: Search for songs by title, artist, or other metadata
       operationId: searchSongs
       tags:
@@ -181,35 +274,59 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Song'
+                  $ref: "#/components/schemas/Song"
+              examples:
+                found:
+                  value:
+                    - id: "abc123def456"
+                      title: "Example Song Title"
+                      artistName: "Example Artist"
+                      releaseYear: 2024
+                      coverURL: "/song/abc123def456/art"
+                empty:
+                  value: []
+        "400":
+          description: Missing or invalid query parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /songs/random:
     get:
-      summary: Random Song
+      summary: Random
       description: Retrieve a random song from the library
       operationId: getRandomSong
       tags:
         - Songs
       responses:
-        '200':
+        "200":
           description: Random song
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Song'
-        '404':
+                $ref: "#/components/schemas/Song"
+              examples:
+                success:
+                  value:
+                    id: "abc123def456"
+                    title: "Example Song Title"
+                    artistName: "Example Artist"
+                    releaseYear: 2024
+                    coverURL: "/song/abc123def456/art"
+        "404":
           description: No songs found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -266,6 +383,12 @@ components:
           type: string
           description: Song lyrics
           nullable: true
+      example:
+        id: "abc123def456"
+        title: "Example Song Title"
+        artistName: "Example Artist"
+        releaseYear: 2024
+        coverURL: "/song/abc123def456/art"
 
     Album:
       type: object

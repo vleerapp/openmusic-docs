@@ -7,11 +7,11 @@
     "introduction/explanation",
     "---API Spec---",
     "api/getInfo",
+    "api/searchSongs",
     "api/getSong",
+    "api/listSongs",
     "api/streamSong",
     "api/getSongArt",
-    "api/listSongs",
-    "api/searchSongs",
     "api/getRandomSong"
   ]
 }
