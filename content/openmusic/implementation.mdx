@@ -24,25 +24,25 @@ Capabilities are a way for a server to communicate to the client what informatio
   Each capability has its own respecting API endpoint.
 </Callout>
 
-| Feature                           | Type     | Description                                                                                                         |
-| --------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| [`info`](/endpoint/getInfo)       | Required | Info about the server                                                                                               |
-| [`search`](/endpoint/searchSongs) | Required | Search songs by string                                                                                              |
-| [`song`](/endpoint/getSong)       | Required | Fetch metadata for song by id                                                                                       |
-| [`stream`](/endpoint/streamSong)  | Required | Stream song in xxx format                                                                                           |
-| `filter`                          | Optional | Advanced filtering for search (like release date, genre etc.)                                                       |
-| `artists`                         | Optional | Search and get artists                                                                                              |
-| `albums`                          | Optional | Search and get albums                                                                                               |
-| `playlists`                        | Optional | Search and get playlists                                                                                            |
-| `lyrics`                          | Optional | Lyrics                                                                                                              |
-| `popular`                         | Optional | Get similar songs from entities with basic filters like genre                                                       |
-| `similar`                         | Optional | Get similar songs from entities                                                                                     |
-| `omm`                             | Optional | OpenMusicMetadata compatibility                                                                                     |
-| `radio`                           | Optional | Radio stream                                                                                                        |
-| `random`                          | Optional | Get completely unbiased random song (maybe)                                                                         |
-| `authentication`                  | Optional | Authenticate with a token for private, premium or protected instances                                               |
-| `list`                            | Optional | List all available songs (can also be sorted in folders)                                                            |
-| `upload`                          | Optional | Upload new songs (only allow on private instances with authentication if you don't exactly know what you are doing) |
+| Feature                                     | Type     | Description                                                                                                         |
+| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| [`info`](/openmusic/endpoints/getInfo)       | Required | Info about the server                                                                                               |
+| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs by string                                                                                              |
+| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch metadata for song by id                                                                                       |
+| [`stream`](/openmusic/endpoints/streamSong)  | Required | Stream song in xxx format                                                                                           |
+| `filter`                                    | Optional | Advanced filtering for search (like release date, genre etc.)                                                       |
+| `artists`                                   | Optional | Search and get artists                                                                                              |
+| `albums`                                    | Optional | Search and get albums                                                                                               |
+| `playlists`                                 | Optional | Search and get playlists                                                                                            |
+| `lyrics`                                    | Optional | Lyrics                                                                                                              |
+| `popular`                                   | Optional | Get similar songs from entities with basic filters like genre                                                       |
+| `similar`                                   | Optional | Get similar songs from entities                                                                                     |
+| `omm`                                       | Optional | OpenMusicMetadata compatibility                                                                                     |
+| `radio`                                     | Optional | Radio stream                                                                                                        |
+| `random`                                    | Optional | Get completely unbiased random song (maybe)                                                                         |
+| `authentication`                            | Optional | Authenticate with a token for private, premium or protected instances                                               |
+| `list`                                      | Optional | List all available songs (can also be sorted in folders)                                                            |
+| `upload`                                    | Optional | Upload new songs (only allow on private instances with authentication if you don't exactly know what you are doing) |
 
 ## Endpoints
 
