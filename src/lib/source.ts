@@ -1,12 +1,8 @@
 import { docs } from "fumadocs-mdx:collections/server";
 import { type InferPageType, loader } from "fumadocs-core/source";
 import { createElement } from "react";
-import { createOpenAPI, openapiPlugin } from "fumadocs-openapi/server";
+import { openapiPlugin } from "fumadocs-openapi/server";
 import { Icon } from "@iconify/react";
-
-export const openapi = createOpenAPI({
-  input: ["./public/openapi.yml"],
-});
 
 export const source = loader({
   baseUrl: "/",

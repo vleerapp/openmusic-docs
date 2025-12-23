@@ -1,0 +1,16 @@
+openapi: 3.1.0
+info:
+  title: OpenMetadata API
+  description: A centralized metadata server for the OpenMusic ecosystem.
+  version: 1.0.0
+  license:
+    name: AGPL-3.0
+
+servers:
+  - url: https://api.vleer.app/metadata
+    description: Production server
+
+paths:
+
+components:
+  schemas:
