@@ -2,20 +2,21 @@ import { source } from "@/src/lib/source";
 import { Image } from "fumadocs-core/framework";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import Link from "next/link";
 
 const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
-      <>
+      <Link href="https://vleer.app" className="branding">
         <Image
-          width="24"
-          height="24"
+          width="32"
+          height="32"
           src="/logo.svg"
           alt="Logo"
           aria-label="Logo"
         />
-        <h1>OpenMusic API</h1>
-      </>
+        <h1>Docs</h1>
+      </Link>
     ),
   },
 };

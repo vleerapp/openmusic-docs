@@ -1,12 +1,3 @@
 {
-  "title": "OpenMusic API",
-  "root": true,
-  "pages": [
-    "---Introduction---",
-    "index",
-    "structure",
-    "---API Spec---",
-    "implementation",
-    "endpoint"
-  ]
+  "pages": ["vleer", "openmusic", "openmetadata"]
 }

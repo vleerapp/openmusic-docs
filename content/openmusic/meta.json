@@ -1,0 +1,14 @@
+{
+  "title": "OpenMusic",
+  "description": "The OpenMusic API Spec.",
+  "icon": "pixelarticons:music",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "structure",
+    "---API Spec---",
+    "implementation",
+    "endpoint"
+  ]
+}

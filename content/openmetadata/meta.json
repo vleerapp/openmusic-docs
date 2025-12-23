@@ -1,0 +1,7 @@
+{
+  "title": "OpenMetadata",
+  "description": "The API docs for OpenMetadata.",
+  "root": true,
+  "icon": "pixelarticons:calendar-grid",
+  "pages": ["---Introduction---", "index"]
+}
