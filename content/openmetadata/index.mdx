@@ -1,7 +1,72 @@
 ---
-title: Documentation
+title: Overview
 description: A centralized metadata server for the OpenMusic ecosystem
-icon: pixelarticons:book-open
+icon: pixelarticons:text-search
 ---
 
-This page is under construction
+OpenMetadata serves as a unified, authoritative metadata repository for the entire OpenMusic ecosystem. By maintaining a comprehensive database of every song, album, and artist, OpenMetadata ensures consistency and eliminates redundancy across all OpenMusic implementations.
+
+## The Problem
+
+Vleer allows you to add multiple sources (OpenMusic implementations) to access your music. These sources can include your personal library, YouTube Music, Tidal, and others. The challenge arises because each service may use different naming conventions for the same content:
+
+- Different capitalization ("The Beatles" vs "the beatles")
+- Varying punctuation ("Don't Stop Believin'" vs "Dont Stop Believin")
+- Alternative spellings or translations
+- Missing or incomplete artist information
+
+This inconsistency can result in the same song appearing multiple times in search results when it exists across different sources. While having multiple audio file sources for a single song is intentional and beneficial, users should see a unified entry rather than duplicates with slightly different metadata.
+
+## The Solution
+
+OpenMetadata acts as the single source of truth for all metadata. When an OpenMusic server retrieves a song from a source like YouTube Music, it attempts to match that track to an OpenMetadata ID based on the information provided by the original source. The server then returns the audio file along with the OpenMetadata ID to Vleer, which can look up the correct canonical metadata. Alternatively, the OpenMusic server can return the parsed metadata directly, already resolved to OpenMetadata's standardized format.
+
+This centralized approach ensures:
+
+- **Deduplication**: Each musical entity exists exactly once in the database
+- **Consistency**: All applications use the same canonical metadata
+- **Completeness**: Rich, curated information for every entry
+- **Synchronization**: Updates propagate across the entire ecosystem
+
+## Example Workflow
+
+Let's say you're using Vleer with both YouTube Music and Tidal as sources, and you search for "Blood In The Water":
+
+**Without OpenMetadata:**
+
+```
+YouTube Music result:  "blood in the water" by Normandie - Topic
+Tidal result:          "Blood In The Water" by Normandie
+Result: 2 separate entries in search results, each with different metadata
+```
+
+**With OpenMetadata:**
+
+```
+1. User searches for "Blood In The Water" in Vleer
+2. Vleer queries both OpenMusic servers (YouTube Music + Tidal)
+3. YouTube Music OpenMusic server:
+   - Finds "blood in the water" by Normandie - Topic
+   - Matches it to OpenMetadata ID: z913j3q5cqmeii0d
+   - Returns audio file reference + OpenMetadata ID
+4. Tidal OpenMusic server:
+   - Finds "Blood In The Water" by Normandie
+   - Matches it to the SAME OpenMetadata ID: z913j3q5cqmeii0d
+   - Returns audio file reference + OpenMetadata ID
+5. Vleer receives both responses and recognizes identical OpenMetadata IDs
+6. Vleer queries OpenMetadata API for canonical metadata:
+   {
+     "id": "z913j3q5cqmeii0d",
+     "name": "Blood In The Water",
+     "album_name": "Dopamine",
+     "artist_name": "Normandie",
+     "release_date": "2023-08-01",
+     "duration_seconds": 214,
+     "isrc": "UKMD42300005",
+     "disc_number": 1,
+     "track_number": 4
+   }
+Result: 1 unified entry with 2 available sources (YouTube Music + Tidal)
+```
+
+The user sees a single "Blood In The Water" entry with standardized metadata, but Vleer knows it can play the song from either YouTube Music or Tidal, whichever source is available or preferred.
