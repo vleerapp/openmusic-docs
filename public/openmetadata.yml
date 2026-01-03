@@ -12,7 +12,7 @@ paths:
   /songs/{id}:
     get:
       summary: Song
-      description: Retrieve a single song by its UUID
+      description: Retrieve a single song by its OMID
       operationId: getSongById
       tags:
         - Songs
@@ -22,8 +22,9 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
-          description: Song UUID
+            pattern: '^[0-9a-z]{16}$'
+            description: 16-character OMID
+          description: Song OMID
       responses:
         "200":
           description: Song found
@@ -101,7 +102,7 @@ paths:
   /artists/{id}:
     get:
       summary: Artist
-      description: Retrieve a single artist by its UUID
+      description: Retrieve a single artist by its OMID
       operationId: getArtistById
       tags:
         - Artists
@@ -111,8 +112,9 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
-          description: Artist UUID
+            pattern: '^[0-9a-z]{16}$'
+            description: 16-character OMID
+          description: Artist OMID
       responses:
         "200":
           description: Artist found
@@ -172,7 +174,7 @@ paths:
   /albums/{id}:
     get:
       summary: Album
-      description: Retrieve a single album by its UUID
+      description: Retrieve a single album by its OMID
       operationId: getAlbumById
       tags:
         - Albums
@@ -182,8 +184,9 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
-          description: Album UUID
+            pattern: '^[0-9a-z]{16}$'
+            description: 16-character OMID
+          description: Album OMID
       responses:
         "200":
           description: Album found
@@ -259,8 +262,8 @@ components:
       properties:
         id:
           type: string
-          format: uuid
-          description: Unique song identifier
+          pattern: '^[0-9a-z]{16}$'
+          description: Unique song OMID (16 chars)
         name:
           type: string
           description: Song title
@@ -305,8 +308,8 @@ components:
       properties:
         id:
           type: string
-          format: uuid
-          description: Unique artist identifier
+          pattern: '^[0-9a-z]{16}$'
+          description: Unique artist OMID (16 chars)
         name:
           type: string
           description: Artist name
@@ -323,8 +326,8 @@ components:
       properties:
         id:
           type: string
-          format: uuid
-          description: Unique album identifier
+          pattern: '^[0-9a-z]{16}$'
+          description: Unique album OMID (16 chars)
         name:
           type: string
           description: Album title
