@@ -11,7 +11,7 @@ servers:
 paths:
   /songs/{id}:
     get:
-      summary: Get song by ID
+      summary: Song
       description: Retrieve a single song by its UUID
       operationId: getSongById
       tags:
@@ -100,7 +100,7 @@ paths:
                     type: integer
   /artists/{id}:
     get:
-      summary: Get artist by ID
+      summary: Artist
       description: Retrieve a single artist by its UUID
       operationId: getArtistById
       tags:
@@ -171,7 +171,7 @@ paths:
                     type: integer
   /albums/{id}:
     get:
-      summary: Get album by ID
+      summary: Album
       description: Retrieve a single album by its UUID
       operationId: getAlbumById
       tags:
@@ -289,10 +289,6 @@ components:
         track_number:
           type: integer
           description: Track number on album
-        date_added:
-          type: string
-          format: date-time
-          description: Timestamp when added to database
       required:
         - id
         - name
@@ -318,10 +314,6 @@ components:
           type: string
           format: uri
           description: Artist artwork URL
-        date_added:
-          type: string
-          format: date-time
-          description: Timestamp when added to database
       required:
         - id
         - name
@@ -356,10 +348,6 @@ components:
           type: string
           nullable: true
           description: Record label name
-        date_added:
-          type: string
-          format: date-time
-          description: Timestamp when added to database
       required:
         - id
         - name
