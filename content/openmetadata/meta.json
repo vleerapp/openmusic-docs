@@ -3,5 +3,5 @@
   "description": "The API docs for OpenMetadata.",
   "root": true,
   "icon": "pixelarticons:calendar-grid",
-  "pages": ["---Introduction---", "index"]
+  "pages": ["---Introduction---", "index", "endpoints"]
 }

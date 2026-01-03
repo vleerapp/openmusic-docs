@@ -5,12 +5,366 @@ info:
   version: 1.0.0
   license:
     name: AGPL-3.0
-
 servers:
   - url: https://api.vleer.app/metadata
     description: Production server
-
 paths:
-
+  /songs/{id}:
+    get:
+      summary: Get song by ID
+      description: Retrieve a single song by its UUID
+      operationId: getSongById
+      tags:
+        - Songs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Song UUID
+      responses:
+        "200":
+          description: Song found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Song"
+        "404":
+          description: Song not found
+  /songs:
+    get:
+      summary: Search songs
+      description: Search songs by name, artist, album, or ISRC
+      operationId: searchSongs
+      tags:
+        - Songs
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query for song name
+        - name: artist
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by artist name
+        - name: album
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by album name
+        - name: isrc
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by ISRC code
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        "200":
+          description: List of songs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Song"
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+  /artists/{id}:
+    get:
+      summary: Get artist by ID
+      description: Retrieve a single artist by its UUID
+      operationId: getArtistById
+      tags:
+        - Artists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Artist UUID
+      responses:
+        "200":
+          description: Artist found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artist"
+        "404":
+          description: Artist not found
+  /artists:
+    get:
+      summary: Search artists
+      description: Search artists by name
+      operationId: searchArtists
+      tags:
+        - Artists
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query for artist name
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        "200":
+          description: List of artists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Artist"
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+  /albums/{id}:
+    get:
+      summary: Get album by ID
+      description: Retrieve a single album by its UUID
+      operationId: getAlbumById
+      tags:
+        - Albums
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Album UUID
+      responses:
+        "200":
+          description: Album found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Album"
+        "404":
+          description: Album not found
+  /albums:
+    get:
+      summary: Search albums
+      description: Search albums by name, artist, or UPC
+      operationId: searchAlbums
+      tags:
+        - Albums
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query for album name
+        - name: artist
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by artist name
+        - name: upc
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by UPC code
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        "200":
+          description: List of albums
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Album"
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
 components:
   schemas:
+    Song:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique song identifier
+        name:
+          type: string
+          description: Song title
+        album_name:
+          type: string
+          description: Album name
+        artist_name:
+          type: string
+          description: Primary artist name
+        artwork_url:
+          type: string
+          format: uri
+          description: Album artwork URL
+        disc_number:
+          type: integer
+          description: Disc number in multi-disc releases
+        duration_seconds:
+          type: integer
+          description: Track duration in seconds
+        isrc:
+          type: string
+          description: International Standard Recording Code
+        release_date:
+          type: string
+          description: Release date
+        track_number:
+          type: integer
+          description: Track number on album
+        date_added:
+          type: string
+          format: date-time
+          description: Timestamp when added to database
+      required:
+        - id
+        - name
+        - album_name
+        - artist_name
+        - artwork_url
+        - disc_number
+        - duration_seconds
+        - isrc
+        - release_date
+        - track_number
+    Artist:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique artist identifier
+        name:
+          type: string
+          description: Artist name
+        artwork_url:
+          type: string
+          format: uri
+          description: Artist artwork URL
+        date_added:
+          type: string
+          format: date-time
+          description: Timestamp when added to database
+      required:
+        - id
+        - name
+        - artwork_url
+    Album:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique album identifier
+        name:
+          type: string
+          description: Album title
+        artist_name:
+          type: string
+          description: Primary artist name
+        artwork_url:
+          type: string
+          format: uri
+          description: Album artwork URL
+        release_date:
+          type: string
+          description: Release date
+        track_count:
+          type: integer
+          description: Number of tracks on album
+        upc:
+          type: string
+          description: Universal Product Code
+        record_label:
+          type: string
+          nullable: true
+          description: Record label name
+        date_added:
+          type: string
+          format: date-time
+          description: Timestamp when added to database
+      required:
+        - id
+        - name
+        - artist_name
+        - artwork_url
+        - release_date
+        - track_count
+        - upc
