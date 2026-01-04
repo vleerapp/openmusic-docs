@@ -4,4 +4,27 @@ description: The music player, but without a subscription
 icon: pixelarticons:book-open
 ---
 
-This page is under construction
+import { Icon } from '@iconify/react';
+
+Welcome to the documentation of **Vleer** here you will find everything you need to get started on your private music listening journey, make your own implemenetation of the OpenMusic API Spec and start using it with any compatible client, configure Vleer to your liking or how to use the OpenMetadata API to centralize all your music's metadata.
+
+<Cards cols={2}>
+  <Card
+    title="Configuration"
+    href="/config"
+    icon={<Icon icon="pixelarticons:sliders" />}
+    description="All available configuration options for Vleer"
+  />
+  <Card
+    title="OpenMusic"
+    href="/openmusic"
+    icon={<Icon icon="pixelarticons:music" />}
+    description="The documentation for OpenMusic API Spec"
+  />
+  <Card
+    title="OpenMetadata"
+    href="/openmetadata"
+    icon={<Icon icon="pixelarticons:calendar-grid" />}
+    description="How to use the OpenMetadata API"
+  />
+</Cards>
