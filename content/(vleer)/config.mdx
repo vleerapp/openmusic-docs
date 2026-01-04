@@ -1,0 +1,143 @@
+---
+title: Configuration
+description: All available configuration options for Vleer
+icon: pixelarticons:sliders
+---
+
+import { Icon } from "@iconify/react";
+
+Vleer stores all user preferences and settings in a TOML configuration file. This guide covers all available configuration options and their default values.
+
+## File Location
+
+The configuration file is stored at:
+
+```
+~/.config/vleer/config.toml
+```
+
+On different operating systems:
+
+- **Linux**: `~/.config/vleer/config.toml`
+- **macOS**: `~/Library/Application Support/vleer/config.toml`
+- **Windows**: `%APPDATA%\vleer\config.toml`
+
+<Callout title="Auto-creation" type="info">
+  If the configuration file doesn't exist when Vleer starts, a new one will be
+  automatically created with default values.
+</Callout>
+
+## Default Config
+
+Here's a complete example of a `config.toml` file with all available options:
+
+```toml
+version = 1
+telemetry = true
+
+[equalizer]
+enabled = false
+frequencies = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+gains = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+q_values = [1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461]
+
+[scan]
+paths = ["~/Music"]
+
+[audio]
+normalization = true
+volume = 0.5
+```
+
+## Sections
+
+### Global Settings
+
+| Option      | Type    | Default | Description                                             |
+| ----------- | ------- | ------- | ------------------------------------------------------- |
+| `version`   | integer | `1`     | Configuration file schema version for migration support |
+| `telemetry` | boolean | `true`  | Enable or disable telemetry collection                  |
+
+### Equalizer Settings
+
+The equalizer section controls audio frequency adjustments.
+
+| Option        | Type              | Default                                                  | Description                                                                   |
+| ------------- | ----------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `enabled`     | boolean           | `false`                                                  | Enable or disable the equalizer                                               |
+| `frequencies` | array of integers | `[32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]` | Frequency bands in Hz. Must contain exactly 10 values                         |
+| `gains`       | array of floats   | `[0.0, 0.0, ...]` (10 values)                            | Gain adjustment in dB for each frequency band. Must contain exactly 10 values |
+| `q_values`    | array of floats   | `[1.461, 1.461, ...]` (10 values)                        | Q factor (bandwidth) for each frequency band. Must contain exactly 10 values  |
+
+#### Equalizer Example
+
+```toml
+[equalizer]
+enabled = true
+frequencies = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+gains = [2.0, 1.5, 0.5, 0.0, -0.5, 0.0, 1.0, 2.0, 1.5, 0.5]
+q_values = [1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461, 1.461]
+```
+
+<Callout title="Array Length Requirement" type="warning">
+  The equalizer requires exactly 10 frequency bands with corresponding gain and
+  Q values. If the counts don't match, Vleer will reset these arrays to defaults
+  with a warning.
+</Callout>
+
+### Scan Settings
+
+Controls how Vleer discovers and indexes music in your library.
+
+| Option  | Type             | Default       | Description                                 |
+| ------- | ---------------- | ------------- | ------------------------------------------- |
+| `paths` | array of strings | `["~/Music"]` | List of directories to scan for music files |
+
+#### Scan Example
+
+```toml
+[scan]
+paths = ["~/Music", "~/Downloads/Music", "/mnt/external/Music"]
+```
+
+<Callout title="Path Expansion" type="tip">
+  You can specify multiple directories. Paths support tilde (`~`) expansion for
+  the home directory.
+</Callout>
+
+### Audio Settings
+
+Controls audio output behavior.
+
+| Option          | Type    | Default | Description                                              |
+| --------------- | ------- | ------- | -------------------------------------------------------- |
+| `normalization` | boolean | `true`  | Enable loudness normalization (ReplayGain) across tracks |
+| `volume`        | float   | `0.5`   | Default playback volume (range: 0.0 to 1.0)              |
+
+#### Audio Example
+
+```toml
+[audio]
+normalization = false
+volume = 0.75
+```
+
+## Configuration Validation
+
+Vleer automatically validates your configuration when it loads. If issues are detected:
+
+- **Equalizer arrays**: If `gains` or `q_values` don't have exactly 10 values, they'll be reset to defaults
+- **Invalid TOML**: If the file has syntax errors, Vleer loads defaults and logs a warning
+- **Missing sections**: Missing sections are automatically populated with defaults
+
+## Reloading Configuration
+
+Changes to `config.toml` can be reloaded without restarting Vleer by using the keyboard shortcut:
+
+- **Linux/Windows**: <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>
+- **macOS**: <kbd>Cmd</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>
+
+<Callout title="Immediate Effect" type="info">
+  Configuration changes take effect immediately after reloading, without
+  interrupting playback.
+</Callout>
