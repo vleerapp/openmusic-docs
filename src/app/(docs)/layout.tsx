@@ -10,7 +10,7 @@ const baseOptions: BaseLayoutProps = {
         <Image
           width="32"
           height="32"
-          src="/logo.svg"
+          src="/vleer.svg"
           alt="Logo"
           aria-label="Logo"
         />
