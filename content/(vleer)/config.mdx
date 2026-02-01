@@ -12,12 +12,6 @@ Vleer stores all user preferences and settings in a TOML configuration file. Thi
 
 The configuration file is stored at:
 
-```
-~/.config/vleer/config.toml
-```
-
-On different operating systems:
-
 - **Linux**: `~/.config/vleer/config.toml`
 - **macOS**: `~/Library/Application Support/vleer/config.toml`
 - **Windows**: `%APPDATA%\vleer\config.toml`
@@ -34,6 +28,7 @@ Here's a complete example of a `config.toml` file with all available options:
 ```toml
 version = 1
 telemetry = true
+discord_rpc = false
 
 [equalizer]
 enabled = false
@@ -53,10 +48,19 @@ volume = 0.5
 
 ### Global Settings
 
-| Option      | Type    | Default | Description                                             |
-| ----------- | ------- | ------- | ------------------------------------------------------- |
-| `version`   | integer | `1`     | Configuration file schema version for migration support |
-| `telemetry` | boolean | `true`  | Enable or disable telemetry collection                  |
+| Option        | Type    | Default | Description                                                          |
+| ------------- | ------- | ------- | -------------------------------------------------------------------- |
+| `version`     | integer | `1`     | Configuration file schema version for migration support              |
+| `telemetry`   | boolean | `true`  | Enable or disable telemetry collection                               |
+| `discord_rpc` | boolean | `false` | Enable or disable Discord RPC status showing current song and artist |
+
+<Callout title="Telemetry Collection" type="info">
+  The telemetry collected consists of the current version, the os and the
+  current total amount of songs in the local db. All of this is associated with
+  a UUID generated upon the first startup of Vleer. This helps us identify the
+  user democraphic and its interresting statistics available for everyone
+  [here](https://graf.wireway.ch/public-dashboards/c518e42c7bc14c5ba95040671fb9e467).
+</Callout>
 
 ### Equalizer Settings
 
@@ -109,18 +113,10 @@ paths = ["~/Music", "~/Downloads/Music", "/mnt/external/Music"]
 
 Controls audio output behavior.
 
-| Option          | Type    | Default | Description                                              |
-| --------------- | ------- | ------- | -------------------------------------------------------- |
-| `normalization` | boolean | `true`  | Enable loudness normalization (ReplayGain) across tracks |
-| `volume`        | float   | `0.5`   | Default playback volume (range: 0.0 to 1.0)              |
-
-#### Audio Example
-
-```toml
-[audio]
-normalization = false
-volume = 0.75
-```
+| Option          | Type    | Default | Description                                            |
+| --------------- | ------- | ------- | ------------------------------------------------------ |
+| `normalization` | boolean | `true`  | Enable loudness normalization (-14 LUFS) across tracks |
+| `volume`        | float   | `0.5`   | Default playback volume (range: 0.0 to 1.0)            |
 
 ## Configuration Validation
 
