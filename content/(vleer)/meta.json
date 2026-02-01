@@ -3,5 +3,5 @@
   "description": "The Vleer app.",
   "icon": "pixelarticons:moon-stars",
   "root": true,
-  "pages": ["---Introduction---", "index", "config"]
+  "pages": ["---Introduction---", "index", "config", "architecture"]
 }

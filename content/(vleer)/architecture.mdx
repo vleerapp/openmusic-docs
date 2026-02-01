@@ -1,0 +1,65 @@
+---
+title: Architecture
+description: The architecture and components of the Vleer music player
+icon: pixelarticons:git-pull-request
+---
+
+<img src="/structure.svg" />
+
+Vleer is built on a modular, decentralized architecture that separates concerns into distinct layers. This design allows for flexibility, extensibility, and true user control over their music ecosystem.
+
+## Core Components
+
+### Client Layer
+**Vleer** is the primary desktop music player client that provides the user interface and playback experience. It communicates with implementations of the OpenMusic API Spec to fetch and stream music.
+
+### API Specification Layer
+
+#### OpenMusic API Spec
+The OpenMusic API Spec is the backbone of Vleer's architecture. It defines the standardized protocol that any music service must implement to work with Vleer. This enables users to:
+- Use any compatible implementation as their music source
+- Switch between implementations seamlessly
+- Mix and match multiple sources simultaneously
+- Build custom implementations for their specific needs
+
+#### OpenMetadata API
+The OpenMetadata API provides centralized metadata management for music across all implementations. This allows Vleer to maintain consistent album artwork, artist information, and song details regardless of where the audio comes from.
+
+### Implementation Layer
+Implementations are services that follow the OpenMusic API Spec. They handle the actual music delivery and can connect to various sources:
+
+- **Local Storage** - Your personal music files on disk
+- **Streaming Services** - Wrappers for platforms like YouTube Music, Spotify, etc.
+- **Cloud Storage** - Music stored on cloud providers
+- **Hybrid Implementations** - Combinations of the above sources
+
+## Data Flow
+
+1. **User Action** - User interacts with Vleer (search, play, browse)
+2. **API Request** - Vleer sends a request to the configured OpenMusic implementation
+3. **Implementation Processing** - The implementation fetches data from its source(s)
+4. **Metadata Enrichment** - OpenMetadata API provides unified metadata if available
+5. **Response** - Audio stream and metadata returned to Vleer
+6. **Playback** - Vleer handles audio processing, equalization, and playback
+
+## Configuration & User Control
+
+Vleer's behavior is controlled through a TOML configuration file that stores:
+- Audio preferences (volume, equalization, normalization)
+- Implementation endpoints and credentials
+- Metadata API configuration
+- Local music library paths
+- User preferences (discord RPC, telemetry, etc.)
+
+See the [Configuration](/config) guide for complete details.
+
+## Why This Architecture
+
+This layered, decentralized approach provides:
+- **User Freedom** - Choose or build any implementation that suits your needs
+- **Decentralization** - No single point of failure or control
+- **Extensibility** - Add new sources or implementations without modifying Vleer
+- **Privacy** - Keep music and preferences under your control
+- **Interoperability** - Any OpenMusic-compatible service works with Vleer
+
+The architecture puts users back in control of their music listening experience.
