@@ -6,23 +6,23 @@ info:
   license:
     name: AGPL-3.0
 servers:
-  - url: https://api.vleer.app/metadata
+  - url: https://api.vleer.app/metadata/v1
     description: Production server
 paths:
-  /songs/{id}:
+  /song/{id}:
     get:
       summary: Song
       description: Retrieve a single song by its OMID
       operationId: getSongById
       tags:
-        - Songs
+        - Song
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-            pattern: '^[0-9a-z]{16}$'
+            pattern: "^[0-9a-z]{16}$"
             description: 16-character OMID
           description: Song OMID
       responses:
@@ -34,85 +34,20 @@ paths:
                 $ref: "#/components/schemas/Song"
         "404":
           description: Song not found
-  /songs:
-    get:
-      summary: Search songs
-      description: Search songs by name, artist, album, or ISRC
-      operationId: searchSongs
-      tags:
-        - Songs
-      parameters:
-        - name: q
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Search query for song name
-        - name: artist
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter by artist name
-        - name: album
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter by album name
-        - name: isrc
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter by ISRC code
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-      responses:
-        "200":
-          description: List of songs
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Song"
-                  total:
-                    type: integer
-                  limit:
-                    type: integer
-                  offset:
-                    type: integer
-  /artists/{id}:
+  /artist/{id}:
     get:
       summary: Artist
       description: Retrieve a single artist by its OMID
       operationId: getArtistById
       tags:
-        - Artists
+        - Artist
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-            pattern: '^[0-9a-z]{16}$'
+            pattern: "^[0-9a-z]{16}$"
             description: 16-character OMID
           description: Artist OMID
       responses:
@@ -124,67 +59,20 @@ paths:
                 $ref: "#/components/schemas/Artist"
         "404":
           description: Artist not found
-  /artists:
-    get:
-      summary: Search artists
-      description: Search artists by name
-      operationId: searchArtists
-      tags:
-        - Artists
-      parameters:
-        - name: q
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Search query for artist name
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-      responses:
-        "200":
-          description: List of artists
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Artist"
-                  total:
-                    type: integer
-                  limit:
-                    type: integer
-                  offset:
-                    type: integer
-  /albums/{id}:
+  /album/{id}:
     get:
       summary: Album
       description: Retrieve a single album by its OMID
       operationId: getAlbumById
       tags:
-        - Albums
+        - Album
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-            pattern: '^[0-9a-z]{16}$'
+            pattern: "^[0-9a-z]{16}$"
             description: 16-character OMID
           description: Album OMID
       responses:
@@ -196,32 +84,51 @@ paths:
                 $ref: "#/components/schemas/Album"
         "404":
           description: Album not found
-  /albums:
+  /search:
     get:
-      summary: Search albums
-      description: Search albums by name, artist, or UPC
-      operationId: searchAlbums
+      summary: Search
+      description: Search across songs, artists, and albums. Optionally filter by item type.
+      operationId: search
       tags:
-        - Albums
+        - Search
       parameters:
         - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: type
           in: query
           required: false
           schema:
             type: string
-          description: Search query for album name
+            enum: [song, artist, album]
+          description: Filter by item type (song, artist, or album). If omitted, searches all types.
         - name: artist
           in: query
           required: false
           schema:
             type: string
-          description: Filter by artist name
+          description: Filter by artist name (applies to songs and albums)
+        - name: album
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by album name (applies to songs)
+        - name: isrc
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by ISRC code (applies to songs)
         - name: upc
           in: query
           required: false
           schema:
             type: string
-          description: Filter by UPC code
+          description: Filter by UPC code (applies to albums)
         - name: limit
           in: query
           required: false
@@ -239,16 +146,21 @@ paths:
             minimum: 0
       responses:
         "200":
-          description: List of albums
+          description: Search results
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  type:
+                    type: string
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Album"
+                      oneOf:
+                        - $ref: "#/components/schemas/Song"
+                        - $ref: "#/components/schemas/Artist"
+                        - $ref: "#/components/schemas/Album"
                   total:
                     type: integer
                   limit:
@@ -262,83 +174,83 @@ components:
       properties:
         id:
           type: string
-          pattern: '^[0-9a-z]{16}$'
+          pattern: "^[0-9a-z]{16}$"
           description: Unique song OMID (16 chars)
         name:
           type: string
           description: Song title
-        album_name:
-          type: string
-          description: Album name
-        artist_name:
+        artist:
           type: string
           description: Primary artist name
-        artwork_url:
+        album:
+          type: string
+          description: Album name
+        image:
           type: string
           format: uri
           description: Album artwork URL
         disc_number:
           type: integer
           description: Disc number in multi-disc releases
-        duration_seconds:
+        track_number:
+          type: integer
+          description: Track number on album
+        duration:
           type: integer
           description: Track duration in seconds
         isrc:
           type: string
           description: International Standard Recording Code
-        release_date:
+        date:
           type: string
           description: Release date
-        track_number:
-          type: integer
-          description: Track number on album
       required:
         - id
         - name
-        - album_name
-        - artist_name
-        - artwork_url
+        - artist
+        - album
+        - image
         - disc_number
-        - duration_seconds
-        - isrc
-        - release_date
         - track_number
+        - duration
+        - isrc
+        - date
     Artist:
       type: object
       properties:
         id:
           type: string
-          pattern: '^[0-9a-z]{16}$'
+          pattern: "^[0-9a-z]{16}$"
           description: Unique artist OMID (16 chars)
         name:
           type: string
           description: Artist name
-        artwork_url:
+        image:
           type: string
           format: uri
           description: Artist artwork URL
       required:
         - id
         - name
-        - artwork_url
+        - image
     Album:
       type: object
       properties:
         id:
           type: string
-          pattern: '^[0-9a-z]{16}$'
+          pattern: "^[0-9a-z]{16}$"
           description: Unique album OMID (16 chars)
         name:
           type: string
           description: Album title
-        artist_name:
+        artist:
           type: string
           description: Primary artist name
-        artwork_url:
+        image:
           type: string
           format: uri
           description: Album artwork URL
-        release_date:
+        date:
           type: string
           description: Release date
         track_count:
@@ -347,15 +259,15 @@ components:
         upc:
           type: string
           description: Universal Product Code
-        record_label:
+        label:
           type: string
           nullable: true
           description: Record label name
       required:
         - id
         - name
-        - artist_name
-        - artwork_url
-        - release_date
+        - artist
+        - image
+        - date
         - track_count
         - upc
