@@ -158,7 +158,7 @@ paths:
                     type: array
                     items:
                       oneOf:
-                        - $ref: "#/components/schemas/Song"
+                        - $ref: "#/components/schemas/SongSummary"
                         - $ref: "#/components/schemas/Artist"
                         - $ref: "#/components/schemas/Album"
                   total:
@@ -169,8 +169,37 @@ paths:
                     type: integer
 components:
   schemas:
-    Song:
+    ArtistRef:
       type: object
+      description: Minimal artist reference (id and name only)
+      properties:
+        id:
+          type: string
+          pattern: "^[0-9a-z]{16}$"
+          description: Unique artist OMID (16 chars)
+        name:
+          type: string
+          description: Artist name
+      required:
+        - id
+        - name
+    AlbumRef:
+      type: object
+      description: Minimal album reference (id and name only)
+      properties:
+        id:
+          type: string
+          pattern: "^[0-9a-z]{16}$"
+          description: Unique album OMID (16 chars)
+        name:
+          type: string
+          description: Album title
+      required:
+        - id
+        - name
+    SongSummary:
+      type: object
+      description: Lightweight song returned by the search endpoint
       properties:
         id:
           type: string
@@ -180,11 +209,20 @@ components:
           type: string
           description: Song title
         artist:
-          type: string
-          description: Primary artist name
+          type: array
+          items:
+            $ref: "#/components/schemas/ArtistRef"
+          description: Artists (id and name only)
         album:
-          type: string
-          description: Album name
+          type: array
+          items:
+            $ref: "#/components/schemas/AlbumRef"
+          description: Albums (id and name only)
+        genres:
+          type: array
+          items:
+            type: string
+          description: Genre names
         image:
           type: string
           format: uri
@@ -209,6 +247,64 @@ components:
         - name
         - artist
         - album
+        - genres
+        - image
+        - disc_number
+        - track_number
+        - duration
+        - isrc
+        - date
+    Song:
+      type: object
+      description: Full song returned by /song/{id} with nested full objects
+      properties:
+        id:
+          type: string
+          pattern: "^[0-9a-z]{16}$"
+          description: Unique song OMID (16 chars)
+        name:
+          type: string
+          description: Song title
+        artist:
+          type: array
+          items:
+            $ref: "#/components/schemas/Artist"
+          description: Full artist objects
+        album:
+          type: array
+          items:
+            $ref: "#/components/schemas/Album"
+          description: Full album objects
+        genres:
+          type: array
+          items:
+            type: string
+          description: Genre names
+        image:
+          type: string
+          format: uri
+          description: Album artwork URL
+        disc_number:
+          type: integer
+          description: Disc number in multi-disc releases
+        track_number:
+          type: integer
+          description: Track number on album
+        duration:
+          type: integer
+          description: Track duration in seconds
+        isrc:
+          type: string
+          description: International Standard Recording Code
+        date:
+          type: string
+          description: Release date
+      required:
+        - id
+        - name
+        - artist
+        - album
+        - genres
         - image
         - disc_number
         - track_number
@@ -229,10 +325,16 @@ components:
           type: string
           format: uri
           description: Artist artwork URL
+        genres:
+          type: array
+          items:
+            type: string
+          description: Genre names
       required:
         - id
         - name
         - image
+        - genres
     Album:
       type: object
       properties:
@@ -244,8 +346,15 @@ components:
           type: string
           description: Album title
         artist:
-          type: string
-          description: Primary artist name
+          type: array
+          items:
+            $ref: "#/components/schemas/Artist"
+          description: Full artist objects
+        genres:
+          type: array
+          items:
+            type: string
+          description: Genre names
         image:
           type: string
           format: uri
@@ -267,6 +376,7 @@ components:
         - id
         - name
         - artist
+        - genres
         - image
         - date
         - track_count

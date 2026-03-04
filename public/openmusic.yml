@@ -1,22 +1,22 @@
 openapi: 3.1.0
 info:
   title: OpenMusic API
-  description: The Open standard for music service comunication
+  description: The Open standard for music service communication
   version: 1.0.0
   license:
     name: AGPL-3.0
 
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080
     description: Development server
-  - url: https://api.example.com/api
+  - url: https://api.example.com
     description: Production server
 
 paths:
   /:
     get:
       summary: Info
-      description: Returns information about the API including branding and details
+      description: Returns information about the API including branding and capabilities
       operationId: getInfo
       tags:
         - Info
@@ -33,7 +33,6 @@ paths:
                 properties:
                   branding:
                     type: object
-                    description: Branding configuration
                     properties:
                       name:
                         type: string
@@ -48,14 +47,63 @@ paths:
                         type: string
                       links:
                         type: object
+                        properties:
+                          homepage:
+                            type: string
+                            format: uri
+                            nullable: true
+                          privacyStatement:
+                            type: string
+                            format: uri
+                            nullable: true
+                          donate:
+                            type: string
+                            format: uri
+                            nullable: true
                   details:
                     type: object
-                    description: API details
                     properties:
                       version:
                         type: string
                       capabilities:
                         type: object
+                        properties:
+                          search:
+                            type: boolean
+                          songs:
+                            type: boolean
+                          streaming:
+                            type: boolean
+                          filters:
+                            type: boolean
+                          artists:
+                            type: boolean
+                          albums:
+                            type: boolean
+                          playlists:
+                            type: boolean
+                          lyrics:
+                            type: boolean
+                          popular:
+                            type: boolean
+                          similar:
+                            type: boolean
+                          openMusicMetadata:
+                            type: boolean
+                          radio:
+                            type: boolean
+                          random:
+                            type: boolean
+                          list:
+                            type: boolean
+                          upload:
+                            type: boolean
+                          favorite:
+                            type: boolean
+                          rate:
+                            type: boolean
+                          edit:
+                            type: boolean
               examples:
                 success:
                   value:
@@ -77,12 +125,12 @@ paths:
                         streaming: true
                         filters: false
                         artists: true
-                        albums: false
+                        albums: true
                         playlists: false
                         lyrics: false
                         popular: false
                         similar: false
-                        open_music_metadata: false
+                        openMusicMetadata: true
                         radio: false
                         random: false
                         list: false
@@ -102,7 +150,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: The unique identifier of the song
+          description: YouTube video ID or watch URL
           schema:
             type: string
       responses:
@@ -115,11 +163,19 @@ paths:
               examples:
                 success:
                   value:
-                    id: "abc123def456"
-                    title: "Example Song Title"
-                    artistName: "Example Artist"
-                    releaseYear: 2024
-                    coverURL: "/song/abc123def456/art"
+                    id: "dQw4w9WgXcQ"
+                    name: "Never Gonna Give You Up"
+                    omid: "abc1234567890def"
+                    artist: "Rick Astley"
+                    album: "Whenever You Need Somebody"
+                    date: 1987
+                    image: "/song/dQw4w9WgXcQ/art"
+        "400":
+          description: Invalid song ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Song not found
           content:
@@ -130,7 +186,7 @@ paths:
   /song/{id}/stream:
     get:
       summary: Stream
-      description: Stream the audio file of a song
+      description: Stream the audio of a song. Supports HTTP range requests.
       operationId: streamSong
       tags:
         - Songs
@@ -138,40 +194,54 @@ paths:
         - name: id
           in: path
           required: true
-          description: The unique identifier of the song
+          description: YouTube video ID or watch URL
+          schema:
+            type: string
+        - name: Range
+          in: header
+          required: false
+          description: Byte range for partial content (e.g. `bytes=0-1048575`)
           schema:
             type: string
       responses:
         "200":
-          description: Audio stream
+          description: Full audio stream
           content:
-            audio/mpeg:
-              schema:
-                type: string
-                format: binary
-            audio/flac:
-              schema:
-                type: string
-                format: binary
-            audio/ogg:
+            audio/mp4:
               schema:
                 type: string
                 format: binary
           headers:
-            Content-Type:
-              schema:
-                type: string
-                example: "audio/mpeg"
-            Content-Length:
-              schema:
-                type: integer
-                example: 6272474
             Accept-Ranges:
               schema:
                 type: string
                 example: "bytes"
-        "404":
-          description: Song file not found
+            Content-Length:
+              schema:
+                type: integer
+        "206":
+          description: Partial audio content
+          content:
+            audio/mp4:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Range:
+              schema:
+                type: string
+                example: "bytes 0-1048575/6272474"
+            Content-Length:
+              schema:
+                type: integer
+        "400":
+          description: Invalid song ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "416":
+          description: Range not satisfiable
           content:
             application/json:
               schema:
@@ -183,23 +253,23 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /song/{id}/art:
+  /song/{id}/image:
     get:
-      summary: Cover
+      summary: Cover Art
       description: Retrieve the cover art image for a song
-      operationId: getSongArt
+      operationId: getSongImage
       tags:
         - Songs
       parameters:
         - name: id
           in: path
           required: true
-          description: The unique identifier of the song
+          description: YouTube video ID or watch URL
           schema:
             type: string
       responses:
         "200":
-          description: Cover art found
+          description: Cover art image
           content:
             image/jpeg:
               schema:
@@ -215,13 +285,6 @@ paths:
                 format: binary
         "404":
           description: Cover art not found
-          content:
-            text/plain:
-              schema:
-                type: string
-              examples:
-                not_found:
-                  value: "404 page not found"
         "500":
           description: Internal server error
           content:
@@ -229,100 +292,255 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /songs:
+  /artist/{id}:
     get:
-      summary: Songs
-      description: Retrieve a list of all available songs
-      operationId: listSongs
+      summary: Artist
+      description: Retrieve information about an artist by YouTube channel browse ID
+      operationId: getArtist
       tags:
-        - Songs
+        - Artists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: YouTube Music artist browse ID
+          schema:
+            type: string
       responses:
         "200":
-          description: List of songs
+          description: Artist found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Song"
+                $ref: "#/components/schemas/Artist"
               examples:
                 success:
                   value:
-                    - id: "abc123def456"
-                      title: "Example Song Title"
-                      artistName: "Example Artist"
-                      releaseYear: 2024
-                      coverURL: "/song/abc123def456/art"
-                    - id: "xyz789ghi012"
-                      title: "Another Song Example"
-                      artistName: "Another Artist"
-                      releaseYear: 2023
-                      coverURL: "/song/xyz789ghi012/art"
+                    id: "UCuAXFkgsw1L7xaCfnd5JJOw"
+                    name: "Rick Astley"
+                    image: "/artist/UCuAXFkgsw1L7xaCfnd5JJOw/image"
+        "404":
+          description: Artist not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
-  /songs/search:
+  /artist/{id}/image:
+    get:
+      summary: Artist Image
+      description: Retrieve the image for an artist
+      operationId: getArtistImage
+      tags:
+        - Artists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: YouTube Music artist browse ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Artist image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Image not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /album/{id}:
+    get:
+      summary: Album
+      description: Retrieve information about an album by YouTube Music playlist browse ID
+      operationId: getAlbum
+      tags:
+        - Albums
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: YouTube Music album playlist ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Album found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Album"
+              examples:
+                success:
+                  value:
+                    id: "MPREb_abc123"
+                    name: "Whenever You Need Somebody"
+                    artist: "Rick Astley"
+                    date: 1987
+                    trackCount: 10
+                    image: "/album/MPREb_abc123/art"
+        "404":
+          description: Album not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /album/{id}/art:
+    get:
+      summary: Album Art
+      description: Retrieve the cover art for an album
+      operationId: getAlbumArt
+      tags:
+        - Albums
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: YouTube Music album playlist ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Album art image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Art not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /search:
     get:
       summary: Search
-      description: Search for songs by title, artist, or other metadata
-      operationId: searchSongs
+      description: Search for songs, artists, or albums. Defaults to songs if no type is specified.
+      operationId: search
       tags:
-        - Songs
+        - Search
       parameters:
-        - name: query
+        - name: q
           in: query
           required: true
           description: Search query string
           schema:
             type: string
+        - name: type
+          in: query
+          required: false
+          description: Filter results by item type. Defaults to song.
+          schema:
+            type: string
+            enum: [song, artist, album]
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of results to return
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          description: Number of results to skip for pagination
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         "200":
           description: Search results
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Song"
+                type: object
+                required:
+                  - type
+                  - data
+                  - total
+                  - limit
+                  - offset
+                properties:
+                  type:
+                    type: string
+                    enum: [song, artist, album]
+                    description: The item type of all results in data
+                  data:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/Song"
+                        - $ref: "#/components/schemas/Artist"
+                        - $ref: "#/components/schemas/Album"
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
               examples:
-                found:
+                songs:
                   value:
-                    - id: "abc123def456"
-                      title: "Example Song Title"
-                      artistName: "Example Artist"
-                      releaseYear: 2024
-                      coverURL: "/song/abc123def456/art"
+                    type: "song"
+                    data:
+                      - id: "dQw4w9WgXcQ"
+                        name: "Never Gonna Give You Up"
+                        artist: "Rick Astley"
+                    image: "/song/dQw4w9WgXcQ/image"
+                    total: 1
+                    limit: 20
+                    offset: 0
+                artists:
+                  value:
+                    type: "artist"
+                    data:
+                      - id: "UCuAXFkgsw1L7xaCfnd5JJOw"
+                        name: "Rick Astley"
+                        image: "/artist/UCuAXFkgsw1L7xaCfnd5JJOw/image"
+                    total: 1
+                    limit: 20
+                    offset: 0
                 empty:
-                  value: []
+                  value:
+                    type: "song"
+                    data: []
+                    total: 0
+                    limit: 20
+                    offset: 0
         "400":
           description: Missing or invalid query parameter
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /songs/random:
-    get:
-      summary: Random
-      description: Retrieve a random song from the library
-      operationId: getRandomSong
-      tags:
-        - Songs
-      responses:
-        "200":
-          description: Random song
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Song"
-              examples:
-                success:
-                  value:
-                    id: "abc123def456"
-                    title: "Example Song Title"
-                    artistName: "Example Artist"
-                    releaseYear: 2024
-                    coverURL: "/song/abc123def456/art"
-        "404":
-          description: No songs found
           content:
             application/json:
               schema:
@@ -334,19 +552,23 @@ components:
       type: object
       required:
         - id
-        - title
+        - name
       properties:
         id:
           type: string
-          description: Unique identifier for the song
-        title:
+          description: YouTube video ID
+        name:
           type: string
           description: Title of the song
-        artistName:
+        omid:
+          type: string
+          description: OpenMetadata ID (OMID) if matched
+          nullable: true
+        artist:
           type: string
           description: Name of the artist
           nullable: true
-        albumName:
+        album:
           type: string
           description: Name of the album
           nullable: true
@@ -354,27 +576,19 @@ components:
           type: string
           description: Genre of the song
           nullable: true
-        releaseYear:
+        date:
           type: integer
-          description: Year the song was released
+          description: Release year
           nullable: true
-        track:
+        track_number:
           type: integer
-          description: Track number on the album
+          description: Track number within the album
           nullable: true
-        trackTotal:
+        disc_number:
           type: integer
-          description: Total number of tracks on the album
+          description: Disc number for multi-disc releases
           nullable: true
-        disc:
-          type: integer
-          description: Disc number (for multi-disc albums)
-          nullable: true
-        discTotal:
-          type: integer
-          description: Total number of discs (for multi-disc albums)
-          nullable: true
-        coverURL:
+        image:
           type: string
           format: uri
           description: URL to the cover art image
@@ -382,50 +596,6 @@ components:
         lyrics:
           type: string
           description: Song lyrics
-          nullable: true
-      example:
-        id: "abc123def456"
-        title: "Example Song Title"
-        artistName: "Example Artist"
-        releaseYear: 2024
-        coverURL: "/song/abc123def456/art"
-
-    Album:
-      type: object
-      required:
-        - id
-        - title
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the album
-        title:
-          type: string
-          description: Title of the album
-        artistName:
-          type: string
-          description: Name of the artist
-          nullable: true
-        artistID:
-          type: integer
-          description: Artist ID
-          nullable: true
-        genre:
-          type: string
-          description: Genre of the album
-          nullable: true
-        releaseYear:
-          type: integer
-          description: Year the album was released
-          nullable: true
-        trackCount:
-          type: integer
-          description: Number of tracks on the album
-          nullable: true
-        coverURL:
-          type: string
-          format: uri
-          description: URL to the cover art image
           nullable: true
 
     Artist:
@@ -436,21 +606,17 @@ components:
       properties:
         id:
           type: string
-          description: Unique identifier for the artist
+          description: YouTube Music artist browse ID
         name:
           type: string
           description: Name of the artist
-        genre:
-          type: string
-          description: Primary genre of the artist
-          nullable: true
-        imageURL:
+        image:
           type: string
           format: uri
           description: URL to the artist image
           nullable: true
 
-    Playlist:
+    Album:
       type: object
       required:
         - id
@@ -458,18 +624,26 @@ components:
       properties:
         id:
           type: string
-          description: Unique identifier for the playlist
+          description: YouTube Music album playlist ID
         name:
           type: string
-          description: Name of the playlist
-        description:
+          description: Title of the album
+        artist:
           type: string
-          description: Description of the playlist
+          description: Name of the artist
           nullable: true
-        imageURL:
+        date:
+          type: integer
+          description: Release year
+          nullable: true
+        track_count:
+          type: integer
+          description: Number of tracks on the album
+          nullable: true
+        image:
           type: string
           format: uri
-          description: URL to the playlist cover image
+          description: URL to the cover art image
           nullable: true
 
     Error:
