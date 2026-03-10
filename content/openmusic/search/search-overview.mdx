@@ -1,0 +1,39 @@
+---
+title: Search Overview
+description: Search across the OpenMusic catalog.
+icon: pixelarticons:toke-square
+---
+
+OpenMusic has two search modes.
+
+## Bucketed Search
+
+`GET /search`
+
+Endpoint reference: [`searchTop`](/openmusic/endpoints/searchTop)
+
+This endpoint returns grouped search buckets inside one response object.
+
+Possible buckets:
+
+- `top`
+- `songs`
+- `artists`
+- `albums`
+- `stations`
+- `playlists`
+
+Key parameters:
+
+- `term` is required
+- `include` selects which buckets are returned
+- scoped `view[...]` and `limit[...]` control nested resource detail
+
+## Typed Search
+
+Typed search endpoints return a paginated result for a single resource type:
+
+- [`Search Songs`](./search-songs)
+- [`Search Albums`](./search-albums)
+- [`Search Artists`](./search-artists)
+- [`Search Playlists`](./search-playlists)

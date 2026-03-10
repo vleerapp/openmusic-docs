@@ -44,8 +44,8 @@ capability flags.
 | Feature                                      | Type     | Description                             |
 | -------------------------------------------- | -------- | --------------------------------------- |
 | [`info`](/openmusic/info/get-api-info)       | Required | Return branding and capability metadata |
-| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs and optionally other types |
-| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch a song by id                      |
+| [`search`](/openmusic/search/search-overview) | Required | Search songs and optionally other types |
+| [`song`](/openmusic/songs/get-a-song)         | Required | Fetch a song by id                      |
 | `download`                                   | Required | Provide downloadable song files         |
 | `stream`                                     | Optional | Provide stream URLs for song files      |
 | `artists`                                    | Optional | Search and fetch artists                |
@@ -198,14 +198,14 @@ Albums group songs into a release.
 They usually expose shared metadata such as name, artwork, UPC, genres, release
 date, and relationships to tracks and artists.
 
-- [`Albums`](/openmusic/albums)
+- [`Albums`](/openmusic/albums/get-an-album)
 
 ### Artists
 
 Artists represent performers or creators.
 They expose artist metadata and connect outward to songs and albums.
 
-- [`Artists`](/openmusic/artists)
+- [`Artists`](/openmusic/artists/get-an-artist)
 
 ### Playlists
 
@@ -213,7 +213,7 @@ Playlists are curated track collections.
 They behave like named lists of songs with artwork, curator information, and
 track relationships.
 
-- [`Playlists`](/openmusic/playlists)
+- [`Playlists`](/openmusic/playlists/get-a-playlist)
 
 ### Stations
 
@@ -224,7 +224,7 @@ tracks.
 Unlike a normal playlist, the station is defined by how it is generated rather
 than by a fixed curated track list.
 
-- [`Stations`](/openmusic/stations)
+- [`Stations`](/openmusic/stations/get-an-artist-station)
 
 ## Response Envelopes
 

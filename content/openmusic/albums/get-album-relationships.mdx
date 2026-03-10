@@ -1,0 +1,61 @@
+---
+title: Get Album Relationships
+description: Fetch an album's tracks or artists.
+icon: pixelarticons:toke-square
+---
+
+Albums expose two dedicated relationship endpoints.
+
+Endpoint references:
+
+- [`getAlbumTracks`](/openmusic/endpoints/getAlbumTracks)
+- [`getAlbumArtists`](/openmusic/endpoints/getAlbumArtists)
+
+## Relationship Endpoints
+
+| Relationship | Endpoint | Response |
+| ------------ | -------- | -------- |
+| Tracks | `GET /albums/{id}/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getAlbumTracks) |
+| Artists | `GET /albums/{id}/rel/artists` | [`ArtistListResponse`](/openmusic/endpoints/getAlbumArtists) |
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Album id | `string` | `album_123` |
+
+## Query Parameters
+
+### Tracks
+
+`GET /albums/{id}/rel/tracks`
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+### Artists
+
+`GET /albums/{id}/rel/artists`
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums` | `false` |
+| `view` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+
+## Responses
+
+- Tracks: [`SongListResponse`](/openmusic/endpoints/getAlbumTracks)
+- Artists: [`ArtistListResponse`](/openmusic/endpoints/getAlbumArtists)
+- Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

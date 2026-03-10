@@ -1,0 +1,31 @@
+---
+title: Get the Popular Station
+description: Fetch the dynamic station seeded by popular tracks.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/stations/popular`
+
+Endpoint reference: [`getPopularStation`](/openmusic/endpoints/getPopularStation)
+
+This station is a dynamic playlist built from the server's popular tracks.
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[stations]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`StationResponse`](/openmusic/endpoints/getPopularStation) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

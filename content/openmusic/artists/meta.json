@@ -2,6 +2,11 @@
   "title": "Artists",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "---Objects---"
+    "get-an-artist",
+    "get-artist-relationships",
+    "get-multiple-artists-by-id",
+    "---Objects---",
+    "models",
+    "responses"
   ]
 }

@@ -1,0 +1,42 @@
+---
+title: Get an Artist
+description: Fetch a single artist resource by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/artists/{id}`
+
+Endpoint reference: [`getArtist`](/openmusic/endpoints/getArtist)
+
+## What You Can Include
+
+- `albums`
+- `songs`
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Artist id | `string` | `artist_123` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `songs` | `false` |
+| `view` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[songs]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`ArtistResponse`](/openmusic/endpoints/getArtist) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

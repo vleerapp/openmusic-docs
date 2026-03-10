@@ -1,0 +1,28 @@
+---
+title: Album Responses
+description: The standard response wrappers returned by album endpoints.
+icon: pixelarticons:menu-square
+---
+
+## AlbumResponse
+
+```ts
+type AlbumResponse = SingleResourceResponse<Album | BaseAlbum>;
+```
+
+## AlbumListResponse
+
+```ts
+type AlbumListResponse = ListResourceResponse<Album | BaseAlbum>;
+```
+
+## AlbumPaginatedResponse
+
+```ts
+type AlbumPaginatedResponse = PaginatedResourceResponse<Album | BaseAlbum>;
+```
+
+## Related Responses
+
+- `/albums/{id}/rel/tracks` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
+- `/albums/{id}/rel/artists` -> [`ArtistListResponse`](/openmusic/artists/responses#artistlistresponse)

@@ -1,0 +1,37 @@
+---
+title: Get Multiple Artists by Id
+description: Fetch one or more artists by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/artists`
+
+Endpoint reference: [`getArtists`](/openmusic/endpoints/getArtists)
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `ids` | Comma-separated artist ids | `string` | `artist_1,artist_2` |
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `songs` | `false` |
+| `view` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[songs]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`ArtistListResponse`](/openmusic/endpoints/getArtists) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

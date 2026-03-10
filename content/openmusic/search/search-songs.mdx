@@ -1,22 +1,20 @@
 ---
-title: Get Multiple Songs by Id
-description: Fetch one or more songs by id using the songs lookup endpoint.
+title: Search Songs
+description: Search songs with pagination, sorting, and genre filtering.
 icon: pixelarticons:toke-square
 ---
 
 ## Endpoint
 
-`GET` `/songs`
+`GET` `/search/songs`
 
-Endpoint reference: [`getSongs`](/openmusic/endpoints/getSongs)
-
-Use this form when you already have one or more song ids and want them back in a single response.
+Endpoint reference: [`searchSongs`](/openmusic/endpoints/searchSongs)
 
 ## Required Query Parameter
 
 | Name | Description | Type | Example |
 | ---- | ----------- | ---- | ------- |
-| `ids` | Comma-separated song ids | `string` | `song_1,song_2,song_3` |
+| `term` | Search term | `string` | `term=radiohead` |
 
 ## Optional Query Parameters
 
@@ -28,7 +26,10 @@ Use this form when you already have one or more song ids and want them back in a
 | `view[songs]` | `minimal` | `false` |
 | `view[albums]` | `minimal` | `false` |
 | `view[artists]` | `minimal` | `false` |
-| `view[lyrics]` | `minimal` | `false` |
+| `limit` | `1-25` | `false` |
+| `offset` | `0+` | `false` |
+| `sort` | `name`, `-name`, `date_released`, `-date_released`, `date_added`, `-date_added` | `false` |
+| `filter[genres]` | comma-separated genres | `false` |
 | `limit[albums]` | `1-25` | `false` |
 | `limit[artists]` | `1-25` | `false` |
 
@@ -36,5 +37,5 @@ Use this form when you already have one or more song ids and want them back in a
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| `200 OK` | `application/json` | [`SongPaginatedResponse`](/openmusic/endpoints/searchSongs) |
 | `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

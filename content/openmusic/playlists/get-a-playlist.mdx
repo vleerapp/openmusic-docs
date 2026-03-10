@@ -1,0 +1,39 @@
+---
+title: Get a Playlist
+description: Fetch a single playlist resource by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/playlists/{id}`
+
+Endpoint reference: [`getPlaylist`](/openmusic/endpoints/getPlaylist)
+
+## What You Can Include
+
+- `tracks`
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Playlist id | `string` | `playlist_123` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[playlists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`PlaylistResponse`](/openmusic/endpoints/getPlaylist) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

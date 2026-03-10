@@ -1,0 +1,46 @@
+---
+title: Album Models
+description: The album resource types used across the OpenMusic API.
+icon: pixelarticons:menu-square
+---
+
+## BaseAlbum
+
+```ts
+interface BaseAlbum extends ResourceBase {
+  type: "albums";
+  meta: {
+    omm_id: string | null;
+  };
+  relationships: {
+    tracks?: (Song | BaseSong)[];
+    artists?: (Artist | BaseArtist)[];
+  };
+}
+```
+
+- [`ResourceBase`](/openmusic/resources#resourcebase)
+- [`Songs`](/openmusic/songs/get-a-song)
+- [`Artists`](/openmusic/artists/get-an-artist)
+
+## Album
+
+```ts
+interface Album extends BaseAlbum {
+  attributes: AlbumAttributes;
+}
+```
+
+## AlbumAttributes
+
+```ts
+interface AlbumAttributes {
+  name: string;
+  artist_name: string;
+  upc: string | null;
+  artwork_url: string | null;
+  track_count: number | null;
+  genres: string[];
+  release_date: string | null;
+}
+```

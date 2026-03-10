@@ -1,0 +1,60 @@
+---
+title: Get Artist Relationships
+description: Fetch an artist's albums or songs.
+icon: pixelarticons:toke-square
+---
+
+Artist relationships are the first place where pagination and sorting matter heavily.
+
+Endpoint references:
+
+- [`getArtistAlbums`](/openmusic/endpoints/getArtistAlbums)
+- [`getArtistSongs`](/openmusic/endpoints/getArtistSongs)
+
+## Relationship Endpoints
+
+| Relationship | Endpoint | Response |
+| ------------ | -------- | -------- |
+| Albums | `GET /artists/{id}/rel/albums` | [`AlbumPaginatedResponse`](/openmusic/endpoints/getArtistAlbums) |
+| Songs | `GET /artists/{id}/rel/songs` | [`SongPaginatedResponse`](/openmusic/endpoints/getArtistSongs) |
+
+## Shared Parameters
+
+Both relationship endpoints support:
+
+- `lang`
+- `view`
+- `limit`
+- `offset`
+
+### Artist Albums
+
+`GET /artists/{id}/rel/albums`
+
+Extra controls:
+
+- `include=artists`
+- `sort=name|-name|date_released|-date_released|date_added|-date_added`
+- `view[albums]`
+- `view[artists]`
+- `limit[artists]`
+
+### Artist Songs
+
+`GET /artists/{id}/rel/songs`
+
+Extra controls:
+
+- `include=albums,artists`
+- `sort=name|-name|date_released|-date_released|date_added|-date_added`
+- `view[songs]`
+- `view[albums]`
+- `view[artists]`
+- `limit[albums]`
+- `limit[artists]`
+
+## Responses
+
+- Albums: [`AlbumPaginatedResponse`](/openmusic/endpoints/getArtistAlbums)
+- Songs: [`SongPaginatedResponse`](/openmusic/endpoints/getArtistSongs)
+- Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

@@ -38,6 +38,6 @@ type SongPaginatedResponse = PaginatedResourceResponse<Song | BaseSong>;
 
 The song relationship endpoints return resource wrappers from the related type:
 
-- `/songs/{id}/rel/albums` -> [`AlbumListResponse`](/openmusic/albums)
-- `/songs/{id}/rel/artists` -> [`ArtistListResponse`](/openmusic/artists)
+- `/songs/{id}/rel/albums` -> [`AlbumListResponse`](/openmusic/albums/get-album-relationships)
+- `/songs/{id}/rel/artists` -> [`ArtistListResponse`](/openmusic/artists/get-artist-relationships)
 - `/songs/{id}/rel/lyrics` -> `LyricsResponse`

@@ -1,0 +1,17 @@
+---
+title: Station Responses
+description: The standard response wrappers returned by station endpoints.
+icon: pixelarticons:menu-square
+---
+
+## StationResponse
+
+```ts
+type StationResponse = SingleResourceResponse<Station | BaseStation>;
+```
+
+## Related Responses
+
+- `/stations/artist/{id}/rel/tracks` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
+- `/stations/genre/{genre}/rel/tracks` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
+- `/stations/popular/rel/tracks` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)

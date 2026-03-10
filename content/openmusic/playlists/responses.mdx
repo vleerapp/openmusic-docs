@@ -1,0 +1,27 @@
+---
+title: Playlist Responses
+description: The standard response wrappers returned by playlist endpoints.
+icon: pixelarticons:menu-square
+---
+
+## PlaylistResponse
+
+```ts
+type PlaylistResponse = SingleResourceResponse<Playlist | BasePlaylist>;
+```
+
+## PlaylistListResponse
+
+```ts
+type PlaylistListResponse = ListResourceResponse<Playlist | BasePlaylist>;
+```
+
+## PlaylistPaginatedResponse
+
+```ts
+type PlaylistPaginatedResponse = PaginatedResourceResponse<Playlist | BasePlaylist>;
+```
+
+## Related Responses
+
+- `/playlists/{id}/rel/tracks` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)

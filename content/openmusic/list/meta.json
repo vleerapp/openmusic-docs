@@ -2,6 +2,10 @@
   "title": "List",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "---Objects---"
+    "list-overview",
+    "list-songs",
+    "list-albums",
+    "list-artists",
+    "list-playlists"
   ]
 }

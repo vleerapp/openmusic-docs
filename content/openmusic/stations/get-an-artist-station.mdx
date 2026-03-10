@@ -1,0 +1,37 @@
+---
+title: Get an Artist Station
+description: Fetch the dynamic station seeded by a specific artist.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/stations/artist/{id}`
+
+Endpoint reference: [`getArtistStation`](/openmusic/endpoints/getArtistStation)
+
+Artist stations are dynamic playlists seeded from an artist.
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Artist id | `string` | `artist_123` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[stations]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`StationResponse`](/openmusic/endpoints/getArtistStation) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

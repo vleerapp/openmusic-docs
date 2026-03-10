@@ -1,0 +1,28 @@
+---
+title: Artist Responses
+description: The standard response wrappers returned by artist endpoints.
+icon: pixelarticons:menu-square
+---
+
+## ArtistResponse
+
+```ts
+type ArtistResponse = SingleResourceResponse<Artist | BaseArtist>;
+```
+
+## ArtistListResponse
+
+```ts
+type ArtistListResponse = ListResourceResponse<Artist | BaseArtist>;
+```
+
+## ArtistPaginatedResponse
+
+```ts
+type ArtistPaginatedResponse = PaginatedResourceResponse<Artist | BaseArtist>;
+```
+
+## Related Responses
+
+- `/artists/{id}/rel/albums` -> [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
+- `/artists/{id}/rel/songs` -> [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)

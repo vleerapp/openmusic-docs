@@ -1,0 +1,45 @@
+---
+title: Station Models
+description: The station resource types used across the OpenMusic API.
+icon: pixelarticons:menu-square
+---
+
+## BaseStation
+
+```ts
+interface BaseStation extends ResourceBase {
+  type: "stations";
+  relationships: {
+    tracks?: (Song | BaseSong)[];
+  };
+}
+```
+
+## Station
+
+```ts
+interface Station extends BaseStation {
+  attributes: StationAttributes;
+}
+```
+
+## StationAttributes
+
+```ts
+interface StationAttributes {
+  name: string;
+  seed: StationSeed;
+  description: string | null;
+  artwork_url: string | null;
+  genres: string[];
+}
+```
+
+## StationSeed
+
+```ts
+type StationSeed =
+  | { kind: "artist"; artist: BaseArtist }
+  | { kind: "genre"; genre: string }
+  | { kind: "popular" };
+```

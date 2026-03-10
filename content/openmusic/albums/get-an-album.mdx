@@ -1,0 +1,59 @@
+---
+title: Get an Album
+description: Fetch a single album resource by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/albums/{id}`
+
+Endpoint reference: [`getAlbum`](/openmusic/endpoints/getAlbum)
+
+Use this endpoint when you already know the album id and want the canonical album resource.
+
+## What You Can Include
+
+- `artists`
+- `tracks`
+
+Scoped controls:
+
+- `view[albums]=minimal`
+- `view[artists]=minimal`
+- `view[songs]=minimal`
+- `limit[artists]`
+- `limit[tracks]`
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Album id | `string` | `album_123` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `artists`, `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Response Shape
+
+Returns a single album resource wrapped in `data`.
+
+- full form: `Album`
+- minimal form: `BaseAlbum`
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`AlbumResponse`](/openmusic/endpoints/getAlbum) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

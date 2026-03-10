@@ -1,0 +1,43 @@
+---
+title: Get Station Tracks
+description: Fetch tracks for artist, genre, or popular stations.
+icon: pixelarticons:toke-square
+---
+
+Stations expose three track endpoints.
+
+Endpoint references:
+
+- [`getArtistStationTracks`](/openmusic/endpoints/getArtistStationTracks)
+- [`getGenreStationTracks`](/openmusic/endpoints/getGenreStationTracks)
+- [`getPopularStationTracks`](/openmusic/endpoints/getPopularStationTracks)
+
+## Relationship Endpoints
+
+| Station Type | Endpoint | Response |
+| ------------ | -------- | -------- |
+| Artist | `GET /stations/artist/{id}/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getArtistStationTracks) |
+| Genre | `GET /stations/genre/{genre}/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getGenreStationTracks) |
+| Popular | `GET /stations/popular/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getPopularStationTracks) |
+
+## Query Parameters
+
+All station track endpoints support:
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+## Responses
+
+- Artist station tracks: [`SongListResponse`](/openmusic/endpoints/getArtistStationTracks)
+- Genre station tracks: [`SongListResponse`](/openmusic/endpoints/getGenreStationTracks)
+- Popular station tracks: [`SongListResponse`](/openmusic/endpoints/getPopularStationTracks)
+- Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

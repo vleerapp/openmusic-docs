@@ -1,0 +1,33 @@
+---
+title: List Playlists
+description: Browse playlists with pagination, sorting, and genre filtering.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/list/playlists`
+
+Endpoint reference: [`listPlaylists`](/openmusic/endpoints/listPlaylists)
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[playlists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit` | `1-25` | `false` |
+| `offset` | `0+` | `false` |
+| `sort` | `name`, `-name`, `date_added`, `-date_added` | `false` |
+| `filter[genres]` | comma-separated genres | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`PlaylistPaginatedResponse`](/openmusic/endpoints/listPlaylists) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

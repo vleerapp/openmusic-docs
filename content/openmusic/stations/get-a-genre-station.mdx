@@ -1,0 +1,37 @@
+---
+title: Get a Genre Station
+description: Fetch the dynamic station seeded by a genre.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/stations/genre/{genre}`
+
+Endpoint reference: [`getGenreStation`](/openmusic/endpoints/getGenreStation)
+
+Genre stations are dynamic playlists seeded from a genre path.
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `genre` | Genre path | `string` | `pop` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[stations]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`StationResponse`](/openmusic/endpoints/getGenreStation) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

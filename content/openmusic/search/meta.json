@@ -2,6 +2,10 @@
   "title": "Search",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "---Objects---"
+    "search-overview",
+    "search-songs",
+    "search-albums",
+    "search-artists",
+    "search-playlists"
   ]
 }

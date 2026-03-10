@@ -1,0 +1,39 @@
+---
+title: Playlist Models
+description: The playlist resource types used across the OpenMusic API.
+icon: pixelarticons:menu-square
+---
+
+## BasePlaylist
+
+```ts
+interface BasePlaylist extends ResourceBase {
+  type: "playlists";
+  relationships: {
+    tracks?: (Song | BaseSong)[];
+  };
+}
+```
+
+- [`ResourceBase`](/openmusic/resources#resourcebase)
+- [`Songs`](/openmusic/songs/get-a-song)
+
+## Playlist
+
+```ts
+interface Playlist extends BasePlaylist {
+  attributes: PlaylistAttributes;
+}
+```
+
+## PlaylistAttributes
+
+```ts
+interface PlaylistAttributes {
+  name: string;
+  curator_name: string;
+  description: string | null;
+  artwork_url: string | null;
+  genres: string[];
+}
+```

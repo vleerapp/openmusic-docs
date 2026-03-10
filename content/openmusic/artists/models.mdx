@@ -1,0 +1,42 @@
+---
+title: Artist Models
+description: The artist resource types used across the OpenMusic API.
+icon: pixelarticons:menu-square
+---
+
+## BaseArtist
+
+```ts
+interface BaseArtist extends ResourceBase {
+  type: "artists";
+  meta: {
+    omm_id: string | null;
+  };
+  relationships: {
+    albums?: (Album | BaseAlbum)[];
+    songs?: (Song | BaseSong)[];
+  };
+}
+```
+
+- [`ResourceBase`](/openmusic/resources#resourcebase)
+- [`Albums`](/openmusic/albums/get-an-album)
+- [`Songs`](/openmusic/songs/get-a-song)
+
+## Artist
+
+```ts
+interface Artist extends BaseArtist {
+  attributes: ArtistAttributes;
+}
+```
+
+## ArtistAttributes
+
+```ts
+interface ArtistAttributes {
+  name: string;
+  artwork_url: string | null;
+  genres: string[];
+}
+```

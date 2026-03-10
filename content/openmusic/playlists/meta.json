@@ -2,6 +2,11 @@
   "title": "Playlists",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "---Objects---"
+    "get-a-playlist",
+    "get-playlist-relationships",
+    "get-multiple-playlists-by-id",
+    "---Objects---",
+    "models",
+    "responses"
   ]
 }

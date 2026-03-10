@@ -1,0 +1,37 @@
+---
+title: Get Playlist Relationships
+description: Fetch the tracks for a playlist.
+icon: pixelarticons:toke-square
+---
+
+## Relationship Endpoint
+
+`GET` `/playlists/{id}/rel/tracks`
+
+Endpoint reference: [`getPlaylistTracks`](/openmusic/endpoints/getPlaylistTracks)
+
+## Path Parameters
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Playlist id | `string` | `playlist_123` |
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/endpoints/getPlaylistTracks) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

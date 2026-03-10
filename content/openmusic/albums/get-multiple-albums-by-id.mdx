@@ -1,0 +1,37 @@
+---
+title: Get Multiple Albums by Id
+description: Fetch one or more albums by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/albums`
+
+Endpoint reference: [`getAlbums`](/openmusic/endpoints/getAlbums)
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `ids` | Comma-separated album ids | `string` | `album_1,album_2` |
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `artists`, `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`AlbumListResponse`](/openmusic/endpoints/getAlbums) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

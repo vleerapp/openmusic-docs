@@ -2,6 +2,12 @@
   "title": "Stations",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "---Objects---"
+    "get-an-artist-station",
+    "get-a-genre-station",
+    "get-the-popular-station",
+    "get-station-tracks",
+    "---Objects---",
+    "models",
+    "responses"
   ]
 }

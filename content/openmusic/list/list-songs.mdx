@@ -1,0 +1,35 @@
+---
+title: List Songs
+description: Browse songs with pagination, sorting, and genre filtering.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/list/songs`
+
+Endpoint reference: [`listSongs`](/openmusic/endpoints/listSongs)
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists`, `lyrics` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `limit` | `1-25` | `false` |
+| `offset` | `0+` | `false` |
+| `sort` | `name`, `-name`, `date_released`, `-date_released`, `date_added`, `-date_added` | `false` |
+| `filter[genres]` | comma-separated genres | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongPaginatedResponse`](/openmusic/endpoints/listSongs) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

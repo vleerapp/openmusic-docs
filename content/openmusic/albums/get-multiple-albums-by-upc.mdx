@@ -1,0 +1,37 @@
+---
+title: Get Multiple Albums by UPC
+description: Fetch one or more albums by UPC.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/albums`
+
+Endpoint reference: [`getAlbums`](/openmusic/endpoints/getAlbums)
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `upc` | Comma-separated UPC values | `string` | `602547673951,888430877625` |
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `artists`, `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`AlbumListResponse`](/openmusic/endpoints/getAlbums) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

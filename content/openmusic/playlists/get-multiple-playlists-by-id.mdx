@@ -1,0 +1,35 @@
+---
+title: Get Multiple Playlists by Id
+description: Fetch one or more playlists by id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/playlists`
+
+Endpoint reference: [`getPlaylists`](/openmusic/endpoints/getPlaylists)
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `ids` | Comma-separated playlist ids | `string` | `playlist_1,playlist_2` |
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `tracks` | `false` |
+| `view` | `minimal` | `false` |
+| `view[playlists]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[tracks]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`PlaylistListResponse`](/openmusic/endpoints/getPlaylists) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |
