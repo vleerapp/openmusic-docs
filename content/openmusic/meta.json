@@ -11,6 +11,12 @@
     "endpoints",
     "---Requests---",
     "songs",
+    "albums",
+    "artists",
+    "playlists",
+    "stations",
+    "search",
+    "list",
     "---Objects---",
     "resources",
     "responses"
