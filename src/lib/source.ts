@@ -9,7 +9,7 @@ export const source = loader({
   source: docs.toFumadocsSource(),
   icon(icon) {
     if (!icon) return;
-    return createElement(Icon, { icon });
+    return createElement(Icon, { icon, key: icon });
   },
   plugins: [openapiPlugin()],
 });
