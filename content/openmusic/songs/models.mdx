@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## BaseSong
 
+Minimal song resource shape used for `view=minimal` and nested relationships.
+
 ```ts
 interface BaseSong extends ResourceBase {
   type: "songs";
@@ -32,6 +34,8 @@ interface BaseSong extends ResourceBase {
 
 ## Song
 
+Full song resource returned when attributes are requested; extends `BaseSong`.
+
 ```ts
 interface Song extends BaseSong {
   attributes: SongAttributes;
@@ -41,6 +45,8 @@ interface Song extends BaseSong {
 - [`SongAttributes`](#songattributes)
 
 ## File
+
+Represents one playable/downloadable media file variant for a song.
 
 ```ts
 interface File {
@@ -57,6 +63,8 @@ interface File {
 
 ## SongAttributes
 
+Full metadata fields attached to `Song`.
+
 ```ts
 interface SongAttributes {
   name: string;
@@ -72,6 +80,8 @@ interface SongAttributes {
 ```
 
 ## Lyrics
+
+Lyrics payload returned when lyrics are included or fetched directly.
 
 ```ts
 interface Lyrics {

@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## BaseStation
 
+Minimal station resource shape used for `view=minimal` and nested relationships.
+
 ```ts
 interface BaseStation extends ResourceBase {
   type: "stations";
@@ -17,6 +19,8 @@ interface BaseStation extends ResourceBase {
 
 ## Station
 
+Full station resource returned when attributes are requested; extends `BaseStation`.
+
 ```ts
 interface Station extends BaseStation {
   attributes: StationAttributes;
@@ -24,6 +28,8 @@ interface Station extends BaseStation {
 ```
 
 ## StationAttributes
+
+Full metadata fields attached to `Station`.
 
 ```ts
 interface StationAttributes {
@@ -36,6 +42,8 @@ interface StationAttributes {
 ```
 
 ## StationSeed
+
+Describes how the station was generated (artist, genre, or popular).
 
 ```ts
 type StationSeed =

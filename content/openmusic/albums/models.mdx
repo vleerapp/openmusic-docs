@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## BaseAlbum
 
+Minimal album resource shape used for `view=minimal` and nested relationships.
+
 ```ts
 interface BaseAlbum extends ResourceBase {
   type: "albums";
@@ -25,6 +27,8 @@ interface BaseAlbum extends ResourceBase {
 
 ## Album
 
+Full album resource returned when attributes are requested; extends `BaseAlbum`.
+
 ```ts
 interface Album extends BaseAlbum {
   attributes: AlbumAttributes;
@@ -32,6 +36,8 @@ interface Album extends BaseAlbum {
 ```
 
 ## AlbumAttributes
+
+Full metadata fields attached to `Album`.
 
 ```ts
 interface AlbumAttributes {

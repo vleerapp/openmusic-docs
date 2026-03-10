@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## BaseArtist
 
+Minimal artist resource shape used for `view=minimal` and nested relationships.
+
 ```ts
 interface BaseArtist extends ResourceBase {
   type: "artists";
@@ -25,6 +27,8 @@ interface BaseArtist extends ResourceBase {
 
 ## Artist
 
+Full artist resource returned when attributes are requested; extends `BaseArtist`.
+
 ```ts
 interface Artist extends BaseArtist {
   attributes: ArtistAttributes;
@@ -32,6 +36,8 @@ interface Artist extends BaseArtist {
 ```
 
 ## ArtistAttributes
+
+Full metadata fields attached to `Artist`.
 
 ```ts
 interface ArtistAttributes {

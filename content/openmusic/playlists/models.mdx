@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## BasePlaylist
 
+Minimal playlist resource shape used for `view=minimal` and nested relationships.
+
 ```ts
 interface BasePlaylist extends ResourceBase {
   type: "playlists";
@@ -20,6 +22,8 @@ interface BasePlaylist extends ResourceBase {
 
 ## Playlist
 
+Full playlist resource returned when attributes are requested; extends `BasePlaylist`.
+
 ```ts
 interface Playlist extends BasePlaylist {
   attributes: PlaylistAttributes;
@@ -27,6 +31,8 @@ interface Playlist extends BasePlaylist {
 ```
 
 ## PlaylistAttributes
+
+Full metadata fields attached to `Playlist`.
 
 ```ts
 interface PlaylistAttributes {
