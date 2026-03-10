@@ -10,6 +10,8 @@ icon: pixelarticons:toke-square
 
 Endpoint reference: [`getPlaylist`](/openmusic/endpoints/getPlaylist)
 
+Use this endpoint when you already know the playlist id and want the canonical playlist resource.
+
 ## What You Can Include
 
 - `tracks`
@@ -22,6 +24,8 @@ Endpoint reference: [`getPlaylist`](/openmusic/endpoints/getPlaylist)
 
 ## Query Parameters
 
+Scoped parameters like `view[...]` and `limit[...]` can shape included relationships.
+
 | Name | Values | Required |
 | ---- | ------ | -------- |
 | `lang` | locale string | `false` |
@@ -30,6 +34,13 @@ Endpoint reference: [`getPlaylist`](/openmusic/endpoints/getPlaylist)
 | `view[playlists]` | `minimal` | `false` |
 | `view[songs]` | `minimal` | `false` |
 | `limit[tracks]` | `1-25` | `false` |
+
+## Response Shape
+
+Returns a single playlist resource wrapped in `data`.
+
+- full form: `Playlist`
+- minimal form: `BasePlaylist`
 
 ## Responses
 

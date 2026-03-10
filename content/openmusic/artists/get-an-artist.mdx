@@ -10,6 +10,8 @@ icon: pixelarticons:toke-square
 
 Endpoint reference: [`getArtist`](/openmusic/endpoints/getArtist)
 
+Use this endpoint when you already know the artist id and want the canonical artist resource.
+
 ## What You Can Include
 
 - `albums`
@@ -23,6 +25,8 @@ Endpoint reference: [`getArtist`](/openmusic/endpoints/getArtist)
 
 ## Query Parameters
 
+Scoped parameters like `view[...]` and `limit[...]` can shape included relationships.
+
 | Name | Values | Required |
 | ---- | ------ | -------- |
 | `lang` | locale string | `false` |
@@ -33,6 +37,13 @@ Endpoint reference: [`getArtist`](/openmusic/endpoints/getArtist)
 | `view[songs]` | `minimal` | `false` |
 | `limit[albums]` | `1-25` | `false` |
 | `limit[songs]` | `1-25` | `false` |
+
+## Response Shape
+
+Returns a single artist resource wrapped in `data`.
+
+- full form: `Artist`
+- minimal form: `BaseArtist`
 
 ## Responses
 

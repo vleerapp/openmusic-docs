@@ -17,14 +17,6 @@ Use this endpoint when you already know the album id and want the canonical albu
 - `artists`
 - `tracks`
 
-Scoped controls:
-
-- `view[albums]=minimal`
-- `view[artists]=minimal`
-- `view[songs]=minimal`
-- `limit[artists]`
-- `limit[tracks]`
-
 ## Path Parameters
 
 | Name | Description | Type | Example |
@@ -32,6 +24,8 @@ Scoped controls:
 | `id` | Album id | `string` | `album_123` |
 
 ## Query Parameters
+
+Scoped parameters like `view[...]` and `limit[...]` can shape included relationships.
 
 | Name | Values | Required |
 | ---- | ------ | -------- |

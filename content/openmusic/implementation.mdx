@@ -110,18 +110,20 @@ Current endpoint families in the spec:
 
 ## Query Model
 
-Most endpoints share the same query concepts.
+Many endpoints share the same query concepts.
 
-| Name             | Description                       | Type                                          | Example                   |
-| ---------------- | --------------------------------- | --------------------------------------------- | ------------------------- |
-| `lang`           | Preferred language                | `string`                                      | `lang=en-US`              |
+| Name             | Description                       | Type                                          | Example                            |
+| ---------------- | --------------------------------- | --------------------------------------------- | ---------------------------------- |
+| `lang`           | Preferred language                | `string`                                      | `lang=en-US`                       |
 | `omm_ids`        | Lookup by OpenMusicMetadata IDs   | `string`                                      | `omm_ids=tz4a98xxat96iws9zmbrgj3a` |
-| `view`           | Return the minimal resource form  | `"minimal"`                                   | `view=minimal`            |
-| `include`        | Include direct relationships      | `string`                                      | `include=artists,albums`  |
-| `limit`          | Page size for paginated endpoints | `number`                                      | `limit=10`                |
-| `offset`         | Number of items to skip           | `number`                                      | `offset=10`               |
-| `sort`           | Sort ascending or descending      | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released`     |
-| `filter[genres]` | Filter by genre                   | `string`                                      | `filter[genres]=pop,rock` |
+| `view`           | Return the minimal resource form  | `"minimal"`                                   | `view=minimal`                     |
+| `include`        | Include direct relationships      | `string`                                      | `include=artists,albums`           |
+| `limit`          | Page size for paginated endpoints | `number`                                      | `limit=10`                         |
+| `offset`         | Number of items to skip           | `number`                                      | `offset=10`                        |
+| `sort`           | Sort ascending or descending      | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released`              |
+| `filter[genres]` | Filter by genre                   | `string`                                      | `filter[genres]=pop,rock`          |
+
+`omm_ids` is only supported on lookup endpoints (`/songs`, `/albums`, `/artists`).
 
 Scoped parameters apply to included relationships.
 
@@ -258,7 +260,8 @@ See [`Responses`](/openmusic/responses) for the shared envelope types.
           "bitrate": null,
           "stream_url": null
         }
-      ]
+      ],
+      "has_lyrics": false
     },
     "relationships": {
       "albums": [

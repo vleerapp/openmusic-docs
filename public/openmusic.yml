@@ -55,7 +55,6 @@ paths:
         - $ref: "#/components/parameters/ViewSongs"
         - $ref: "#/components/parameters/ViewAlbums"
         - $ref: "#/components/parameters/ViewArtists"
-        - $ref: "#/components/parameters/ViewLyrics"
         - $ref: "#/components/parameters/LimitAlbums"
         - $ref: "#/components/parameters/LimitArtists"
       responses:
@@ -81,7 +80,6 @@ paths:
         - $ref: "#/components/parameters/ViewSongs"
         - $ref: "#/components/parameters/ViewAlbums"
         - $ref: "#/components/parameters/ViewArtists"
-        - $ref: "#/components/parameters/ViewLyrics"
         - $ref: "#/components/parameters/LimitAlbums"
         - $ref: "#/components/parameters/LimitArtists"
       responses:
@@ -959,13 +957,6 @@ components:
       name: view[stations]
       in: query
       description: View mode for stations.
-      schema:
-        $ref: "#/components/schemas/ViewMode"
-
-    ViewLyrics:
-      name: view[lyrics]
-      in: query
-      description: View mode for lyrics.
       schema:
         $ref: "#/components/schemas/ViewMode"
 

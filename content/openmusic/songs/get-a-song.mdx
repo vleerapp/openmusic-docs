@@ -14,16 +14,9 @@ Use this endpoint when you already know the song id and want the canonical song 
 
 ## What You Can Include
 
-The songs endpoint supports the following direct relationships:
-
 - `albums`
 - `artists`
 - `lyrics`
-
-If you include relationships, you can further shape them with scoped parameters such as
-`view[albums]=minimal` or `limit[artists]=5`.
-
-For the full parameter definitions, see [`Implementation`](/openmusic/implementation#query-param-definitions).
 
 ## Path Parameters
 
@@ -33,6 +26,8 @@ For the full parameter definitions, see [`Implementation`](/openmusic/implementa
 
 ## Query Parameters
 
+Scoped parameters like `view[...]` and `limit[...]` can shape included relationships.
+
 | Name | Values | Required |
 | ---- | ------ | -------- |
 | `lang` | locale string | `false` |
@@ -41,7 +36,6 @@ For the full parameter definitions, see [`Implementation`](/openmusic/implementa
 | `view[songs]` | `minimal` | `false` |
 | `view[albums]` | `minimal` | `false` |
 | `view[artists]` | `minimal` | `false` |
-| `view[lyrics]` | `minimal` | `false` |
 | `limit[albums]` | `1-25` | `false` |
 | `limit[artists]` | `1-25` | `false` |
 
