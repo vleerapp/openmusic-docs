@@ -5,6 +5,7 @@
     "get-a-song",
     "get-a-songs-relationship",
     "get-multiple-songs-by-id",
+    "get-multiple-songs-by-omm-id",
     "get-multiple-songs-by-isrc",
     "---Objects---",
     "models",

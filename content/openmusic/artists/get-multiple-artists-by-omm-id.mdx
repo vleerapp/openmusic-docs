@@ -1,0 +1,39 @@
+---
+title: Get Multiple Artists by OMM Id
+description: Fetch one or more artists by OpenMusicMetadata id.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/artists`
+
+Endpoint reference: [`getArtists`](/openmusic/endpoints/getArtists)
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `omm_ids` | Comma-separated OpenMusicMetadata ids | `string` | `z913j3q5cqmeii0d,ab12cd34ef56gh78` |
+
+`omm_ids` are generally CUID2 identifiers issued by OpenMusicMetadata.
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `songs` | `false` |
+| `view` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[songs]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`ArtistListResponse`](/openmusic/artists/responses#artistlistresponse) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

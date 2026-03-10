@@ -5,6 +5,7 @@
     "get-an-album",
     "get-album-relationships",
     "get-multiple-albums-by-id",
+    "get-multiple-albums-by-omm-id",
     "get-multiple-albums-by-upc",
     "---Objects---",
     "models",

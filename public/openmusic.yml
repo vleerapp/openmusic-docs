@@ -48,6 +48,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/Lang"
         - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/OmmIds"
         - $ref: "#/components/parameters/Isrc"
         - $ref: "#/components/parameters/IncludeAll"
         - $ref: "#/components/parameters/View"
@@ -165,6 +166,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/Lang"
         - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/OmmIds"
         - $ref: "#/components/parameters/Upc"
         - $ref: "#/components/parameters/IncludeAll"
         - $ref: "#/components/parameters/View"
@@ -264,6 +266,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/Lang"
         - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/OmmIds"
         - $ref: "#/components/parameters/IncludeAll"
         - $ref: "#/components/parameters/View"
         - $ref: "#/components/parameters/ViewArtists"
@@ -855,6 +858,15 @@ components:
         type: string
         examples:
           - "id1,id2,id3"
+
+    OmmIds:
+      name: omm_ids
+      in: query
+      description: Comma-separated OpenMusicMetadata IDs (generally CUID2 strings).
+      schema:
+        type: string
+        examples:
+          - "tz4a98xxat96iws9zmbrgj3a,ab12cd34ef56gh78ijklmn"
 
     Isrc:
       name: isrc

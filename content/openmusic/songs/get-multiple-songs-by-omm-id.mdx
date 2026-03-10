@@ -1,0 +1,42 @@
+---
+title: Get Multiple Songs by OMM Id
+description: Fetch one or more songs by OpenMusicMetadata id using the songs lookup endpoint.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/songs`
+
+Endpoint reference: [`getSongs`](/openmusic/endpoints/getSongs)
+
+Use this form when you want canonical lookup through OpenMusicMetadata ids.
+
+## Required Query Parameter
+
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `omm_ids` | Comma-separated OpenMusicMetadata ids | `string` | `z913j3q5cqmeii0d,ab12cd34ef56gh78` |
+
+`omm_ids` are generally CUID2 identifiers issued by OpenMusicMetadata.
+
+## Optional Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists`, `lyrics` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[lyrics]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

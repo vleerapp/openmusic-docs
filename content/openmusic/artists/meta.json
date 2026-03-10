@@ -5,6 +5,7 @@
     "get-an-artist",
     "get-artist-relationships",
     "get-multiple-artists-by-id",
+    "get-multiple-artists-by-omm-id",
     "---Objects---",
     "models",
     "responses"

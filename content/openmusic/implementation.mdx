@@ -115,6 +115,7 @@ Most endpoints share the same query concepts.
 | Name             | Description                       | Type                                          | Example                   |
 | ---------------- | --------------------------------- | --------------------------------------------- | ------------------------- |
 | `lang`           | Preferred language                | `string`                                      | `lang=en-US`              |
+| `omm_ids`        | Lookup by OpenMusicMetadata IDs   | `string`                                      | `omm_ids=tz4a98xxat96iws9zmbrgj3a` |
 | `view`           | Return the minimal resource form  | `"minimal"`                                   | `view=minimal`            |
 | `include`        | Include direct relationships      | `string`                                      | `include=artists,albums`  |
 | `limit`          | Page size for paginated endpoints | `number`                                      | `limit=10`                |
@@ -133,6 +134,17 @@ Examples:
 
 This allows a client to fetch a rich main resource while keeping nested related
 resources compact.
+
+## OMM IDs
+
+`omm_ids` are canonical IDs from OpenMusicMetadata.
+
+These identifiers are generally CUID2 strings (for example
+`tz4a98xxat96iws9zmbrgj3a`) and are used to map the same song, album, or artist
+across different OpenMusic implementations.
+
+Use `omm_ids` when you need cross-source identity instead of source-specific
+lookup keys like `ids`, `isrc`, or `upc`.
 
 ## Info
 
