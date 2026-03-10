@@ -41,20 +41,20 @@ Clients should not assume every endpoint family is available.
 Instead, they should call the info endpoint first and inspect the returned
 capability flags.
 
-| Feature                                      | Type     | Description                             |
-| -------------------------------------------- | -------- | --------------------------------------- |
-| [`info`](/openmusic/info/get-api-info)       | Required | Return branding and capability metadata |
-| [`search`](/openmusic/search/search-overview) | Required | Search songs and optionally other types |
-| [`song`](/openmusic/songs/get-a-song)         | Required | Fetch a song by id                      |
-| `download`                                   | Required | Provide downloadable song files         |
-| `stream`                                     | Optional | Provide stream URLs for song files      |
-| `artists`                                    | Optional | Search and fetch artists                |
-| `albums`                                     | Optional | Search and fetch albums                 |
-| `playlists`                                  | Optional | Search and fetch playlists              |
-| `stations`                                   | Optional | Expose generated stations               |
-| `sort`                                       | Optional | Support `sort` query params             |
-| `lyrics`                                     | Optional | Expose lyrics data                      |
-| `list`                                       | Optional | Expose paginated catalog listings       |
+| Feature                  | Type     | Description                             |
+| ------------------------ | -------- | --------------------------------------- |
+| [`info`](#info)          | Required | Return branding and capability metadata |
+| [`search`](#search)      | Required | Search songs and optionally other types |
+| [`song`](#song)          | Required | Fetch a song by id                      |
+| `download`               | Required | Provide downloadable song files         |
+| `stream`                 | Optional | Provide stream URLs for song files      |
+| [`artists`](#artist)     | Optional | Search and fetch artists                |
+| [`albums`](#album)       | Optional | Search and fetch albums                 |
+| [`playlists`](#playlist) | Optional | Search and fetch playlists              |
+| [`stations`](#station)   | Optional | Expose generated stations               |
+| `sort`                   | Optional | Support `sort` query params             |
+| `lyrics`                 | Optional | Expose lyrics data                      |
+| `list`                   | Optional | Expose paginated catalog listings       |
 
 ## Endpoint Families
 
@@ -112,15 +112,15 @@ Current endpoint families in the spec:
 
 Most endpoints share the same query concepts.
 
-| Name | Description | Type | Example |
-| ---- | ----------- | ---- | ------- |
-| `lang` | Preferred language | `string` | `lang=en-US` |
-| `view` | Return the minimal resource form | `"minimal"` | `view=minimal` |
-| `include` | Include direct relationships | `string` | `include=artists,albums` |
-| `limit` | Page size for paginated endpoints | `number` | `limit=10` |
-| `offset` | Number of items to skip | `number` | `offset=10` |
-| `sort` | Sort ascending or descending | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released` |
-| `filter[genres]` | Filter by genre | `string` | `filter[genres]=pop,rock` |
+| Name             | Description                       | Type                                          | Example                   |
+| ---------------- | --------------------------------- | --------------------------------------------- | ------------------------- |
+| `lang`           | Preferred language                | `string`                                      | `lang=en-US`              |
+| `view`           | Return the minimal resource form  | `"minimal"`                                   | `view=minimal`            |
+| `include`        | Include direct relationships      | `string`                                      | `include=artists,albums`  |
+| `limit`          | Page size for paginated endpoints | `number`                                      | `limit=10`                |
+| `offset`         | Number of items to skip           | `number`                                      | `offset=10`               |
+| `sort`           | Sort ascending or descending      | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released`     |
+| `filter[genres]` | Filter by genre                   | `string`                                      | `filter[genres]=pop,rock` |
 
 Scoped parameters apply to included relationships.
 
@@ -148,41 +148,18 @@ More detail:
 
 - [`Info`](/openmusic/info/get-api-info)
 
-```json lineNumbers
-{
-  "data": {
-    "branding": {
-      "name": "My Music Service",
-      "email": "contact@example.com",
-      "short_name": "MMS",
-      "logo": "https://example.com/logo.png",
-      "theme": "#0066cc",
-      "homepage": "https://example.com"
-    },
-    "openmusic": {
-      "version": "1.0.0",
-      "capabilities": {
-        "info": true,
-        "search": true,
-        "song": true,
-        "download": true,
-        "stream": false,
-        "artists": true,
-        "albums": false,
-        "playlists": false,
-        "stations": false,
-        "sort": false,
-        "lyrics": false,
-        "list": false
-      }
-    }
-  }
-}
-```
+## Search
+
+Search includes a bucketed endpoint and typed endpoints for songs, albums,
+artists, and playlists.
+
+More detail:
+
+- [`Search Overview`](/openmusic/search/search-overview)
 
 ## Resources
 
-### Songs
+### Song
 
 Songs are the core required resource type.
 They contain the main metadata, file information, and links to related albums,
@@ -192,7 +169,7 @@ More detail:
 
 - [`Songs`](/openmusic/songs/get-a-song)
 
-### Albums
+### Album
 
 Albums group songs into a release.
 They usually expose shared metadata such as name, artwork, UPC, genres, release
@@ -200,14 +177,14 @@ date, and relationships to tracks and artists.
 
 - [`Albums`](/openmusic/albums/get-an-album)
 
-### Artists
+### Artist
 
 Artists represent performers or creators.
 They expose artist metadata and connect outward to songs and albums.
 
 - [`Artists`](/openmusic/artists/get-an-artist)
 
-### Playlists
+### Playlist
 
 Playlists are curated track collections.
 They behave like named lists of songs with artwork, curator information, and
@@ -215,7 +192,7 @@ track relationships.
 
 - [`Playlists`](/openmusic/playlists/get-a-playlist)
 
-### Stations
+### Station
 
 Stations are dynamic playlists generated from a seed.
 In the current spec, a station can be based on an artist, a genre, or popular
@@ -237,42 +214,74 @@ The common wrappers used throughout the spec are:
 
 See [`Responses`](/openmusic/responses) for the shared envelope types.
 
-## Minimal Example
+## Minimal Song Response Example
 
 ```json lineNumbers
 {
   "data": {
-    "id": "song_123",
+    "id": "1866862252",
     "type": "songs",
     "attributes": {
-      "name": "Example Song",
-      "album_name": "Example Album",
-      "artist_name": "Example Artist",
-      "isrc": "USRC17607839",
-      "artwork_url": "https://example.com/artwork.jpg",
+      "name": "TEST ME",
+      "album_name": "TEST ME - Single",
+      "artist_name": "Chanmina",
+      "isrc": "JPU902504960",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5e/6e/3b/5e6e3bb0-91ae-1443-1195-96b8b74b9985/4547366799163.jpg/{w}x{h}bb.jpg",
       "track_number": 1,
       "disc_number": 1,
-      "genres": ["pop"],
-      "release_date": "2024-01-01"
+      "genres": ["J-Pop"],
+      "release_date": "2026-01-14"
     },
     "meta": {
       "omm_id": null
     },
     "instance": {
-      "duration_in_ms": 180000,
+      "duration_in_ms": 171483,
       "files": [
         {
-          "download_url": "https://example.com/song.mp3",
+          "download_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a8/68/29/a8682985-dd6d-64cd-8332-82ae106d4189/mzaf_3854554072934137608.plus.aac.p.m4a",
           "lossless": false,
-          "mime_type": "audio/mpeg",
-          "codec": "mp3",
-          "bitrate": 320000,
+          "mime_type": "audio/aac",
+          "codec": "aac",
+          "bitrate": null,
           "stream_url": null
         }
-      ],
-      "has_lyrics": false
+      ]
     },
-    "relationships": {}
+    "relationships": {
+      "albums": [
+        {
+          "id": "1866862251",
+          "type": "albums",
+          "attributes": {
+            "name": "TEST ME - Single",
+            "artist_name": "Chanmina",
+            "upc": "4547366799163",
+            "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5e/6e/3b/5e6e3bb0-91ae-1443-1195-96b8b74b9985/4547366799163.jpg/{w}x{h}bb.jpg",
+            "track_count": 1,
+            "genres": ["J-Pop"],
+            "release_date": "2026-01-14"
+          },
+          "meta": {
+            "omm_id": null
+          }
+        }
+      ],
+      "artists": [
+        {
+          "id": "1104839687",
+          "type": "artists",
+          "attributes": {
+            "name": "Chanmina",
+            "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/df/49/d5/df49d5f0-b831-ed8a-4f83-4624f1414c83/ami-identity-873b66ee3717cf382744b7a515a63526-2025-05-02T02-36-59.227Z_cropped.png/{w}x{h}bb.jpg",
+            "genres": ["Hip-Hop/Rap"]
+          },
+          "meta": {
+            "omm_id": null
+          }
+        }
+      ]
+    }
   }
 }
 ```
