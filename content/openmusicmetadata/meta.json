@@ -1,7 +1,12 @@
 {
   "title": "OpenMusicMetadata",
-  "description": "The API docs for OpenMusicMetadata.",
-  "root": true,
+  "description": "API Specifications",
   "icon": "pixelarticons:calendar-grid",
-  "pages": ["---Introduction---", "index", "endpoints"]
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "---API Spec---",
+    "endpoints"
+  ]
 }
