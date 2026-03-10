@@ -2,6 +2,9 @@
   "title": "Info",
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
-    "get-api-info"
+    "get-api-info",
+    "---Objects---",
+    "models",
+    "responses"
   ]
 }

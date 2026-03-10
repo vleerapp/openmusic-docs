@@ -17,8 +17,8 @@ Endpoint references:
 
 | Relationship | Endpoint | Response |
 | ------------ | -------- | -------- |
-| Albums | `GET /songs/{id}/rel/albums` | [`AlbumListResponse`](/openmusic/songs/responses#related-responses) |
-| Artists | `GET /songs/{id}/rel/artists` | [`ArtistListResponse`](/openmusic/songs/responses#related-responses) |
+| Albums | `GET /songs/{id}/rel/albums` | [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse) |
+| Artists | `GET /songs/{id}/rel/artists` | [`ArtistListResponse`](/openmusic/artists/responses#artistlistresponse) |
 | Lyrics | `GET /songs/{id}/rel/lyrics` | [`LyricsResponse`](/openmusic/songs/responses#related-responses) |
 
 ## Path Parameters
@@ -65,7 +65,7 @@ No include parameters are defined for lyrics. This returns the lyrics object dir
 
 ## Related Responses
 
-- Albums: [`AlbumListResponse`](/openmusic/endpoints/getSongAlbums)
-- Artists: [`ArtistListResponse`](/openmusic/endpoints/getSongArtists)
-- Lyrics: [`LyricsResponse`](/openmusic/endpoints/getSongLyrics)
+- Albums: [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse)
+- Artists: [`ArtistListResponse`](/openmusic/artists/responses#artistlistresponse)
+- Lyrics: [`LyricsResponse`](/openmusic/songs/responses#related-responses)
 - Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

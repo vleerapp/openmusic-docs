@@ -1,0 +1,48 @@
+---
+title: List Responses
+description: Response wrappers returned by list endpoints.
+icon: pixelarticons:menu-square
+---
+
+## ListSongsResponse
+
+```ts
+type ListSongsResponse = SongPaginatedResponse;
+```
+
+## ListAlbumsResponse
+
+```ts
+type ListAlbumsResponse = AlbumPaginatedResponse;
+```
+
+## ListArtistsResponse
+
+```ts
+type ListArtistsResponse = ArtistPaginatedResponse;
+```
+
+## ListPlaylistsResponse
+
+```ts
+type ListPlaylistsResponse = PlaylistPaginatedResponse;
+```
+
+## ErrorResponse
+
+```ts
+type ErrorResponse = {
+  error: {
+    code: string;
+    title: string;
+    description: string;
+    trace_id: string | null;
+  };
+};
+```
+
+- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
+- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
+- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
+- [`PlaylistPaginatedResponse`](/openmusic/playlists/responses#playlistpaginatedresponse)
+- [`ErrorResponse`](/openmusic/responses#errorresponse)

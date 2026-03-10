@@ -6,6 +6,8 @@ icon: pixelarticons:menu-square
 
 ## SingleResourceResponse
 
+Wrapper used when an endpoint returns one resource in `data`.
+
 ```ts
 interface SingleResourceResponse<T> {
   data: T;
@@ -14,6 +16,8 @@ interface SingleResourceResponse<T> {
 
 ## ListResourceResponse
 
+Wrapper used when an endpoint returns a non-paginated list in `data`.
+
 ```ts
 interface ListResourceResponse<T> {
   data: T[];
@@ -21,6 +25,8 @@ interface ListResourceResponse<T> {
 ```
 
 ## PaginatedResourceResponse
+
+Wrapper used for paginated list endpoints, including paging metadata.
 
 ```ts
 interface PaginatedResourceResponse<T> {
@@ -34,6 +40,8 @@ interface PaginatedResourceResponse<T> {
 ```
 
 ## ErrorResponse
+
+Standard error envelope returned by OpenMusic endpoints.
 
 ```ts
 interface ErrorResponse {

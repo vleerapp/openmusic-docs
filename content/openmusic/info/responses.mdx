@@ -1,0 +1,29 @@
+---
+title: Info Responses
+description: Response wrappers returned by info endpoints.
+icon: pixelarticons:menu-square
+---
+
+## InfoResponse
+
+```ts
+type InfoResponse = SingleResourceResponse<Info>;
+```
+
+- [`SingleResourceResponse`](/openmusic/responses#singleresourceresponse)
+- [`Info`](/openmusic/info/models#info)
+
+## ErrorResponse
+
+```ts
+type ErrorResponse = {
+  error: {
+    code: string;
+    title: string;
+    description: string;
+    trace_id: string | null;
+  };
+};
+```
+
+- [`ErrorResponse`](/openmusic/responses#errorresponse)

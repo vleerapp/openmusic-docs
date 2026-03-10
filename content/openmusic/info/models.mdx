@@ -1,0 +1,55 @@
+---
+title: Info Models
+description: Object models returned by the info endpoint.
+icon: pixelarticons:menu-square
+---
+
+## Branding
+
+User-facing metadata for the OpenMusic service.
+
+```ts
+interface Branding {
+  name: string;
+  email: string;
+  logo: string | null;
+  short_name: string | null;
+  theme: string | null;
+  homepage: string | null;
+}
+```
+
+## OpenMusicInfo
+
+Describes the implemented OpenMusic version and capability flags.
+
+```ts
+interface OpenMusicInfo {
+  version: string;
+  capabilities: {
+    info: true;
+    search: true;
+    song: true;
+    download: true;
+    stream: boolean;
+    albums: boolean;
+    artists: boolean;
+    playlists: boolean;
+    stations: boolean;
+    sort: boolean;
+    lyrics: boolean;
+    list: boolean;
+  };
+}
+```
+
+## Info
+
+Top-level info object returned inside `data`.
+
+```ts
+type Info = {
+  branding: Branding;
+  openmusic: OpenMusicInfo;
+};
+```

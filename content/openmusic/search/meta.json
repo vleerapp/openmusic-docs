@@ -6,6 +6,9 @@
     "search-songs",
     "search-albums",
     "search-artists",
-    "search-playlists"
+    "search-playlists",
+    "---Objects---",
+    "models",
+    "responses"
   ]
 }

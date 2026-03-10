@@ -35,6 +35,24 @@ The object has two top-level parts:
 - `branding`
 - `openmusic`
 
+```ts
+type Info = {
+  branding: Branding;
+  openmusic: OpenMusicInfo;
+};
+
+type InfoResponse = SingleResourceResponse<Info>;
+```
+
+Object references:
+
+- [`Info`](/openmusic/info/models#info)
+- [`Branding`](/openmusic/info/models#branding)
+- [`OpenMusicInfo`](/openmusic/info/models#openmusicinfo)
+- [`InfoResponse`](/openmusic/info/responses#inforesponse)
+- [`SingleResourceResponse`](/openmusic/responses#singleresourceresponse)
+- [`ErrorResponse`](/openmusic/responses#errorresponse)
+
 ### Branding
 
 Branding is user-facing metadata for the service.
@@ -112,5 +130,5 @@ interface OpenMusicInfo {
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`InfoResponse`](/openmusic/endpoints/getInfo) |
+| `200 OK` | `application/json` | [`InfoResponse`](/openmusic/info/responses#inforesponse) |
 | `500 Internal Server Error` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

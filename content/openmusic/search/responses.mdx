@@ -1,0 +1,63 @@
+---
+title: Search Responses
+description: Response wrappers returned by bucketed and typed search endpoints.
+icon: pixelarticons:menu-square
+---
+
+## SearchTopResponse
+
+```ts
+type SearchTopResponse = {
+  data: {
+    top?: (Song | BaseSong)[];
+    songs?: (Song | BaseSong)[];
+    albums?: (Album | BaseAlbum)[];
+    artists?: (Artist | BaseArtist)[];
+    playlists?: (Playlist | BasePlaylist)[];
+    stations?: (Station | BaseStation)[];
+  };
+};
+```
+
+## SearchSongsResponse
+
+```ts
+type SearchSongsResponse = SongPaginatedResponse;
+```
+
+## SearchAlbumsResponse
+
+```ts
+type SearchAlbumsResponse = AlbumPaginatedResponse;
+```
+
+## SearchArtistsResponse
+
+```ts
+type SearchArtistsResponse = ArtistPaginatedResponse;
+```
+
+## SearchPlaylistsResponse
+
+```ts
+type SearchPlaylistsResponse = PlaylistPaginatedResponse;
+```
+
+## ErrorResponse
+
+```ts
+type ErrorResponse = {
+  error: {
+    code: string;
+    title: string;
+    description: string;
+    trace_id: string | null;
+  };
+};
+```
+
+- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
+- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
+- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
+- [`PlaylistPaginatedResponse`](/openmusic/playlists/responses#playlistpaginatedresponse)
+- [`ErrorResponse`](/openmusic/responses#errorresponse)

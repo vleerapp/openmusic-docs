@@ -16,9 +16,9 @@ Endpoint references:
 
 | Station Type | Endpoint | Response |
 | ------------ | -------- | -------- |
-| Artist | `GET /stations/artist/{id}/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getArtistStationTracks) |
-| Genre | `GET /stations/genre/{genre}/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getGenreStationTracks) |
-| Popular | `GET /stations/popular/rel/tracks` | [`SongListResponse`](/openmusic/endpoints/getPopularStationTracks) |
+| Artist | `GET /stations/artist/{id}/rel/tracks` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| Genre | `GET /stations/genre/{genre}/rel/tracks` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| Popular | `GET /stations/popular/rel/tracks` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
 
 ## Query Parameters
 
@@ -37,7 +37,7 @@ All station track endpoints support:
 
 ## Responses
 
-- Artist station tracks: [`SongListResponse`](/openmusic/endpoints/getArtistStationTracks)
-- Genre station tracks: [`SongListResponse`](/openmusic/endpoints/getGenreStationTracks)
-- Popular station tracks: [`SongListResponse`](/openmusic/endpoints/getPopularStationTracks)
+- Artist station tracks: [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
+- Genre station tracks: [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
+- Popular station tracks: [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
 - Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)
