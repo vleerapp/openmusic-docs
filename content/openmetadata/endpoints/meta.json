@@ -1,12 +1,4 @@
 {
   "title": "Endpoints",
-  "icon": "pixelarticons:map",
-  "pages": [
-    "getSongById",
-    "getAlbumById",
-    "getArtistById",
-    "searchSongs",
-    "searchAlbums",
-    "searchArtists"
-  ]
+  "icon": "pixelarticons:map"
 }
