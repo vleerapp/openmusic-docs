@@ -1,6 +1,6 @@
 ---
 title: Song Models
-description: A resource object that represents a song.
+description: The song resource types used across the OpenMusic API.
 icon: pixelarticons:menu-square
 ---
 
@@ -14,18 +14,21 @@ interface BaseSong extends ResourceBase {
   };
   instance: {
     duration_in_ms: number;
-    files: FileSchema;
+    files: File[];
     has_lyrics: boolean;
   };
   relationships: {
     albums?: (Album | BaseAlbum)[];
     artists?: (Artist | BaseArtist)[];
+    lyrics?: Lyrics;
   };
 }
 ```
 
 - [`ResourceBase`](/openmusic/resources#resourcebase)
-- [`FileSchema`](#fileschema)
+- [`File`](#file)
+- [`Albums`](/openmusic/albums)
+- [`Artists`](/openmusic/artists)
 
 ## Song
 
@@ -36,21 +39,21 @@ interface Song extends BaseSong {
 ```
 
 - [`SongAttributes`](#songattributes)
-- [`Album`](/openmusic/albums/models#album)
-- [`BaseAlbum`](/openmusic/albums/models#basealbum)
 
-## FileSchema
+## File
 
 ```ts
-interface FileSchema {
+interface File {
+  download_url: string;
+  lossless: boolean;
   mime_type: string;
   codec: string | null;
-  lossless: boolean;
   bitrate: number | null;
-  download_url: string;
   stream_url: string | null;
 }
 ```
+
+`download_url` is required. `stream_url` may be `null` if the server does not support streaming.
 
 ## SongAttributes
 
@@ -64,6 +67,15 @@ interface SongAttributes {
   track_number: number | null;
   disc_number: number | null;
   genres: string[];
-  release_date: Date | null;
+  release_date: string | null;
+}
+```
+
+## Lyrics
+
+```ts
+interface Lyrics {
+  text: string;
+  language: string | null;
 }
 ```

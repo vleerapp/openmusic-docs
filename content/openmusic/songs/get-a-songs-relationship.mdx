@@ -1,36 +1,65 @@
 ---
-title: Get a Song's Relationship by Name
-description: Fetch a song's relationship by using its identifier.
+title: Get Song Relationships
+description: Fetch a song's related albums, artists, or lyrics.
 icon: pixelarticons:toke-square
 ---
 
-## URL
+Songs expose three dedicated relationship endpoints instead of a generic
+`/songs/{id}/{relationship}` route.
 
-`GET` `/songs/{id}/{relationship}`
+## Relationship Endpoints
 
-## Path Params
+| Relationship | Endpoint | Response |
+| ------------ | -------- | -------- |
+| Albums | `GET /songs/{id}/rel/albums` | [`AlbumListResponse`](/openmusic/songs/responses#related-responses) |
+| Artists | `GET /songs/{id}/rel/artists` | [`ArtistListResponse`](/openmusic/songs/responses#related-responses) |
+| Lyrics | `GET /songs/{id}/rel/lyrics` | [`LyricsResponse`](/openmusic/songs/responses#related-responses) |
 
-| Name           | Description              | Type                                | Example  |
-| -------------- | ------------------------ | ----------------------------------- | -------- |
-| `id`           | Song id                  | `string`                            | `1`      |
-| `relationship` | Name of the Relationship | `"albums" \| "artists" \| "lyrics"` | `albums` |
+## Path Parameters
 
-## Query Params
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `id` | Song id | `string` | `song_123` |
 
-### General
+## Query Parameters
 
-[`See definitions`](/openmusic/implementation#query-param-definitions)
+All relationship endpoints support `lang` and `view`.
 
-| Name      | Values                                       | Required |
-| --------- | -------------------------------------------- | -------- |
-| `view`    | `minimal`                                    | `false`  |
-| `include` | relationships from `relationship` path param | `false`  |
-| `limit`   |                                              | `false`  |
-| `offset`  |                                              | `false`  |
+Additional parameters depend on the relationship you request.
 
-## Responses
+### Albums
 
-| Status                      | Content Type     | Response                                                                                                                                                                                                                 |
-| --------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `200 OK`                    | application/json | [`ListAlbumResponse`](/openmusic/songs/responses#singlesongresponse) \| [`ListArtistResponse`](/openmusic/songs/responses#singlesongresponse) \| [`SingleLyricsResponse`](/openmusic/songs/responses#singlesongresponse) |
-| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                                                                                                                                                                    |
+`GET /songs/{id}/rel/albums`
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `include` | `artists` | `false` |
+| `view` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `limit[artists]` | `1-25` | `false` |
+
+### Artists
+
+`GET /songs/{id}/rel/artists`
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `include` | `albums` | `false` |
+| `view` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+
+### Lyrics
+
+`GET /songs/{id}/rel/lyrics`
+
+No include parameters are defined for lyrics. This returns the lyrics object directly in the standard `data` wrapper.
+
+## Related Responses
+
+- Albums: [`AlbumListResponse`](/openmusic/endpoints/getSongAlbums)
+- Artists: [`ArtistListResponse`](/openmusic/endpoints/getSongArtists)
+- Lyrics: [`LyricsResponse`](/openmusic/endpoints/getSongLyrics)
+- Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

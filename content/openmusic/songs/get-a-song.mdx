@@ -1,34 +1,60 @@
 ---
 title: Get a Song
-description: Fetch a song by using its identifier.
+description: Fetch a single song resource by id.
 icon: pixelarticons:toke-square
 ---
 
-## URL
+## Endpoint
 
 `GET` `/songs/{id}`
 
-## Path Params
+Use this endpoint when you already know the song id and want the canonical song resource.
+
+## What You Can Include
+
+The songs endpoint supports the following direct relationships:
+
+- `albums`
+- `artists`
+- `lyrics`
+
+If you include relationships, you can further shape them with scoped parameters such as
+`view[albums]=minimal` or `limit[artists]=5`.
+
+For the full parameter definitions, see [`Implementation`](/openmusic/implementation#query-param-definitions).
+
+## Path Parameters
 
 | Name | Description | Type     | Example |
 | ---- | ----------- | -------- | ------- |
-| `id` | Song id     | `string` | `1`     |
+| `id` | Song id     | `string` | `song_123` |
 
-## Query Params
+## Query Parameters
 
-### General
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists`, `lyrics` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[lyrics]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
 
-[`See definitions`](/openmusic/implementation#query-param-definitions)
+## Response Shape
 
-| Name      | Values                    | Required |
-| --------- | ------------------------- | -------- |
-| `view`    | `minimal`                 | `false`  |
-| `include` | `albums, artists, lyrics` | `false`  |
+Returns a single song resource wrapped in `data`.
+
+The returned item may be:
+
+- a full `Song`
+- a minimal `BaseSong` if `view=minimal` is used
 
 ## Responses
 
-| Status                      | Content Type     | Response                                                              |
-| --------------------------- | ---------------- | --------------------------------------------------------------------- |
-| `200 OK`                    | application/json | [`SingleSongResponse`](/openmusic/songs/responses#singlesongresponse) |
-| `404 NOT FOUND`             | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                 |
-| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                 |
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongResponse`](/openmusic/songs/responses#songresponse) |
+| `404 Not Found` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

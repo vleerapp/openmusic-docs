@@ -1,33 +1,38 @@
 ---
 title: Get Multiple Songs by ISRC
-description: Fetch one or more songs by using their ISRC.
+description: Fetch one or more songs by ISRC using the songs lookup endpoint.
 icon: pixelarticons:toke-square
 ---
 
-## URL
+## Endpoint
 
 `GET` `/songs`
 
-## Query Params
+Use this form when you want song lookup by external recording code instead of internal id.
 
-### General
+## Required Query Parameter
 
-[`See definitions`](/openmusic/implementation#query-param-definitions)
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `isrc` | Comma-separated ISRC values | `string` | `USRC17607839,GBARL0600786` |
 
-| Name      | Values                    | Required |
-| --------- | ------------------------- | -------- |
-| `view`    | `minimal`                 | `false`  |
-| `include` | `albums, artists, lyrics` | `false`  |
+## Optional Query Parameters
 
-### Extra
-
-| Name   | Description | Type       | Example     |
-| ------ | ----------- | ---------- | ----------- |
-| `isrc` | Song isrcs  | `string[]` | `ids=1,2,3` |
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists`, `lyrics` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[lyrics]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
 
 ## Responses
 
-| Status                      | Content Type     | Response                                                          |
-| --------------------------- | ---------------- | ----------------------------------------------------------------- |
-| `200 OK`                    | application/json | [`ListSongResponse`](/openmusic/songs/responses#listsongresponse) |
-| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)             |
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

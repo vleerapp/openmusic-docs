@@ -1,33 +1,38 @@
 ---
 title: Get Multiple Songs by Id
-description: Fetch one or more songs by using their identifiers.
+description: Fetch one or more songs by id using the songs lookup endpoint.
 icon: pixelarticons:toke-square
 ---
 
-## URL
+## Endpoint
 
 `GET` `/songs`
 
-## Query Params
+Use this form when you already have one or more song ids and want them back in a single response.
 
-### General
+## Required Query Parameter
 
-[`See definitions`](/openmusic/implementation#query-param-definitions)
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `ids` | Comma-separated song ids | `string` | `song_1,song_2,song_3` |
 
-| Name      | Values                    | Required |
-| --------- | ------------------------- | -------- |
-| `view`    | `minimal`                 | `false`  |
-| `include` | `albums, artists, lyrics` | `false`  |
+## Optional Query Parameters
 
-### Extra
-
-| Name  | Description | Type       | Example     |
-| ----- | ----------- | ---------- | ----------- |
-| `ids` | Song ids    | `string[]` | `ids=1,2,3` |
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+| `include` | `albums`, `artists`, `lyrics` | `false` |
+| `view` | `minimal` | `false` |
+| `view[songs]` | `minimal` | `false` |
+| `view[albums]` | `minimal` | `false` |
+| `view[artists]` | `minimal` | `false` |
+| `view[lyrics]` | `minimal` | `false` |
+| `limit[albums]` | `1-25` | `false` |
+| `limit[artists]` | `1-25` | `false` |
 
 ## Responses
 
-| Status                      | Content Type     | Response                                                          |
-| --------------------------- | ---------------- | ----------------------------------------------------------------- |
-| `200 OK`                    | application/json | [`ListSongResponse`](/openmusic/songs/responses#listsongresponse) |
-| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)             |
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
+| `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |
