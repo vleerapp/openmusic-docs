@@ -1,0 +1,7 @@
+{
+  "title": "Info",
+  "icon": "pixelarticons:bulletlist-sharp",
+  "pages": [
+    "get-api-info"
+  ]
+}

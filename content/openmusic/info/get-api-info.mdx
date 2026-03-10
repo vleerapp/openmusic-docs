@@ -1,0 +1,114 @@
+---
+title: Get API Info
+description: Fetch branding and capability information for an OpenMusic server.
+icon: pixelarticons:toke-square
+---
+
+## Endpoint
+
+`GET` `/`
+
+This is the first endpoint a client should call.
+
+It tells the client:
+
+- how to present the server to the user
+- which OpenMusic version the server targets
+- which required and optional capability families are available
+
+## Query Parameters
+
+| Name | Values | Required |
+| ---- | ------ | -------- |
+| `lang` | locale string | `false` |
+
+If the requested language is unavailable, the server should fall back to `en-US`.
+
+## Response Shape
+
+The info endpoint returns a single `Info` object wrapped in `data`.
+
+The object has two top-level parts:
+
+- `branding`
+- `openmusic`
+
+### Branding
+
+Branding is user-facing metadata for the service.
+
+```ts
+interface Branding {
+  name: string;
+  email: string;
+  logo: string | null;
+  short_name: string | null;
+  theme: string | null;
+  homepage: string | null;
+}
+```
+
+### OpenMusic
+
+This part describes the spec version and the supported capability flags.
+
+```ts
+interface OpenMusicInfo {
+  version: string;
+  capabilities: {
+    info: true;
+    search: true;
+    song: true;
+    download: true;
+    stream: boolean;
+    albums: boolean;
+    artists: boolean;
+    playlists: boolean;
+    stations: boolean;
+    sort: boolean;
+    lyrics: boolean;
+    list: boolean;
+  };
+}
+```
+
+## Example Response
+
+```json
+{
+  "data": {
+    "branding": {
+      "name": "My Music Service",
+      "email": "contact@example.com",
+      "logo": "https://example.com/logo.png",
+      "short_name": "MMS",
+      "theme": "#0066cc",
+      "homepage": "https://example.com"
+    },
+    "openmusic": {
+      "version": "1.0.0",
+      "capabilities": {
+        "info": true,
+        "search": true,
+        "song": true,
+        "download": true,
+        "stream": false,
+        "albums": true,
+        "artists": true,
+        "playlists": true,
+        "stations": true,
+        "sort": true,
+        "lyrics": true,
+        "list": true
+      }
+    }
+  }
+}
+```
+
+## Responses
+
+| Status | Content Type | Response |
+| ------ | ------------ | -------- |
+| `200 OK` | `application/json` | [`InfoResponse`](/openmusic/endpoints/getInfo) |
+| `500 Internal Server Error` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

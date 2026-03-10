@@ -43,7 +43,7 @@ capability flags.
 
 | Feature                                      | Type     | Description                             |
 | -------------------------------------------- | -------- | --------------------------------------- |
-| [`info`](/openmusic/endpoints/getInfo)       | Required | Return branding and capability metadata |
+| [`info`](/openmusic/info/get-api-info)       | Required | Return branding and capability metadata |
 | [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs and optionally other types |
 | [`song`](/openmusic/endpoints/getSong)       | Required | Fetch a song by id                      |
 | `download`                                   | Required | Provide downloadable song files         |
@@ -143,6 +143,10 @@ It returns:
 - branding metadata for display
 - the supported OpenMusic spec version
 - capability flags describing which optional families are implemented
+
+More detail:
+
+- [`Info`](/openmusic/info/get-api-info)
 
 ```json lineNumbers
 {
