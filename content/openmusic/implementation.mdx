@@ -62,7 +62,7 @@ This is the list of the current to be implemented endpoints. This is subject to 
   /artists:
     /{id}:
       /rel:
-        /albums:
+        /albums: # sortable
         /songs: # sortable
   /playlists:
     /{id}:
@@ -96,14 +96,14 @@ This is the list of the current to be implemented endpoints. This is subject to 
 
 ### Query Param Definitions
 
-| Name            | Description                                   | Type                                        | Example                  |
-| --------------- | --------------------------------------------- | ------------------------------------------- | ------------------------ |
-| `view`          | Strip attributes and relationships            | `"minimal"`                                 | `view=minimal`           |
-| `include`       | Include relationships                         | `string[]`                                  | `include=artists,albums` |
-| `limit`         | Limit response items                          | `number`                                    | `limit=10`               |
-| `offset`        | The offset for paginated responses            | `number`                                    | `offset=10`              |
-| `sort`          | Sort by. Add a `-` before to sort descending. | `"-?dateReleased"\|"-?dateAdded"\|"-?name"` | `sort=-dateReleased`     |
-| `filter[scope]` | Filter for specific scopes                    | `string`                                    | `filter[genres]=pop`     |
+| Name            | Description                                   | Type                                          | Example                  |
+| --------------- | --------------------------------------------- | --------------------------------------------- | ------------------------ |
+| `view`          | Strip attributes and relationships            | `"minimal"`                                   | `view=minimal`           |
+| `include`       | Include relationships                         | `string[]`                                    | `include=artists,albums` |
+| `limit`         | Limit response items                          | `number`                                      | `limit=10`               |
+| `offset`        | The offset for paginated responses            | `number`                                      | `offset=10`              |
+| `sort`          | Sort by. Add a `-` before to sort descending. | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_Released`    |
+| `filter[scope]` | Filter for specific scopes                    | `string`                                      | `filter[genres]=pop`     |
 
 Query Params can be scoped.
 If for example a `song` is fetched with `include=albums` the `albums` can be requested with the minimal view by adding `view[albums]=minimal`
@@ -178,8 +178,6 @@ Query Params:
 | `include` | [`Read more`](#query-param-definitions) | `albums, artists` |                                  |
 
 Example Request:
-
-
 
 ```json lineNumbers
 {

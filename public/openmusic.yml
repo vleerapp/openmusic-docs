@@ -1,678 +1,1869 @@
 openapi: 3.1.0
 info:
   title: OpenMusic API
-  description: The Open standard for music service communication
   version: 1.0.0
+  description: Open standard for music service communication
   license:
     name: AGPL-3.0
 
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
     description: Development server
-  - url: https://api.example.com
+  - url: https://api.example.com/api
     description: Production server
+
+tags:
+  - name: Info
+  - name: Songs
+  - name: Albums
+  - name: Artists
+  - name: Playlists
+  - name: Stations
+  - name: List
+  - name: Search
 
 paths:
   /:
     get:
-      summary: Info
-      description: Returns information about the API including branding and capabilities
+      tags: [Info]
+      summary: Get API info
       operationId: getInfo
-      tags:
-        - Info
+      parameters:
+        - $ref: "#/components/parameters/Lang"
       responses:
         "200":
-          description: Successful response
+          description: API info
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - branding
-                  - details
-                properties:
-                  branding:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      short:
-                        type: string
-                      logo:
-                        type: string
-                        format: uri
-                      theme:
-                        type: string
-                      links:
-                        type: object
-                        properties:
-                          homepage:
-                            type:
-                              - string
-                              - "null"
-                            format: uri
-                          privacyStatement:
-                            type:
-                              - string
-                              - "null"
-                            format: uri
-                          donate:
-                            type:
-                              - string
-                              - "null"
-                            format: uri
-                  details:
-                    type: object
-                    properties:
-                      version:
-                        type: string
-                      capabilities:
-                        type: object
-                        properties:
-                          search:
-                            type: boolean
-                          songs:
-                            type: boolean
-                          streaming:
-                            type: boolean
-                          filters:
-                            type: boolean
-                          artists:
-                            type: boolean
-                          albums:
-                            type: boolean
-                          playlists:
-                            type: boolean
-                          lyrics:
-                            type: boolean
-                          popular:
-                            type: boolean
-                          similar:
-                            type: boolean
-                          openMusicMetadata:
-                            type: boolean
-                          radio:
-                            type: boolean
-                          random:
-                            type: boolean
-                          list:
-                            type: boolean
-                          upload:
-                            type: boolean
-                          favorite:
-                            type: boolean
-                          rate:
-                            type: boolean
-                          edit:
-                            type: boolean
-              examples:
-                success:
-                  value:
-                    branding:
-                      name: "My Music Service"
-                      email: "contact@example.com"
-                      short: "MMS"
-                      logo: "https://example.com/logo.png"
-                      theme: "#0066cc"
-                      links:
-                        homepage: "https://example.com"
-                        privacyStatement: "https://example.com/privacy"
-                        donate: null
-                    details:
-                      version: "1.0.0"
-                      capabilities:
-                        search: true
-                        songs: true
-                        streaming: true
-                        filters: false
-                        artists: true
-                        albums: true
-                        playlists: false
-                        lyrics: false
-                        popular: false
-                        similar: false
-                        openMusicMetadata: true
-                        radio: false
-                        random: false
-                        list: false
-                        upload: false
-                        favorite: false
-                        rate: false
-                        edit: false
+                $ref: "#/components/schemas/InfoResponse"
+        "500":
+          $ref: "#/components/responses/Error"
 
-  /song/{id}:
+  /songs:
     get:
-      summary: Song
-      description: Retrieve detailed information about a song
+      tags: [Songs]
+      summary: Get songs by lookup
+      operationId: getSongs
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/Isrc"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewLyrics"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Matching songs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongListResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /songs/{id}:
+    get:
+      tags: [Songs]
+      summary: Get song
       operationId: getSong
-      tags:
-        - Songs
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube video ID or watch URL
-          schema:
-            type: string
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SongId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewLyrics"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
       responses:
         "200":
-          description: Song found
+          description: Song
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Song"
-              examples:
-                success:
-                  value:
-                    id: "dQw4w9WgXcQ"
-                    name: "Never Gonna Give You Up"
-                    omm_id: "abc1234567890def"
-                    artist: "Rick Astley"
-                    album: "Whenever You Need Somebody"
-                    date: 1987
-                    image: "/song/dQw4w9WgXcQ/art"
+                $ref: "#/components/schemas/SongResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /songs/{id}/rel/albums:
+    get:
+      tags: [Songs]
+      summary: Get related albums for a song
+      operationId: getSongAlbums
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SongId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Related albums
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlbumListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /songs/{id}/rel/artists:
+    get:
+      tags: [Songs]
+      summary: Get related artists for a song
+      operationId: getSongArtists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SongId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/LimitAlbums"
+      responses:
+        "200":
+          description: Related artists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /songs/{id}/rel/lyrics:
+    get:
+      tags: [Songs]
+      summary: Get lyrics for a song
+      operationId: getSongLyrics
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SongId"
+      responses:
+        "200":
+          description: Lyrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LyricsResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /albums:
+    get:
+      tags: [Albums]
+      summary: Get albums by lookup
+      operationId: getAlbums
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/Upc"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitArtists"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Matching albums
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlbumListResponse"
         "400":
-          description: Invalid song ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "404":
-          description: Song not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/Error"
 
-  /song/{id}/stream:
+  /albums/{id}:
     get:
-      summary: Stream
-      description: Stream the audio of a song. Supports HTTP range requests.
-      operationId: streamSong
-      tags:
-        - Songs
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube video ID or watch URL
-          schema:
-            type: string
-        - name: Range
-          in: header
-          required: false
-          description: Byte range for partial content (e.g. `bytes=0-1048575`)
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Full audio stream
-          content:
-            audio/mp4:
-              schema:
-                type: string
-                format: binary
-          headers:
-            Accept-Ranges:
-              schema:
-                type: string
-                example: "bytes"
-            Content-Length:
-              schema:
-                type: integer
-        "206":
-          description: Partial audio content
-          content:
-            audio/mp4:
-              schema:
-                type: string
-                format: binary
-          headers:
-            Content-Range:
-              schema:
-                type: string
-                example: "bytes 0-1048575/6272474"
-            Content-Length:
-              schema:
-                type: integer
-        "400":
-          description: Invalid song ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "416":
-          description: Range not satisfiable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /song/{id}/image:
-    get:
-      summary: Cover Art
-      description: Retrieve the cover art image for a song
-      operationId: getSongImage
-      tags:
-        - Songs
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube video ID or watch URL
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Cover art image
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/webp:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Cover art not found
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /artist/{id}:
-    get:
-      summary: Artist
-      description: Retrieve information about an artist by YouTube channel browse ID
-      operationId: getArtist
-      tags:
-        - Artists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube Music artist browse ID
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Artist found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Artist"
-              examples:
-                success:
-                  value:
-                    id: "UCuAXFkgsw1L7xaCfnd5JJOw"
-                    name: "Rick Astley"
-                    image: "/artist/UCuAXFkgsw1L7xaCfnd5JJOw/image"
-        "404":
-          description: Artist not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /artist/{id}/image:
-    get:
-      summary: Artist Image
-      description: Retrieve the image for an artist
-      operationId: getArtistImage
-      tags:
-        - Artists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube Music artist browse ID
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Artist image
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/webp:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Image not found
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /album/{id}:
-    get:
-      summary: Album
-      description: Retrieve information about an album by YouTube Music playlist browse ID
+      tags: [Albums]
+      summary: Get album
       operationId: getAlbum
-      tags:
-        - Albums
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube Music album playlist ID
-          schema:
-            type: string
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/AlbumId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitArtists"
+        - $ref: "#/components/parameters/LimitTracks"
       responses:
         "200":
-          description: Album found
+          description: Album
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Album"
-              examples:
-                success:
-                  value:
-                    id: "MPREb_abc123"
-                    name: "Whenever You Need Somebody"
-                    artist: "Rick Astley"
-                    date: 1987
-                    trackCount: 10
-                    image: "/album/MPREb_abc123/art"
+                $ref: "#/components/schemas/AlbumResponse"
         "404":
-          description: Album not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/Error"
 
-  /album/{id}/art:
+  /albums/{id}/rel/tracks:
     get:
-      summary: Album Art
-      description: Retrieve the cover art for an album
-      operationId: getAlbumArt
-      tags:
-        - Albums
+      tags: [Albums]
+      summary: Get tracks for an album
+      operationId: getAlbumTracks
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: YouTube Music album playlist ID
-          schema:
-            type: string
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/AlbumId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
       responses:
         "200":
-          description: Album art image
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/webp:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Art not found
-        "500":
-          description: Internal server error
+          description: Album tracks
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/SongListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /albums/{id}/rel/artists:
+    get:
+      tags: [Albums]
+      summary: Get artists for an album
+      operationId: getAlbumArtists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/AlbumId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/LimitAlbums"
+      responses:
+        "200":
+          description: Album artists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /artists:
+    get:
+      tags: [Artists]
+      summary: Get artists by lookup
+      operationId: getArtists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitSongs"
+      responses:
+        "200":
+          description: Matching artists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistListResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /artists/{id}:
+    get:
+      tags: [Artists]
+      summary: Get artist
+      operationId: getArtist
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/ArtistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitSongs"
+      responses:
+        "200":
+          description: Artist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /artists/{id}/rel/albums:
+    get:
+      tags: [Artists]
+      summary: Get albums for an artist
+      operationId: getArtistAlbums
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/ArtistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortArtistAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Artist albums
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlbumPaginatedResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /artists/{id}/rel/songs:
+    get:
+      tags: [Artists]
+      summary: Get songs for an artist
+      operationId: getArtistSongs
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/ArtistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortSongs"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Artist songs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongPaginatedResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /playlists:
+    get:
+      tags: [Playlists]
+      summary: Get playlists by lookup
+      operationId: getPlaylists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/Ids"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewPlaylists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Matching playlists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaylistListResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /playlists/{id}:
+    get:
+      tags: [Playlists]
+      summary: Get playlist
+      operationId: getPlaylist
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/PlaylistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewPlaylists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Playlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaylistResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /playlists/{id}/rel/tracks:
+    get:
+      tags: [Playlists]
+      summary: Get tracks for a playlist
+      operationId: getPlaylistTracks
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/PlaylistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Playlist tracks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/artist/{id}:
+    get:
+      tags: [Stations]
+      summary: Get artist station
+      operationId: getArtistStation
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/ArtistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewStations"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Artist station
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StationResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/artist/{id}/rel/tracks:
+    get:
+      tags: [Stations]
+      summary: Get tracks for an artist station
+      operationId: getArtistStationTracks
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/ArtistId"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Station tracks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/genre/{genre}:
+    get:
+      tags: [Stations]
+      summary: Get genre station
+      operationId: getGenreStation
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/GenrePath"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewStations"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Genre station
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StationResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/genre/{genre}/rel/tracks:
+    get:
+      tags: [Stations]
+      summary: Get tracks for a genre station
+      operationId: getGenreStationTracks
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/GenrePath"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Station tracks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/popular:
+    get:
+      tags: [Stations]
+      summary: Get popular station
+      operationId: getPopularStation
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewStations"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Popular station
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StationResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /stations/popular/rel/tracks:
+    get:
+      tags: [Stations]
+      summary: Get tracks for the popular station
+      operationId: getPopularStationTracks
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Station tracks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongListResponse"
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /list/songs:
+    get:
+      tags: [List]
+      summary: List songs
+      operationId: listSongs
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortSongs"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Song list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SongPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /list/albums:
+    get:
+      tags: [List]
+      summary: List albums
+      operationId: listAlbums
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortAlbums"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitArtists"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Album list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlbumPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /list/artists:
+    get:
+      tags: [List]
+      summary: List artists
+      operationId: listArtists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortArtists"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitSongs"
+      responses:
+        "200":
+          description: Artist list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /list/playlists:
+    get:
+      tags: [List]
+      summary: List playlists
+      operationId: listPlaylists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewPlaylists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortPlaylists"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Playlist list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaylistPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
 
   /search:
     get:
-      summary: Search
-      description: Search for songs, artists, or albums. Defaults to songs if no type is specified.
-      operationId: search
-      tags:
-        - Search
+      tags: [Search]
+      summary: Search top results
+      operationId: searchTop
       parameters:
-        - name: q
-          in: query
-          required: true
-          description: Search query string
-          schema:
-            type: string
-        - name: type
-          in: query
-          required: false
-          description: Filter results by item type. Defaults to song.
-          schema:
-            type: string
-            enum: [song, artist, album]
-        - name: limit
-          in: query
-          required: false
-          description: Maximum number of results to return
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          required: false
-          description: Number of results to skip for pagination
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SearchTerm"
+        - $ref: "#/components/parameters/IncludeSearchBuckets"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewPlaylists"
+        - $ref: "#/components/parameters/ViewStations"
+        - $ref: "#/components/parameters/LimitSongs"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+        - $ref: "#/components/parameters/LimitTracks"
       responses:
         "200":
-          description: Search results
+          description: Search buckets for included resource types
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - type
-                  - data
-                  - total
-                  - limit
-                  - offset
-                properties:
-                  type:
-                    type: string
-                    enum: [song, artist, album]
-                    description: The item type of all results in data
-                  data:
-                    type: array
-                    items:
-                      oneOf:
-                        - $ref: "#/components/schemas/Song"
-                        - $ref: "#/components/schemas/Artist"
-                        - $ref: "#/components/schemas/Album"
-                  total:
-                    type: integer
-                  limit:
-                    type: integer
-                  offset:
-                    type: integer
-              examples:
-                songs:
-                  value:
-                    type: "song"
-                    data:
-                      - id: "dQw4w9WgXcQ"
-                        name: "Never Gonna Give You Up"
-                        artist: "Rick Astley"
-                    image: "/song/dQw4w9WgXcQ/image"
-                    total: 1
-                    limit: 20
-                    offset: 0
-                artists:
-                  value:
-                    type: "artist"
-                    data:
-                      - id: "UCuAXFkgsw1L7xaCfnd5JJOw"
-                        name: "Rick Astley"
-                        image: "/artist/UCuAXFkgsw1L7xaCfnd5JJOw/image"
-                    total: 1
-                    limit: 20
-                    offset: 0
-                empty:
-                  value:
-                    type: "song"
-                    data: []
-                    total: 0
-                    limit: 20
-                    offset: 0
+                $ref: "#/components/schemas/SearchResponse"
         "400":
-          description: Missing or invalid query parameter
+          $ref: "#/components/responses/Error"
+
+  /search/songs:
+    get:
+      tags: [Search]
+      summary: Search songs
+      operationId: searchSongs
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SearchTerm"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortSongs"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitArtists"
+      responses:
+        "200":
+          description: Song search results
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/SongPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /search/albums:
+    get:
+      tags: [Search]
+      summary: Search albums
+      operationId: searchAlbums
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SearchTerm"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortAlbums"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitArtists"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Album search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlbumPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /search/artists:
+    get:
+      tags: [Search]
+      summary: Search artists
+      operationId: searchArtists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SearchTerm"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/ViewAlbums"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortArtists"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitAlbums"
+        - $ref: "#/components/parameters/LimitSongs"
+      responses:
+        "200":
+          description: Artist search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtistPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+
+  /search/playlists:
+    get:
+      tags: [Search]
+      summary: Search playlists
+      operationId: searchPlaylists
+      parameters:
+        - $ref: "#/components/parameters/Lang"
+        - $ref: "#/components/parameters/SearchTerm"
+        - $ref: "#/components/parameters/IncludeAll"
+        - $ref: "#/components/parameters/View"
+        - $ref: "#/components/parameters/ViewPlaylists"
+        - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortPlaylists"
+        - $ref: "#/components/parameters/FilterGenres"
+        - $ref: "#/components/parameters/LimitTracks"
+      responses:
+        "200":
+          description: Playlist search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaylistPaginatedResponse"
+        "400":
+          $ref: "#/components/responses/Error"
 
 components:
-  schemas:
-    Song:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-          description: YouTube video ID
-        name:
-          type: string
-          description: Title of the song
-        omm_id:
-          type:
-            - string
-            - "null"
-          description: OpenMusicMetadata ID (OMID) if matched
-        artist:
-          type:
-            - string
-            - "null"
-          description: Name of the artist
-        album:
-          type:
-            - string
-            - "null"
-          description: Name of the album
-        genre:
-          type:
-            - string
-            - "null"
-          description: Genre of the song
-        date:
-          type:
-            - integer
-            - "null"
-          description: Release year
-        track_number:
-          type:
-            - integer
-            - "null"
-          description: Track number within the album
-        disc_number:
-          type:
-            - integer
-            - "null"
-          description: Disc number for multi-disc releases
-        image:
-          type:
-            - string
-            - "null"
-          format: uri
-          description: URL to the cover art image
-        lyrics:
-          type:
-            - string
-            - "null"
-          description: Song lyrics
+  responses:
+    Error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
 
-    Artist:
+  parameters:
+    Lang:
+      name: lang
+      in: query
+      description: Preferred language. Falls back to en-US if omitted or unavailable.
+      schema:
+        type: string
+        default: en-US
+        examples:
+          - en-US
+          - de-CH
+
+    Ids:
+      name: ids
+      in: query
+      description: Comma-separated resource IDs.
+      schema:
+        type: string
+        examples:
+          - "id1,id2,id3"
+
+    Isrc:
+      name: isrc
+      in: query
+      description: Comma-separated ISRC values.
+      schema:
+        type: string
+        examples:
+          - "USRC17607839,GBARL0600786"
+
+    Upc:
+      name: upc
+      in: query
+      description: Comma-separated UPC values.
+      schema:
+        type: string
+        examples:
+          - "602547673951,888430877625"
+
+    SearchTerm:
+      name: term
+      in: query
+      required: true
+      description: Search term.
+      schema:
+        type: string
+
+    IncludeAll:
+      name: include
+      in: query
+      description: >
+        Comma-separated relationships to include. Includes are only one level deep.
+        Valid values depend on the endpoint.
+      schema:
+        type: string
+        examples:
+          - "artists,albums"
+          - "tracks"
+          - "songs,albums"
+
+    IncludeSearchBuckets:
+      name: include
+      in: query
+      description: >
+        Comma-separated search buckets to return.
+        Supported values: top, songs, artists, albums, stations, playlists.
+      schema:
+        type: string
+        examples:
+          - "top"
+          - "top,songs,artists"
+          - "albums,playlists"
+
+    View:
+      name: view
+      in: query
+      description: Apply the same view to the main resource and included relationships.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewSongs:
+      name: view[songs]
+      in: query
+      description: View mode for songs.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewAlbums:
+      name: view[albums]
+      in: query
+      description: View mode for albums.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewArtists:
+      name: view[artists]
+      in: query
+      description: View mode for artists.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewPlaylists:
+      name: view[playlists]
+      in: query
+      description: View mode for playlists.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewStations:
+      name: view[stations]
+      in: query
+      description: View mode for stations.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    ViewLyrics:
+      name: view[lyrics]
+      in: query
+      description: View mode for lyrics.
+      schema:
+        $ref: "#/components/schemas/ViewMode"
+
+    Limit:
+      name: limit
+      in: query
+      description: Page size.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 25
+        default: 25
+
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip.
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+    LimitSongs:
+      name: limit[songs]
+      in: query
+      description: Limit included songs.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 25
+
+    LimitAlbums:
+      name: limit[albums]
+      in: query
+      description: Limit included albums.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 25
+
+    LimitArtists:
+      name: limit[artists]
+      in: query
+      description: Limit included artists.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 25
+
+    LimitTracks:
+      name: limit[tracks]
+      in: query
+      description: Limit included tracks.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 25
+
+    FilterGenres:
+      name: filter[genres]
+      in: query
+      description: Comma-separated genres filter.
+      schema:
+        type: string
+        examples:
+          - "pop"
+          - "pop,rock"
+
+    SortSongs:
+      name: sort
+      in: query
+      description: Sort songs. Prefix with `-` for descending.
+      schema:
+        type: string
+        enum:
+          [name, -name, date_released, -date_released, date_added, -date_added]
+
+    SortAlbums:
+      name: sort
+      in: query
+      description: Sort albums. Prefix with `-` for descending.
+      schema:
+        type: string
+        enum:
+          [name, -name, date_released, -date_released, date_added, -date_added]
+
+    SortArtistAlbums:
+      name: sort
+      in: query
+      description: Sort artist albums. Prefix with `-` for descending.
+      schema:
+        type: string
+        enum:
+          [name, -name, date_released, -date_released, date_added, -date_added]
+
+    SortArtists:
+      name: sort
+      in: query
+      description: Sort artists. Prefix with `-` for descending.
+      schema:
+        type: string
+        enum: [name, -name, date_added, -date_added]
+
+    SortPlaylists:
+      name: sort
+      in: query
+      description: Sort playlists. Prefix with `-` for descending.
+      schema:
+        type: string
+        enum: [name, -name, date_added, -date_added]
+
+    SongId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    AlbumId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    ArtistId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    PlaylistId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    GenrePath:
+      name: genre
+      in: path
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    ViewMode:
+      type: string
+      enum: [minimal]
+
+    ResourceBase:
       type: object
-      required:
-        - id
-        - name
+      required: [id, type]
       properties:
         id:
           type: string
-          description: YouTube Music artist browse ID
+        type:
+          type: string
+
+    Meta:
+      type: object
+      required: [omm_id]
+      properties:
+        omm_id:
+          type: [string, "null"]
+
+    Lyrics:
+      type: object
+      required: [text, language]
+      properties:
+        text:
+          type: string
+        language:
+          type: [string, "null"]
+
+    File:
+      type: object
+      required: [download_url, lossless, mime_type, codec, bitrate, stream_url]
+      properties:
+        download_url:
+          type: string
+          format: uri
+        lossless:
+          type: boolean
+        mime_type:
+          type: string
+          description: "example: audio/mpeg"
+        codec:
+          type: [string, "null"]
+          description: "example: mp3"
+        bitrate:
+          type: [integer, "null"]
+          description: Average or target bitrate in bps.
+        stream_url:
+          type: [string, "null"]
+          format: uri
+
+    SongAttributes:
+      type: object
+      required:
+        - name
+        - album_name
+        - artist_name
+        - isrc
+        - artwork_url
+        - track_number
+        - disc_number
+        - genres
+        - release_date
+      properties:
         name:
           type: string
-          description: Name of the artist
-        image:
-          type:
-            - string
-            - "null"
+        album_name:
+          type: string
+        artist_name:
+          type: string
+        isrc:
+          type: [string, "null"]
+        artwork_url:
+          type: [string, "null"]
           format: uri
-          description: URL to the artist image
+        track_number:
+          type: [integer, "null"]
+        disc_number:
+          type: [integer, "null"]
+        genres:
+          type: array
+          items:
+            type: string
+        release_date:
+          type: [string, "null"]
+          format: date
+
+    AlbumAttributes:
+      type: object
+      required:
+        - name
+        - artist_name
+        - upc
+        - artwork_url
+        - track_count
+        - genres
+        - release_date
+      properties:
+        name:
+          type: string
+        artist_name:
+          type: string
+        upc:
+          type: [string, "null"]
+        artwork_url:
+          type: [string, "null"]
+          format: uri
+        track_count:
+          type: [integer, "null"]
+        genres:
+          type: array
+          items:
+            type: string
+        release_date:
+          type: [string, "null"]
+          format: date
+
+    ArtistAttributes:
+      type: object
+      required:
+        - name
+        - artwork_url
+        - genres
+      properties:
+        name:
+          type: string
+        artwork_url:
+          type: [string, "null"]
+          format: uri
+        genres:
+          type: array
+          items:
+            type: string
+
+    PlaylistAttributes:
+      type: object
+      required:
+        - name
+        - curator_name
+        - description
+        - artwork_url
+        - genres
+      properties:
+        name:
+          type: string
+        curator_name:
+          type: string
+          description: Who created the playlist?
+        description:
+          type: [string, "null"]
+        artwork_url:
+          type: [string, "null"]
+          format: uri
+        genres:
+          type: array
+          items:
+            type: string
+
+    StationSeedArtist:
+      type: object
+      required: [kind, artist]
+      properties:
+        kind:
+          type: string
+          const: artist
+        artist:
+          $ref: "#/components/schemas/ArtistBase"
+
+    StationSeedGenre:
+      type: object
+      required: [kind, genre]
+      properties:
+        kind:
+          type: string
+          const: genre
+        genre:
+          type: string
+
+    StationSeedPopular:
+      type: object
+      required: [kind]
+      properties:
+        kind:
+          type: string
+          const: popular
+
+    StationSeed:
+      oneOf:
+        - $ref: "#/components/schemas/StationSeedArtist"
+        - $ref: "#/components/schemas/StationSeedGenre"
+        - $ref: "#/components/schemas/StationSeedPopular"
+
+    StationAttributes:
+      type: object
+      required:
+        - name
+        - seed
+        - description
+        - artwork_url
+        - genres
+      properties:
+        name:
+          type: string
+        seed:
+          $ref: "#/components/schemas/StationSeed"
+        description:
+          type: [string, "null"]
+        artwork_url:
+          type: [string, "null"]
+          format: uri
+        genres:
+          type: array
+          items:
+            type: string
+
+    SongInstance:
+      type: object
+      required: [duration_in_ms, files, has_lyrics]
+      properties:
+        duration_in_ms:
+          type: integer
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/File"
+        has_lyrics:
+          type: boolean
+
+    SongBase:
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - type: object
+          required: [type, meta, instance, relationships]
+          properties:
+            type:
+              type: string
+              const: songs
+            meta:
+              $ref: "#/components/schemas/Meta"
+            instance:
+              $ref: "#/components/schemas/SongInstance"
+            relationships:
+              $ref: "#/components/schemas/SongRelationships"
+
+    Song:
+      allOf:
+        - $ref: "#/components/schemas/SongBase"
+        - type: object
+          required: [attributes]
+          properties:
+            attributes:
+              $ref: "#/components/schemas/SongAttributes"
+
+    AlbumBase:
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - type: object
+          required: [type, meta, relationships]
+          properties:
+            type:
+              type: string
+              const: albums
+            meta:
+              $ref: "#/components/schemas/Meta"
+            relationships:
+              $ref: "#/components/schemas/AlbumRelationships"
 
     Album:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-          description: YouTube Music album playlist ID
-        name:
-          type: string
-          description: Title of the album
-        artist:
-          type:
-            - string
-            - "null"
-          description: Name of the artist
-        date:
-          type:
-            - integer
-            - "null"
-          description: Release year
-        track_count:
-          type:
-            - integer
-            - "null"
-          description: Number of tracks on the album
-        image:
-          type:
-            - string
-            - "null"
-          format: uri
-          description: URL to the cover art image
+      allOf:
+        - $ref: "#/components/schemas/AlbumBase"
+        - type: object
+          required: [attributes]
+          properties:
+            attributes:
+              $ref: "#/components/schemas/AlbumAttributes"
 
-    Error:
+    ArtistBase:
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - type: object
+          required: [type, meta, relationships]
+          properties:
+            type:
+              type: string
+              const: artists
+            meta:
+              $ref: "#/components/schemas/Meta"
+            relationships:
+              $ref: "#/components/schemas/ArtistRelationships"
+
+    Artist:
+      allOf:
+        - $ref: "#/components/schemas/ArtistBase"
+        - type: object
+          required: [attributes]
+          properties:
+            attributes:
+              $ref: "#/components/schemas/ArtistAttributes"
+
+    PlaylistBase:
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - type: object
+          required: [type, relationships]
+          properties:
+            type:
+              type: string
+              const: playlists
+            relationships:
+              $ref: "#/components/schemas/PlaylistRelationships"
+
+    Playlist:
+      allOf:
+        - $ref: "#/components/schemas/PlaylistBase"
+        - type: object
+          required: [attributes]
+          properties:
+            attributes:
+              $ref: "#/components/schemas/PlaylistAttributes"
+
+    StationBase:
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - type: object
+          required: [type, relationships]
+          properties:
+            type:
+              type: string
+              const: stations
+            relationships:
+              $ref: "#/components/schemas/StationRelationships"
+
+    Station:
+      allOf:
+        - $ref: "#/components/schemas/StationBase"
+        - type: object
+          required: [attributes]
+          properties:
+            attributes:
+              $ref: "#/components/schemas/StationAttributes"
+
+    SongResource:
+      oneOf:
+        - $ref: "#/components/schemas/SongBase"
+        - $ref: "#/components/schemas/Song"
+
+    AlbumResource:
+      oneOf:
+        - $ref: "#/components/schemas/AlbumBase"
+        - $ref: "#/components/schemas/Album"
+
+    ArtistResource:
+      oneOf:
+        - $ref: "#/components/schemas/ArtistBase"
+        - $ref: "#/components/schemas/Artist"
+
+    PlaylistResource:
+      oneOf:
+        - $ref: "#/components/schemas/PlaylistBase"
+        - $ref: "#/components/schemas/Playlist"
+
+    StationResource:
+      oneOf:
+        - $ref: "#/components/schemas/StationBase"
+        - $ref: "#/components/schemas/Station"
+
+    AnyResource:
+      oneOf:
+        - $ref: "#/components/schemas/SongBase"
+        - $ref: "#/components/schemas/Song"
+        - $ref: "#/components/schemas/AlbumBase"
+        - $ref: "#/components/schemas/Album"
+        - $ref: "#/components/schemas/ArtistBase"
+        - $ref: "#/components/schemas/Artist"
+        - $ref: "#/components/schemas/PlaylistBase"
+        - $ref: "#/components/schemas/Playlist"
+        - $ref: "#/components/schemas/StationBase"
+        - $ref: "#/components/schemas/Station"
+
+    SongRelationships:
       type: object
-      required:
-        - message
       properties:
+        albums:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlbumResource"
+        artists:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArtistResource"
+        lyrics:
+          $ref: "#/components/schemas/Lyrics"
+
+    AlbumRelationships:
+      type: object
+      properties:
+        tracks:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+        artists:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArtistResource"
+
+    ArtistRelationships:
+      type: object
+      properties:
+        albums:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlbumResource"
+        songs:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+
+    PlaylistRelationships:
+      type: object
+      properties:
+        tracks:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+
+    StationRelationships:
+      type: object
+      properties:
+        tracks:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+
+    SingleResourceResponse_Song:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/SongResource"
+
+    SingleResourceResponse_Album:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/AlbumResource"
+
+    SingleResourceResponse_Artist:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/ArtistResource"
+
+    SingleResourceResponse_Playlist:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/PlaylistResource"
+
+    SingleResourceResponse_Station:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/StationResource"
+
+    SingleResourceResponse_Lyrics:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/Lyrics"
+
+    ListResourceResponse_Song:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+
+    ListResourceResponse_Album:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlbumResource"
+
+    ListResourceResponse_Artist:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArtistResource"
+
+    ListResourceResponse_Playlist:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaylistResource"
+
+    ListResourceResponse_Station:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/StationResource"
+
+    Page:
+      type: object
+      required: [limit, offset, has_next_page]
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        has_next_page:
+          type: boolean
+
+    PaginatedResourceResponse_Song:
+      type: object
+      required: [data, page]
+      properties:
+        data:
+          type: array
+          maxItems: 25
+          items:
+            $ref: "#/components/schemas/SongResource"
+        page:
+          $ref: "#/components/schemas/Page"
+
+    PaginatedResourceResponse_Album:
+      type: object
+      required: [data, page]
+      properties:
+        data:
+          type: array
+          maxItems: 25
+          items:
+            $ref: "#/components/schemas/AlbumResource"
+        page:
+          $ref: "#/components/schemas/Page"
+
+    PaginatedResourceResponse_Artist:
+      type: object
+      required: [data, page]
+      properties:
+        data:
+          type: array
+          maxItems: 25
+          items:
+            $ref: "#/components/schemas/ArtistResource"
+        page:
+          $ref: "#/components/schemas/Page"
+
+    PaginatedResourceResponse_Playlist:
+      type: object
+      required: [data, page]
+      properties:
+        data:
+          type: array
+          maxItems: 25
+          items:
+            $ref: "#/components/schemas/PlaylistResource"
+        page:
+          $ref: "#/components/schemas/Page"
+
+    SearchData:
+      type: object
+      properties:
+        top:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnyResource"
+        songs:
+          type: array
+          items:
+            $ref: "#/components/schemas/SongResource"
+        artists:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArtistResource"
+        albums:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlbumResource"
+        stations:
+          type: array
+          items:
+            $ref: "#/components/schemas/StationResource"
+        playlists:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaylistResource"
+
+    SearchResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/SearchData"
+
+    Info:
+      type: object
+      required: [branding, openmusic]
+      properties:
+        branding:
+          type: object
+          required: [name, email, logo, short_name, theme, homepage]
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+            logo:
+              type: [string, "null"]
+              format: uri
+            short_name:
+              type: [string, "null"]
+            theme:
+              type: [string, "null"]
+            homepage:
+              type: [string, "null"]
+              format: uri
+        openmusic:
+          type: object
+          required: [version, capabilities]
+          properties:
+            version:
+              type: string
+            capabilities:
+              type: object
+              required:
+                - info
+                - search
+                - song
+                - download
+                - stream
+                - albums
+                - artists
+                - playlists
+                - stations
+                - sort
+                - lyrics
+                - list
+              properties:
+                info:
+                  type: boolean
+                  const: true
+                search:
+                  type: boolean
+                  const: true
+                song:
+                  type: boolean
+                  const: true
+                  description: Search and get songs
+                download:
+                  type: boolean
+                  const: true
+                stream:
+                  type: boolean
+                  description: Allow streaming
+                albums:
+                  type: boolean
+                  description: Search and get albums
+                artists:
+                  type: boolean
+                  description: Search and get artists
+                playlists:
+                  type: boolean
+                  description: Search and get playlists
+                stations:
+                  type: boolean
+                  description: Search and get stations
+                sort:
+                  type: boolean
+                  description: Sort by date_released, date_added or name
+                lyrics:
+                  type: boolean
+                list:
+                  type: boolean
+
+    SingleResourceResponse_Info:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: "#/components/schemas/Info"
+
+    ErrorObject:
+      type: object
+      required: [code, title, message, trace_id]
+      properties:
+        code:
+          type: integer
+        title:
+          type: string
         message:
           type: string
-          description: Error message
-        code:
-          type:
-            - string
-            - "null"
-          description: Error code
+        trace_id:
+          type: [integer, "null"]
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorObject"
+
+    SongResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Song"
+
+    SongListResponse:
+      $ref: "#/components/schemas/ListResourceResponse_Song"
+
+    SongPaginatedResponse:
+      $ref: "#/components/schemas/PaginatedResourceResponse_Song"
+
+    AlbumResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Album"
+
+    AlbumListResponse:
+      $ref: "#/components/schemas/ListResourceResponse_Album"
+
+    AlbumPaginatedResponse:
+      $ref: "#/components/schemas/PaginatedResourceResponse_Album"
+
+    ArtistResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Artist"
+
+    ArtistListResponse:
+      $ref: "#/components/schemas/ListResourceResponse_Artist"
+
+    ArtistPaginatedResponse:
+      $ref: "#/components/schemas/PaginatedResourceResponse_Artist"
+
+    PlaylistResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Playlist"
+
+    PlaylistListResponse:
+      $ref: "#/components/schemas/ListResourceResponse_Playlist"
+
+    PlaylistPaginatedResponse:
+      $ref: "#/components/schemas/PaginatedResourceResponse_Playlist"
+
+    StationResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Station"
+
+    LyricsResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Lyrics"
+
+    InfoResponse:
+      $ref: "#/components/schemas/SingleResourceResponse_Info"

@@ -17,6 +17,10 @@ interface BaseSong extends ResourceBase {
     files: FileSchema;
     has_lyrics: boolean;
   };
+  relationships: {
+    albums?: (Album | BaseAlbum)[];
+    artists?: (Artist | BaseArtist)[];
+  };
 }
 ```
 
@@ -27,11 +31,7 @@ interface BaseSong extends ResourceBase {
 
 ```ts
 interface Song extends BaseSong {
-  attributes: SongAttributes,
-  relationships: {
-    albums?: (Album | BaseAlbum)[];
-    artists?: (Artist | BaseArtist)[];
-  };
+  attributes: SongAttributes;
 }
 ```
 
