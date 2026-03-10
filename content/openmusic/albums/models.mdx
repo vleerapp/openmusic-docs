@@ -39,10 +39,15 @@ interface Album extends BaseAlbum {
 
 Full metadata fields attached to `Album`.
 
+`artist_name` is a fallback display field for cases where artist relationships
+are unavailable.
+It should also be populated by implementations that do expose artist
+relationships, whenever the value is available.
+
 ```ts
 interface AlbumAttributes {
   name: string;
-  artist_name: string;
+  artist_name: string | null;
   upc: string | null;
   artwork_url: string | null;
   track_count: number | null;

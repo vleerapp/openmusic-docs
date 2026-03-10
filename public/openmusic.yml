@@ -1171,9 +1171,9 @@ components:
         name:
           type: string
         album_name:
-          type: string
+          type: [string, "null"]
         artist_name:
-          type: string
+          type: [string, "null"]
         isrc:
           type: [string, "null"]
         artwork_url:
@@ -1205,7 +1205,7 @@ components:
         name:
           type: string
         artist_name:
-          type: string
+          type: [string, "null"]
         upc:
           type: [string, "null"]
         artwork_url:

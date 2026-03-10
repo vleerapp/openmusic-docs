@@ -65,11 +65,16 @@ interface File {
 
 Full metadata fields attached to `Song`.
 
+`artist_name` and `album_name` are fallback display fields for cases where
+artist/album relationships are unavailable.
+They should also be populated by implementations that do expose those
+relationships, whenever the values are available.
+
 ```ts
 interface SongAttributes {
   name: string;
-  album_name: string;
-  artist_name: string;
+  album_name: string | null;
+  artist_name: string | null;
   isrc: string | null;
   artwork_url: string | null;
   track_number: number | null;

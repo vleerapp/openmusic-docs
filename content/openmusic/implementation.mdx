@@ -56,6 +56,12 @@ capability flags.
 | `lyrics`                 | Optional | Expose lyrics data                      |
 | `list`                   | Optional | Expose paginated catalog listings       |
 
+When relationship capabilities are unavailable (for example `artists` or
+`albums`), fallback display fields can be used in attributes:
+`artist_name` and `album_name` on songs, and `artist_name` on albums.
+Implementations that do expose these relationships should still populate these
+fields whenever the values are available.
+
 ## Endpoint Families
 
 Current endpoint families in the spec:
