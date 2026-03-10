@@ -1,49 +1,64 @@
 ---
 title: Implementation
-description: How to implement the OpenMusic API Spec
+description: How to implement the OpenMusic API spec in practice
 icon: pixelarticons:code
 ---
 
 import { GithubInfo } from "fumadocs-ui/components/github-info";
 
-We have implemented the Spec as a refernce but also production ready local filesystem adapter **openmusic-fs** in Go.
+OpenMusic is a read-only music API spec for exposing songs and related metadata
+through a consistent resource model.
+
+We maintain **openmusic-fs** as the reference implementation and a production-ready
+local filesystem adapter in Go.
 
 <GithubInfo owner="vleerapp" repo="openmusic-fs" />
 
-This will always be our official refernce implementation and is what helps us develop the OpenMusic API Spec.
+It is the implementation used to validate and evolve the spec.
 
-# Get Started
+## Core Model
 
-To get started on implementing your own server take a look at what capabilities are and why you should implement as much of them as possible.
+An OpenMusic server exposes resource objects such as:
 
-# Capabilities
+- songs
+- albums
+- artists
+- playlists
+- stations
 
-Capabilities are a way for a server to communicate to the client what it can and can not do.
-Some may be required to provide basic functionallity while others stay optional for servers to implement.
-All the others are optional but should be implemented by the client to ensure compatibility.
+Most responses follow the same structure:
 
-<Callout title="Info" type="info">
-  Each capability has its own respecting API endpoints.
-</Callout>
+- `data` wrapper
+- `id` and `type`
+- `attributes` for the full representation
+- `relationships` for linked resources
+
+This lets clients work with different resource types in a predictable way.
+
+## Capabilities
+
+Clients should not assume every endpoint family is available.
+Instead, they should call the info endpoint first and inspect the returned
+capability flags.
 
 | Feature                                      | Type     | Description                             |
 | -------------------------------------------- | -------- | --------------------------------------- |
-| [`info`](/openmusic/endpoints/getInfo)       | Required | Info about the server                   |
-| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs by string                  |
-| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch metadata for song by id           |
-| `download`                                   | Required | Download song                           |
-| `stream`                                     | Optional | Stream song                             |
-| `artists`                                    | Optional | Search and get artists                  |
-| `albums`                                     | Optional | Search and get albums                   |
-| `playlists`                                  | Optional | Search and get playlists                |
-| `stations`                                   | Optional | Search and get stations                 |
-| `sort`                                       | Optional | Sort by dateReleased, dateAdded or name |
-| `lyrics`                                     | Optional | Lyrics                                  |
-| `list`                                       | Optional | Paginate all available types            |
+| [`info`](/openmusic/endpoints/getInfo)       | Required | Return branding and capability metadata |
+| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs and optionally other types |
+| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch a song by id                      |
+| `download`                                   | Required | Provide downloadable song files         |
+| `stream`                                     | Optional | Provide stream URLs for song files      |
+| `artists`                                    | Optional | Search and fetch artists                |
+| `albums`                                     | Optional | Search and fetch albums                 |
+| `playlists`                                  | Optional | Search and fetch playlists              |
+| `stations`                                   | Optional | Expose generated stations               |
+| `sort`                                       | Optional | Support `sort` query params             |
+| `lyrics`                                     | Optional | Expose lyrics data                      |
+| `list`                                       | Optional | Expose paginated catalog listings       |
 
-# Endpoints
+## Endpoint Families
 
-This is the list of the current to be implemented endpoints. This is subject to change at any point.
+Current endpoint families in the spec:
 
 ```yml
 /api:
@@ -86,61 +101,174 @@ This is the list of the current to be implemented endpoints. This is subject to 
     /artists: # sortable
     /playlists: # sortable
   /search:
+    /: # bucketed search
     /songs: # sortable
     /albums: # sortable
     /artists: # sortable
     /playlists: # sortable
 ```
 
-## General
+## Query Model
 
-### Query Param Definitions
+Most endpoints share the same query concepts.
 
-| Name            | Description                                   | Type                                          | Example                  |
-| --------------- | --------------------------------------------- | --------------------------------------------- | ------------------------ |
-| `view`          | Strip attributes and relationships            | `"minimal"`                                   | `view=minimal`           |
-| `include`       | Include relationships                         | `string[]`                                    | `include=artists,albums` |
-| `limit`         | Limit response items                          | `number`                                      | `limit=10`               |
-| `offset`        | The offset for paginated responses            | `number`                                      | `offset=10`              |
-| `sort`          | Sort by. Add a `-` before to sort descending. | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_Released`    |
-| `filter[scope]` | Filter for specific scopes                    | `string`                                      | `filter[genres]=pop`     |
+| Name | Description | Type | Example |
+| ---- | ----------- | ---- | ------- |
+| `lang` | Preferred language | `string` | `lang=en-US` |
+| `view` | Return the minimal resource form | `"minimal"` | `view=minimal` |
+| `include` | Include direct relationships | `string` | `include=artists,albums` |
+| `limit` | Page size for paginated endpoints | `number` | `limit=10` |
+| `offset` | Number of items to skip | `number` | `offset=10` |
+| `sort` | Sort ascending or descending | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released` |
+| `filter[genres]` | Filter by genre | `string` | `filter[genres]=pop,rock` |
 
-Query Params can be scoped.
-If for example a `song` is fetched with `include=albums` the `albums` can be requested with the minimal view by adding `view[albums]=minimal`
+Scoped parameters apply to included relationships.
+
+Examples:
+
+- `view[albums]=minimal`
+- `view[artists]=minimal`
+- `limit[albums]=5`
+- `limit[artists]=10`
+
+This allows a client to fetch a rich main resource while keeping nested related
+resources compact.
 
 ## Info
 
-The return should be branding information as well as the capabilites the server has.
+The info endpoint should be the first request a client makes.
+
+It returns:
+
+- branding metadata for display
+- the supported OpenMusic spec version
+- capability flags describing which optional families are implemented
 
 ```json lineNumbers
 {
-  "branding": {
-    "name": "My Music Service",
-    "email": "contact@example.com",
-    "short_name": "MMS",
-    "logo": "https://example.com/logo.png",
-    "theme": "#0066cc",
-    "homepage": "https://example.com"
-  },
-  "openmusic": {
-    "version": "1.0.0", // OpenMusic specifications version
-    "capabilities": {
-      // Required
-      "info": true,
-      "search": true,
-      "songs": true,
-      "download": true,
-
-      // Optional
-      "stream": false,
-      "artists": true,
-      "albums": false,
-      "playlists": false,
-      "stations": false,
-      "sort": false,
-      "lyrics": false,
-      "list": false
+  "data": {
+    "branding": {
+      "name": "My Music Service",
+      "email": "contact@example.com",
+      "short_name": "MMS",
+      "logo": "https://example.com/logo.png",
+      "theme": "#0066cc",
+      "homepage": "https://example.com"
+    },
+    "openmusic": {
+      "version": "1.0.0",
+      "capabilities": {
+        "info": true,
+        "search": true,
+        "song": true,
+        "download": true,
+        "stream": false,
+        "artists": true,
+        "albums": false,
+        "playlists": false,
+        "stations": false,
+        "sort": false,
+        "lyrics": false,
+        "list": false
+      }
     }
+  }
+}
+```
+
+## Resources
+
+### Songs
+
+Songs are the core required resource type.
+They contain the main metadata, file information, and links to related albums,
+artists, and optionally lyrics.
+
+More detail:
+
+- [`Songs`](/openmusic/songs/get-a-song)
+
+### Albums
+
+Albums group songs into a release.
+They usually expose shared metadata such as name, artwork, UPC, genres, release
+date, and relationships to tracks and artists.
+
+- [`Albums`](/openmusic/albums)
+
+### Artists
+
+Artists represent performers or creators.
+They expose artist metadata and connect outward to songs and albums.
+
+- [`Artists`](/openmusic/artists)
+
+### Playlists
+
+Playlists are curated track collections.
+They behave like named lists of songs with artwork, curator information, and
+track relationships.
+
+- [`Playlists`](/openmusic/playlists)
+
+### Stations
+
+Stations are dynamic playlists generated from a seed.
+In the current spec, a station can be based on an artist, a genre, or popular
+tracks.
+
+Unlike a normal playlist, the station is defined by how it is generated rather
+than by a fixed curated track list.
+
+- [`Stations`](/openmusic/stations)
+
+## Response Envelopes
+
+The common wrappers used throughout the spec are:
+
+- single resource response
+- list resource response
+- paginated resource response
+- error response
+
+See [`Responses`](/openmusic/responses) for the shared envelope types.
+
+## Minimal Example
+
+```json lineNumbers
+{
+  "data": {
+    "id": "song_123",
+    "type": "songs",
+    "attributes": {
+      "name": "Example Song",
+      "album_name": "Example Album",
+      "artist_name": "Example Artist",
+      "isrc": "USRC17607839",
+      "artwork_url": "https://example.com/artwork.jpg",
+      "track_number": 1,
+      "disc_number": 1,
+      "genres": ["pop"],
+      "release_date": "2024-01-01"
+    },
+    "meta": {
+      "omm_id": null
+    },
+    "instance": {
+      "duration_in_ms": 180000,
+      "files": [
+        {
+          "download_url": "https://example.com/song.mp3",
+          "lossless": false,
+          "mime_type": "audio/mpeg",
+          "codec": "mp3",
+          "bitrate": 320000,
+          "stream_url": null
+        }
+      ],
+      "has_lyrics": false
+    },
+    "relationships": {}
   }
 }
 ```
