@@ -22,8 +22,8 @@ The OpenMusic API Spec is the backbone of Vleer's architecture. It defines the s
 - Mix and match multiple sources simultaneously
 - Build custom implementations for their specific needs
 
-#### OpenMetadata API
-The OpenMetadata API provides centralized metadata management for music across all implementations. This allows Vleer to maintain consistent album artwork, artist information, and song details regardless of where the audio comes from.
+#### OpenMusicMetadata API
+The OpenMusicMetadata API provides centralized metadata management for music across all implementations. This allows Vleer to maintain consistent album artwork, artist information, and song details regardless of where the audio comes from.
 
 ### Implementation Layer
 Implementations are services that follow the OpenMusic API Spec. They handle the actual music delivery and can connect to various sources:
@@ -38,7 +38,7 @@ Implementations are services that follow the OpenMusic API Spec. They handle the
 1. **User Action** - User interacts with Vleer (search, play, browse)
 2. **API Request** - Vleer sends a request to the configured OpenMusic implementation
 3. **Implementation Processing** - The implementation fetches data from its source(s)
-4. **Metadata Enrichment** - OpenMetadata API provides unified metadata if available
+4. **Metadata Enrichment** - OpenMusicMetadata API provides unified metadata if available
 5. **Response** - Audio stream and metadata returned to Vleer
 6. **Playback** - Vleer handles audio processing, equalization, and playback
 

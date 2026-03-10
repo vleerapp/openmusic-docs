@@ -49,17 +49,20 @@ paths:
                         type: object
                         properties:
                           homepage:
-                            type: string
+                            type:
+                              - string
+                              - "null"
                             format: uri
-                            nullable: true
                           privacyStatement:
-                            type: string
+                            type:
+                              - string
+                              - "null"
                             format: uri
-                            nullable: true
                           donate:
-                            type: string
+                            type:
+                              - string
+                              - "null"
                             format: uri
-                            nullable: true
                   details:
                     type: object
                     properties:
@@ -165,7 +168,7 @@ paths:
                   value:
                     id: "dQw4w9WgXcQ"
                     name: "Never Gonna Give You Up"
-                    omid: "abc1234567890def"
+                    omm_id: "abc1234567890def"
                     artist: "Rick Astley"
                     album: "Whenever You Need Somebody"
                     date: 1987
@@ -560,43 +563,52 @@ components:
         name:
           type: string
           description: Title of the song
-        omid:
-          type: string
-          description: OpenMetadata ID (OMID) if matched
-          nullable: true
+        omm_id:
+          type:
+            - string
+            - "null"
+          description: OpenMusicMetadata ID (OMID) if matched
         artist:
-          type: string
+          type:
+            - string
+            - "null"
           description: Name of the artist
-          nullable: true
         album:
-          type: string
+          type:
+            - string
+            - "null"
           description: Name of the album
-          nullable: true
         genre:
-          type: string
+          type:
+            - string
+            - "null"
           description: Genre of the song
-          nullable: true
         date:
-          type: integer
+          type:
+            - integer
+            - "null"
           description: Release year
-          nullable: true
         track_number:
-          type: integer
+          type:
+            - integer
+            - "null"
           description: Track number within the album
-          nullable: true
         disc_number:
-          type: integer
+          type:
+            - integer
+            - "null"
           description: Disc number for multi-disc releases
-          nullable: true
         image:
-          type: string
+          type:
+            - string
+            - "null"
           format: uri
           description: URL to the cover art image
-          nullable: true
         lyrics:
-          type: string
+          type:
+            - string
+            - "null"
           description: Song lyrics
-          nullable: true
 
     Artist:
       type: object
@@ -611,10 +623,11 @@ components:
           type: string
           description: Name of the artist
         image:
-          type: string
+          type:
+            - string
+            - "null"
           format: uri
           description: URL to the artist image
-          nullable: true
 
     Album:
       type: object
@@ -629,22 +642,26 @@ components:
           type: string
           description: Title of the album
         artist:
-          type: string
+          type:
+            - string
+            - "null"
           description: Name of the artist
-          nullable: true
         date:
-          type: integer
+          type:
+            - integer
+            - "null"
           description: Release year
-          nullable: true
         track_count:
-          type: integer
+          type:
+            - integer
+            - "null"
           description: Number of tracks on the album
-          nullable: true
         image:
-          type: string
+          type:
+            - string
+            - "null"
           format: uri
           description: URL to the cover art image
-          nullable: true
 
     Error:
       type: object
@@ -655,6 +672,7 @@ components:
           type: string
           description: Error message
         code:
-          type: string
+          type:
+            - string
+            - "null"
           description: Error code
-          nullable: true

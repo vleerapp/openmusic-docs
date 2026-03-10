@@ -1,1 +1,1 @@
-This is the central docs repo for all things related to Vleer and the OpenMusic/OpenMetadata API's
+This is the central docs repo for all things related to Vleer and the OpenMusic/OpenMusicMetadata API's

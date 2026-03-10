@@ -1,5 +1,5 @@
 import { generateFiles } from "fumadocs-openapi";
-import { openmetadata, openmusic } from "./openapi";
+import { openmusicmetadata, openmusic } from "./openapi";
 
 await generateFiles({
   input: openmusic,
@@ -8,7 +8,7 @@ await generateFiles({
 });
 
 await generateFiles({
-  input: openmetadata,
-  output: "./content/openmetadata/endpoints",
+  input: openmusicmetadata,
+  output: "./content/openmusicmetadata/endpoints",
   includeDescription: true,
 });

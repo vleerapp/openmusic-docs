@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: OpenMetadata API
+  title: OpenMusicMetadata API
   description: A centralized metadata server for the OpenMusic ecosystem.
   version: 1.0.0
   license:
@@ -369,8 +369,9 @@ components:
           type: string
           description: Universal Product Code
         label:
-          type: string
-          nullable: true
+          type:
+            - string
+            - "null"
           description: Record label name
       required:
         - id
