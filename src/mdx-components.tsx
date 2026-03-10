@@ -2,7 +2,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import { createAPIPage } from "fumadocs-openapi/ui";
 import type { ComponentProps } from "react";
-import { openmetadata, openmusic } from "@/scripts/generate-docs";
+import { openmetadata, openmusic } from "@/scripts/openapi";
 
 const OpenMusicAPIPage = createAPIPage(openmusic);
 const OpenMetadataAPIPage = createAPIPage(openmetadata);

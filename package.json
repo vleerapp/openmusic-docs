@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "generate:docs": "bun run scripts/generate-docs.ts",
+    "predev": "npm run generate:docs",
+    "prebuild": "npm run generate:docs",
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "postinstall": "fumadocs-mdx",
+    "postinstall": "fumadocs-mdx && npm run generate:docs",
     "lint": "eslint"
   },
   "dependencies": {

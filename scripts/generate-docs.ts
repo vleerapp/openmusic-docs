@@ -1,21 +1,13 @@
 import { generateFiles } from "fumadocs-openapi";
-import { createOpenAPI } from "fumadocs-openapi/server";
+import { openmetadata, openmusic } from "./openapi";
 
-export const openmusic = createOpenAPI({
-  input: ["./public/openmusic.yml"],
-});
-
-export const openmetadata = createOpenAPI({
-  input: ["./public/openmetadata.yml"],
-});
-
-void generateFiles({
+await generateFiles({
   input: openmusic,
   output: "./content/openmusic/endpoints",
   includeDescription: true,
 });
 
-void generateFiles({
+await generateFiles({
   input: openmetadata,
   output: "./content/openmetadata/endpoints",
   includeDescription: true,
