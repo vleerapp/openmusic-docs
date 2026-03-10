@@ -3,6 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import { createAPIPage } from "fumadocs-openapi/ui";
 import type { ComponentProps } from "react";
 import { openmusicmetadata, openmusic } from "@/scripts/openapi";
+import { TypeTable } from "fumadocs-ui/components/type-table";
 
 const OpenMusicAPIPage = createAPIPage(openmusic);
 const OpenMusicMetadataAPIPage = createAPIPage(openmusicmetadata);
@@ -23,6 +24,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
     APIPage,
+    TypeTable,
     ...components,
   };
 }

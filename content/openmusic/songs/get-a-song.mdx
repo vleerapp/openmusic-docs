@@ -1,0 +1,34 @@
+---
+title: Get a Song
+description: Fetch a song by using its identifier.
+icon: pixelarticons:toke-square
+---
+
+## URL
+
+`GET` `/songs/{id}`
+
+## Path Params
+
+| Name | Description | Type     | Example |
+| ---- | ----------- | -------- | ------- |
+| `id` | Song id     | `string` | `1`     |
+
+## Query Params
+
+### General
+
+[`See definitions`](/openmusic/implementation#query-param-definitions)
+
+| Name      | Values                    | Required |
+| --------- | ------------------------- | -------- |
+| `view`    | `minimal`                 | `false`  |
+| `include` | `albums, artists, lyrics` | `false`  |
+
+## Responses
+
+| Status                      | Content Type     | Response                                                              |
+| --------------------------- | ---------------- | --------------------------------------------------------------------- |
+| `200 OK`                    | application/json | [`SingleSongResponse`](/openmusic/songs/responses#singlesongresponse) |
+| `404 NOT FOUND`             | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                 |
+| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                 |

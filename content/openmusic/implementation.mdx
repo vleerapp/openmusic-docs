@@ -1,7 +1,7 @@
 ---
 title: Implementation
 description: How to implement the OpenMusic API Spec
-icon: pixelarticons:power
+icon: pixelarticons:code
 ---
 
 import { GithubInfo } from "fumadocs-ui/components/github-info";
@@ -12,54 +12,103 @@ We have implemented the Spec as a refernce but also production ready local files
 
 This will always be our official refernce implementation and is what helps us develop the OpenMusic API Spec.
 
-## Get Started
+# Get Started
 
 To get started on implementing your own server take a look at what capabilities are and why you should implement as much of them as possible.
 
-## Capabilities
+# Capabilities
 
-Capabilities are a way for a server to communicate to the client what information it provides. As you can see here the 4 required ones are info, search, song and stream. All the others are optional but have to be implemented on the client.
+Capabilities are a way for a server to communicate to the client what it can and can not do.
+Some may be required to provide basic functionallity while others stay optional for servers to implement.
+All the others are optional but should be implemented by the client to ensure compatibility.
 
 <Callout title="Info" type="info">
-  Each capability has its own respecting API endpoint.
+  Each capability has its own respecting API endpoints.
 </Callout>
 
-| Feature                                     | Type     | Description                                                                                                         |
-| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| [`info`](/openmusic/endpoints/getInfo)       | Required | Info about the server                                                                                               |
-| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs by string                                                                                              |
-| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch metadata for song by id                                                                                       |
-| [`stream`](/openmusic/endpoints/streamSong)  | Required | Stream song in xxx format                                                                                           |
-| `filter`                                    | Optional | Advanced filtering for search (like release date, genre etc.)                                                       |
-| `artists`                                   | Optional | Search and get artists                                                                                              |
-| `albums`                                    | Optional | Search and get albums                                                                                               |
-| `playlists`                                 | Optional | Search and get playlists                                                                                            |
-| `lyrics`                                    | Optional | Lyrics                                                                                                              |
-| `popular`                                   | Optional | Get similar songs from entities with basic filters like genre                                                       |
-| `similar`                                   | Optional | Get similar songs from entities                                                                                     |
-| `omm`                                       | Optional | OpenMusicMetadata compatibility                                                                                     |
-| `radio`                                     | Optional | Radio stream                                                                                                        |
-| `random`                                    | Optional | Get completely unbiased random song (maybe)                                                                         |
-| `authentication`                            | Optional | Authenticate with a token for private, premium or protected instances                                               |
-| `list`                                      | Optional | List all available songs (can also be sorted in folders)                                                            |
-| `upload`                                    | Optional | Upload new songs (only allow on private instances with authentication if you don't exactly know what you are doing) |
+| Feature                                      | Type     | Description                             |
+| -------------------------------------------- | -------- | --------------------------------------- |
+| [`info`](/openmusic/endpoints/getInfo)       | Required | Info about the server                   |
+| [`search`](/openmusic/endpoints/searchSongs) | Required | Search songs by string                  |
+| [`song`](/openmusic/endpoints/getSong)       | Required | Fetch metadata for song by id           |
+| `download`                                   | Required | Download song                           |
+| `stream`                                     | Optional | Stream song                             |
+| `artists`                                    | Optional | Search and get artists                  |
+| `albums`                                     | Optional | Search and get albums                   |
+| `playlists`                                  | Optional | Search and get playlists                |
+| `stations`                                   | Optional | Search and get stations                 |
+| `sort`                                       | Optional | Sort by dateReleased, dateAdded or name |
+| `lyrics`                                     | Optional | Lyrics                                  |
+| `list`                                       | Optional | Paginate all available types            |
 
-## Endpoints
+# Endpoints
 
 This is the list of the current to be implemented endpoints. This is subject to change at any point.
 
-```yml lineNumbers
+```yml
 /api:
-  /:
-  /song/:id:
-  /song/:id/stream:
-  /song/:id/art:
+  /: # info
   /songs:
-  /songs/search:
-  /songs/random:
+    /{id}:
+      /rel:
+        /albums:
+        /artists:
+        /lyrics:
+  /albums:
+    /{id}:
+      /rel:
+        /tracks:
+        /artists:
+  /artists:
+    /{id}:
+      /rel:
+        /albums:
+        /songs: # sortable
+  /playlists:
+    /{id}:
+      /rel:
+        /tracks:
+  /stations:
+    /artist:
+      /{id}:
+        /rel:
+          /tracks:
+    /genre:
+      /{genre}:
+        /rel:
+          /tracks:
+    /popular:
+      /rel:
+        /tracks:
+  /list:
+    /songs: # sortable
+    /albums: # sortable
+    /artists: # sortable
+    /playlists: # sortable
+  /search:
+    /songs: # sortable
+    /albums: # sortable
+    /artists: # sortable
+    /playlists: # sortable
 ```
 
-### Info
+## General
+
+### Query Param Definitions
+
+| Name            | Description                                   | Type                                        | Example                  |
+| --------------- | --------------------------------------------- | ------------------------------------------- | ------------------------ |
+| `view`          | Strip attributes and relationships            | `"minimal"`                                 | `view=minimal`           |
+| `include`       | Include relationships                         | `string[]`                                  | `include=artists,albums` |
+| `limit`         | Limit response items                          | `number`                                    | `limit=10`               |
+| `offset`        | The offset for paginated responses            | `number`                                    | `offset=10`              |
+| `sort`          | Sort by. Add a `-` before to sort descending. | `"-?dateReleased"\|"-?dateAdded"\|"-?name"` | `sort=-dateReleased`     |
+| `filter[scope]` | Filter for specific scopes                    | `string`                                    | `filter[genres]=pop`     |
+
+Query Params can be scoped.
+If for example a `song` is fetched with `include=albums` the `albums` can be requested with the minimal view by adding `view[albums]=minimal`
+
+## Info
 
 The return should be branding information as well as the capabilites the server has.
 
@@ -68,44 +117,69 @@ The return should be branding information as well as the capabilites the server 
   "branding": {
     "name": "My Music Service",
     "email": "contact@example.com",
-    "short": "MMS",
+    "short_name": "MMS",
     "logo": "https://example.com/logo.png",
     "theme": "#0066cc",
-    "links": {
-      "homepage": "https://example.com",
-      "privacyStatement": "https://example.com/privacy",
-      "donate": null
-    }
+    "homepage": "https://example.com"
   },
-  "details": {
-    "version": "1.0.0",
+  "openmusic": {
+    "version": "1.0.0", // OpenMusic specifications version
     "capabilities": {
+      // Required
+      "info": true,
       "search": true,
       "songs": true,
-      "streaming": true,
-      "filters": false,
+      "download": true,
+
+      // Optional
+      "stream": false,
       "artists": true,
       "albums": false,
       "playlists": false,
+      "stations": false,
+      "sort": false,
       "lyrics": false,
-      "popular": false,
-      "similar": false,
-      "open_music_metadata": false,
-      "radio": false,
-      "random": false,
-      "list": false,
-      "upload": false,
-      "favorite": false,
-      "rate": false,
-      "edit": false
+      "list": false
     }
   }
 }
 ```
 
-### Song
+## Song
 
-The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
+```yml
+/songs:
+  /{id}:
+    /rel:
+      /albums:
+      /artists:
+      /lyrics:
+```
+
+### Get a Song
+
+URL
+
+`GET /songs/{id}`
+
+Path Params:
+
+| Name | Description | Type     | Example |
+| ---- | ----------- | -------- | ------- |
+| `id` | Song id     | `string` | `1`     |
+
+Query Params:
+
+| Name      | Description                             | Type              | Example                          |
+| --------- | --------------------------------------- | ----------------- | -------------------------------- |
+| `ids`     | Get by ids                              | `string[]`        | `ids=1,2`                        |
+| `isrc`    | Get by isrc ids                         | `string[]`        | `isrc=JPU902504960,JPU902504961` |
+| `view`    | [`Read more`](#query-param-definitions) |                   |                                  |
+| `include` | [`Read more`](#query-param-definitions) | `albums, artists` |                                  |
+
+Example Request:
+
+
 
 ```json lineNumbers
 {
@@ -117,7 +191,7 @@ The input should be a song id which has been returned by either [listSongs](#son
 }
 ```
 
-### Stream
+## Stream
 
 The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
 
@@ -129,7 +203,7 @@ Content-Length: 6272474
 Content-Type: audio/mpeg
 ```
 
-### Cover
+## Cover
 
 The input should be a song id which has been returned by either [listSongs](#songs) or in from the [search](#search) results.
 
@@ -140,7 +214,7 @@ Content-Type: image/jpeg
 Content-Length: 73618
 ```
 
-### Songs
+## Songs
 
 The return should be a list of all songs the server serves this may optionally have multiple pages.
 
@@ -163,7 +237,7 @@ The return should be a list of all songs the server serves this may optionally h
 ]
 ```
 
-### Search
+## Search
 
 The input should be a string.
 

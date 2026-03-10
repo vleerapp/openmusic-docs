@@ -6,8 +6,13 @@
   "pages": [
     "---Introduction---",
     "index",
-    "---API Spec---",
+    "---API Specifications---",
     "implementation",
-    "endpoints"
+    "endpoints",
+    "---Requests---",
+    "songs",
+    "---Objects---",
+    "resources",
+    "responses"
   ]
 }

@@ -1,0 +1,47 @@
+---
+title: Responses
+description: Common Body Responses.
+icon: pixelarticons:menu-square
+---
+
+## SingleResourceResponse
+
+```ts
+interface SingleResourceResponse<T> {
+  data: T;
+}
+```
+
+## ListResourceResponse
+
+```ts
+interface ListResourceResponse<T> {
+  data: T[];
+}
+```
+
+## PaginatedResourceResponse
+
+```ts
+interface PaginatedResourceResponse<T> {
+  data: T[];
+  page: {
+    limit: number;
+    offset: number;
+    has_next_page: boolean;
+  };
+}
+```
+
+## ErrorResponse
+
+```ts
+interface ErrorResponse {
+  error: {
+    code: string;
+    title: string;
+    description: string;
+    trace_id: string | null;
+  };
+}
+```

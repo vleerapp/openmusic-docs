@@ -1,0 +1,33 @@
+---
+title: Get Multiple Songs by Id
+description: Fetch one or more songs by using their identifiers.
+icon: pixelarticons:toke-square
+---
+
+## URL
+
+`GET` `/songs`
+
+## Query Params
+
+### General
+
+[`See definitions`](/openmusic/implementation#query-param-definitions)
+
+| Name      | Values                    | Required |
+| --------- | ------------------------- | -------- |
+| `view`    | `minimal`                 | `false`  |
+| `include` | `albums, artists, lyrics` | `false`  |
+
+### Extra
+
+| Name  | Description | Type       | Example     |
+| ----- | ----------- | ---------- | ----------- |
+| `ids` | Song ids    | `string[]` | `ids=1,2,3` |
+
+## Responses
+
+| Status                      | Content Type     | Response                                                          |
+| --------------------------- | ---------------- | ----------------------------------------------------------------- |
+| `200 OK`                    | application/json | [`ListSongResponse`](/openmusic/songs/responses#listsongresponse) |
+| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)             |

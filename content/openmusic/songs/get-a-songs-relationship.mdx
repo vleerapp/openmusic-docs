@@ -1,0 +1,36 @@
+---
+title: Get a Song's Relationship by Name
+description: Fetch a song's relationship by using its identifier.
+icon: pixelarticons:toke-square
+---
+
+## URL
+
+`GET` `/songs/{id}/{relationship}`
+
+## Path Params
+
+| Name           | Description              | Type                                | Example  |
+| -------------- | ------------------------ | ----------------------------------- | -------- |
+| `id`           | Song id                  | `string`                            | `1`      |
+| `relationship` | Name of the Relationship | `"albums" \| "artists" \| "lyrics"` | `albums` |
+
+## Query Params
+
+### General
+
+[`See definitions`](/openmusic/implementation#query-param-definitions)
+
+| Name      | Values                                       | Required |
+| --------- | -------------------------------------------- | -------- |
+| `view`    | `minimal`                                    | `false`  |
+| `include` | relationships from `relationship` path param | `false`  |
+| `limit`   |                                              | `false`  |
+| `offset`  |                                              | `false`  |
+
+## Responses
+
+| Status                      | Content Type     | Response                                                                                                                                                                                                                 |
+| --------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `200 OK`                    | application/json | [`ListAlbumResponse`](/openmusic/songs/responses#singlesongresponse) \| [`ListArtistResponse`](/openmusic/songs/responses#singlesongresponse) \| [`SingleLyricsResponse`](/openmusic/songs/responses#singlesongresponse) |
+| `500 Internal Server Error` | application/json | [`ErrorResponse`](/openmusic/responses#errorresponse)                                                                                                                                                                    |

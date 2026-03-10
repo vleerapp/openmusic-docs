@@ -1,0 +1,69 @@
+---
+title: Song Models
+description: A resource object that represents a song.
+icon: pixelarticons:menu-square
+---
+
+## BaseSong
+
+```ts
+interface BaseSong extends ResourceBase {
+  type: "songs";
+  meta: {
+    omm_id: string | null;
+  };
+  instance: {
+    duration_in_ms: number;
+    files: FileSchema;
+    has_lyrics: boolean;
+  };
+}
+```
+
+- [`ResourceBase`](/openmusic/resources#resourcebase)
+- [`FileSchema`](#fileschema)
+
+## Song
+
+```ts
+interface Song extends BaseSong {
+  attributes: SongAttributes,
+  relationships: {
+    albums?: (Album | BaseAlbum)[];
+    artists?: (Artist | BaseArtist)[];
+  };
+}
+```
+
+- [`SongAttributes`](#songattributes)
+- [`Album`](/openmusic/albums/models#album)
+- [`BaseAlbum`](/openmusic/albums/models#basealbum)
+
+## FileSchema
+
+```ts
+interface FileSchema {
+  mime_type: string;
+  codec: string | null;
+  lossless: boolean;
+  bitrate: number | null;
+  download_url: string;
+  stream_url: string | null;
+}
+```
+
+## SongAttributes
+
+```ts
+interface SongAttributes {
+  name: string;
+  album_name: string;
+  artist_name: string;
+  isrc: string | null;
+  artwork_url: string | null;
+  track_number: number | null;
+  disc_number: number | null;
+  genres: string[];
+  release_date: Date | null;
+}
+```
