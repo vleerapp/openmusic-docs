@@ -9,31 +9,25 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "postinstall": "fumadocs-mdx && npm run generate:docs",
-    "lint": "eslint"
+    "postinstall": "fumadocs-mdx && npm run generate:docs"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
     "@orama/orama": "^3.1.18",
-    "ajv": "^8.17.1",
-    "fumadocs-core": "16.5.0",
-    "fumadocs-mdx": "14.2.6",
-    "fumadocs-openapi": "^10.3.1",
-    "fumadocs-ui": "16.5.0",
+    "fumadocs-core": "16.6.15",
+    "fumadocs-mdx": "14.2.9",
+    "fumadocs-openapi": "10.3.13",
+    "fumadocs-ui": "16.6.15",
     "next": "16.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "baseline-browser-mapping": "^2.10.0",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "16.1.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
