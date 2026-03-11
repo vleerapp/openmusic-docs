@@ -11,7 +11,7 @@ Minimal playlist resource shape used for `view=minimal` and nested relationships
 ```ts
 interface BasePlaylist extends ResourceBase {
   type: "playlists";
-  relationships: {
+  relationships?: {
     tracks?: (Song | BaseSong)[];
   };
 }

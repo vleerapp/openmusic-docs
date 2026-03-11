@@ -1246,7 +1246,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ResourceBase"
         - type: object
-          required: [type, meta, instance, relationships]
+          required: [type, meta, instance]
           properties:
             type:
               type: string
@@ -1271,7 +1271,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ResourceBase"
         - type: object
-          required: [type, meta, relationships]
+          required: [type, meta]
           properties:
             type:
               type: string
@@ -1294,7 +1294,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ResourceBase"
         - type: object
-          required: [type, meta, relationships]
+          required: [type, meta]
           properties:
             type:
               type: string
@@ -1317,7 +1317,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ResourceBase"
         - type: object
-          required: [type, relationships]
+          required: [type]
           properties:
             type:
               type: string
@@ -1338,7 +1338,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ResourceBase"
         - type: object
-          required: [type, relationships]
+          required: [type]
           properties:
             type:
               type: string

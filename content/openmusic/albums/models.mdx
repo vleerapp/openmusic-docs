@@ -14,7 +14,7 @@ interface BaseAlbum extends ResourceBase {
   meta: {
     omm_id: string | null;
   };
-  relationships: {
+  relationships?: {
     tracks?: (Song | BaseSong)[];
     artists?: (Artist | BaseArtist)[];
   };

@@ -48,6 +48,11 @@ Most responses follow the same structure:
 
 This lets clients work with different resource types in a predictable way.
 
+`relationships` is optional.
+If it is omitted, no relationships were included in that resource payload.
+If a relationship key is present with an empty array, it means the relationship
+was included and no related resources were found.
+
 ## Capabilities
 
 Clients should not assume every endpoint family is available.

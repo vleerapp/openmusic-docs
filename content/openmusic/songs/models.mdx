@@ -19,7 +19,7 @@ interface BaseSong extends ResourceBase {
     files: File[];
     has_lyrics: boolean;
   };
-  relationships: {
+  relationships?: {
     albums?: (Album | BaseAlbum)[];
     artists?: (Artist | BaseArtist)[];
     lyrics?: Lyrics;

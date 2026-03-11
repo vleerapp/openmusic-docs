@@ -11,7 +11,7 @@ Minimal station resource shape used for `view=minimal` and nested relationships.
 ```ts
 interface BaseStation extends ResourceBase {
   type: "stations";
-  relationships: {
+  relationships?: {
     tracks?: (Song | BaseSong)[];
   };
 }
