@@ -65,7 +65,7 @@ capability flags.
 | [`albums`](#album)       | Optional | Search and fetch albums                 |
 | [`playlists`](#playlist) | Optional | Search and fetch playlists              |
 | [`stations`](#station)   | Optional | Expose generated stations               |
-| `sort`                   | Optional | Support `sort` query params             |
+| `sort`                   | Optional | Support `sort` on listing endpoints     |
 | `lyrics`                 | Optional | Expose lyrics data                      |
 
 When relationship capabilities are unavailable (for example `artists` or
@@ -81,23 +81,23 @@ Current endpoint families in the spec:
 ```yml
 /api:
   /: # info
-  /songs:
+  /songs: # sortable
     /{id}:
       /rel:
         /albums:
         /artists:
         /lyrics:
-  /albums:
+  /albums: # sortable
     /{id}:
       /rel:
         /tracks:
         /artists:
-  /artists:
+  /artists: # sortable
     /{id}:
       /rel:
         /albums: # sortable
         /songs: # sortable
-  /playlists:
+  /playlists: # sortable
     /{id}:
       /rel:
         /tracks:
@@ -114,11 +114,11 @@ Current endpoint families in the spec:
       /rel:
         /tracks:
   /search:
-    /: # bucketed search
-    /songs: # sortable
-    /albums: # sortable
-    /artists: # sortable
-    /playlists: # sortable
+    /:
+    /songs:
+    /albums:
+    /artists:
+    /playlists:
 ```
 
 ## Query Model
@@ -137,6 +137,13 @@ Many endpoints share the same query concepts.
 | `filter[genres]` | Filter by genre                  | `string`                                      | `filter[genres]=pop,rock`          |
 
 `omm_ids` is only supported on lookup endpoints (`/songs`, `/albums`, `/artists`).
+`sort` is supported on base resource listing requests and on these relationship endpoints:
+
+- `/artists/{id}/rel/albums`
+- `/artists/{id}/rel/songs`
+- `/stations/artist/{id}/rel/tracks`
+- `/stations/genre/{genre}/rel/tracks`
+- `/stations/popular/rel/tracks`
 
 ## Language
 
