@@ -12,18 +12,3 @@ type InfoResponse = SingleResourceResponse<Info>;
 
 - [`SingleResourceResponse`](/openmusic/responses#singleresourceresponse)
 - [`Info`](/openmusic/info/models#info)
-
-## ErrorResponse
-
-```ts
-type ErrorResponse = {
-  error: {
-    code: number;
-    title: string;
-    message: string;
-    trace_id: string | null;
-  };
-};
-```
-
-- [`ErrorResponse`](/openmusic/responses#errorresponse)

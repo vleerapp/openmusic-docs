@@ -10,11 +10,15 @@ icon: pixelarticons:menu-square
 type ListSongsResponse = SongPaginatedResponse;
 ```
 
+- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
+
 ## ListAlbumsResponse
 
 ```ts
 type ListAlbumsResponse = AlbumPaginatedResponse;
 ```
+
+- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
 
 ## ListArtistsResponse
 
@@ -22,27 +26,12 @@ type ListAlbumsResponse = AlbumPaginatedResponse;
 type ListArtistsResponse = ArtistPaginatedResponse;
 ```
 
+- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
+
 ## ListPlaylistsResponse
 
 ```ts
 type ListPlaylistsResponse = PlaylistPaginatedResponse;
 ```
 
-## ErrorResponse
-
-```ts
-type ErrorResponse = {
-  error: {
-    code: number;
-    title: string;
-    message: string;
-    trace_id: string | null;
-  };
-};
-```
-
-- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
-- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
-- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
 - [`PlaylistPaginatedResponse`](/openmusic/playlists/responses#playlistpaginatedresponse)
-- [`ErrorResponse`](/openmusic/responses#errorresponse)

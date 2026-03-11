@@ -30,11 +30,24 @@ type SearchTopResponse = {
 };
 ```
 
+- [`Song`](/openmusic/songs/models#song)
+- [`BaseSong`](/openmusic/songs/models#basesong)
+- [`Album`](/openmusic/albums/models#album)
+- [`BaseAlbum`](/openmusic/albums/models#basealbum)
+- [`Artist`](/openmusic/artists/models#artist)
+- [`BaseArtist`](/openmusic/artists/models#baseartist)
+- [`Playlist`](/openmusic/playlists/models#playlist)
+- [`BasePlaylist`](/openmusic/playlists/models#baseplaylist)
+- [`Station`](/openmusic/stations/models#station)
+- [`BaseStation`](/openmusic/stations/models#basestation)
+
 ## SearchSongsResponse
 
 ```ts
 type SearchSongsResponse = SongPaginatedResponse;
 ```
+
+- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
 
 ## SearchAlbumsResponse
 
@@ -42,11 +55,15 @@ type SearchSongsResponse = SongPaginatedResponse;
 type SearchAlbumsResponse = AlbumPaginatedResponse;
 ```
 
+- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
+
 ## SearchArtistsResponse
 
 ```ts
 type SearchArtistsResponse = ArtistPaginatedResponse;
 ```
+
+- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
 
 ## SearchPlaylistsResponse
 
@@ -54,21 +71,4 @@ type SearchArtistsResponse = ArtistPaginatedResponse;
 type SearchPlaylistsResponse = PlaylistPaginatedResponse;
 ```
 
-## ErrorResponse
-
-```ts
-type ErrorResponse = {
-  error: {
-    code: number;
-    title: string;
-    message: string;
-    trace_id: string | null;
-  };
-};
-```
-
-- [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
-- [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
-- [`ArtistPaginatedResponse`](/openmusic/artists/responses#artistpaginatedresponse)
 - [`PlaylistPaginatedResponse`](/openmusic/playlists/responses#playlistpaginatedresponse)
-- [`ErrorResponse`](/openmusic/responses#errorresponse)
