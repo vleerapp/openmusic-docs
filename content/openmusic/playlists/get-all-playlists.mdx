@@ -1,14 +1,17 @@
 ---
-title: List Playlists
-description: Browse playlists with pagination, sorting, and genre filtering.
+title: Get All Playlists
+description: Browse playlists from the playlists endpoint.
 icon: pixelarticons:toke-square
 ---
 
 ## Endpoint
 
-`GET` `/list/playlists`
+`GET` `/playlists`
 
-Endpoint reference: [`listPlaylists`](/openmusic/endpoints/listPlaylists)
+Endpoint reference: [`getPlaylists`](/openmusic/endpoints/getPlaylists)
+
+Use this form when you want to browse playlists instead of looking them up by
+`ids`.
 
 ## Query Parameters
 
@@ -16,7 +19,7 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Name | Values | Required |
 | ---- | ------ | -------- |
-| `lang` | locale string | `false` |
+| `lang` | locale string like `en-US` | `false` |
 | `include` | `tracks` | `false` |
 | `view` | `minimal` | `false` |
 | `view[playlists]` | `minimal` | `false` |
@@ -31,5 +34,5 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`ListPlaylistsResponse`](/openmusic/list/responses#listplaylistsresponse) |
+| `200 OK` | `application/json` | [`PlaylistListResponse`](/openmusic/playlists/responses#playlistlistresponse) |
 | `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

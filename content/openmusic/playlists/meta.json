@@ -3,6 +3,7 @@
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
     "get-a-playlist",
+    "get-all-playlists",
     "get-playlist-relationships",
     "get-multiple-playlists-by-id",
     "---Objects---",

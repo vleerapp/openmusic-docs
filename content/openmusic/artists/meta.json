@@ -3,6 +3,7 @@
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
     "get-an-artist",
+    "get-all-artists",
     "get-artist-relationships",
     "get-multiple-artists-by-id",
     "get-multiple-artists-by-omm-id",

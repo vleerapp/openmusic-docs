@@ -1,14 +1,17 @@
 ---
-title: List Songs
-description: Browse songs with pagination, sorting, and genre filtering.
+title: Get All Songs
+description: Browse songs from the songs endpoint.
 icon: pixelarticons:toke-square
 ---
 
 ## Endpoint
 
-`GET` `/list/songs`
+`GET` `/songs`
 
-Endpoint reference: [`listSongs`](/openmusic/endpoints/listSongs)
+Endpoint reference: [`getSongs`](/openmusic/endpoints/getSongs)
+
+Use this form when you want to browse songs instead of looking them up by
+`ids`, `omm_ids`, or `isrc`.
 
 ## Query Parameters
 
@@ -16,7 +19,7 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Name | Values | Required |
 | ---- | ------ | -------- |
-| `lang` | locale string | `false` |
+| `lang` | locale string like `en-US` | `false` |
 | `include` | `albums`, `artists`, `lyrics` | `false` |
 | `view` | `minimal` | `false` |
 | `view[songs]` | `minimal` | `false` |
@@ -33,5 +36,5 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`ListSongsResponse`](/openmusic/list/responses#listsongsresponse) |
+| `200 OK` | `application/json` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
 | `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

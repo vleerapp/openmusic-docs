@@ -19,7 +19,6 @@ tags:
   - name: Artists
   - name: Playlists
   - name: Stations
-  - name: List
   - name: Search
 
 paths:
@@ -43,7 +42,7 @@ paths:
   /songs:
     get:
       tags: [Songs]
-      summary: Get songs by lookup
+      summary: Get or list songs
       operationId: getSongs
       parameters:
         - $ref: "#/components/parameters/Lang"
@@ -55,11 +54,15 @@ paths:
         - $ref: "#/components/parameters/ViewSongs"
         - $ref: "#/components/parameters/ViewAlbums"
         - $ref: "#/components/parameters/ViewArtists"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortSongs"
+        - $ref: "#/components/parameters/FilterGenres"
         - $ref: "#/components/parameters/LimitAlbums"
         - $ref: "#/components/parameters/LimitArtists"
       responses:
         "200":
-          description: Matching songs
+          description: Matching songs or song list
           content:
             application/json:
               schema:
@@ -159,7 +162,7 @@ paths:
   /albums:
     get:
       tags: [Albums]
-      summary: Get albums by lookup
+      summary: Get or list albums
       operationId: getAlbums
       parameters:
         - $ref: "#/components/parameters/Lang"
@@ -171,11 +174,15 @@ paths:
         - $ref: "#/components/parameters/ViewAlbums"
         - $ref: "#/components/parameters/ViewArtists"
         - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortAlbums"
+        - $ref: "#/components/parameters/FilterGenres"
         - $ref: "#/components/parameters/LimitArtists"
         - $ref: "#/components/parameters/LimitTracks"
       responses:
         "200":
-          description: Matching albums
+          description: Matching albums or album list
           content:
             application/json:
               schema:
@@ -259,7 +266,7 @@ paths:
   /artists:
     get:
       tags: [Artists]
-      summary: Get artists by lookup
+      summary: Get or list artists
       operationId: getArtists
       parameters:
         - $ref: "#/components/parameters/Lang"
@@ -270,11 +277,15 @@ paths:
         - $ref: "#/components/parameters/ViewArtists"
         - $ref: "#/components/parameters/ViewAlbums"
         - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortArtists"
+        - $ref: "#/components/parameters/FilterGenres"
         - $ref: "#/components/parameters/LimitAlbums"
         - $ref: "#/components/parameters/LimitSongs"
       responses:
         "200":
-          description: Matching artists
+          description: Matching artists or artist list
           content:
             application/json:
               schema:
@@ -364,7 +375,7 @@ paths:
   /playlists:
     get:
       tags: [Playlists]
-      summary: Get playlists by lookup
+      summary: Get or list playlists
       operationId: getPlaylists
       parameters:
         - $ref: "#/components/parameters/Lang"
@@ -373,10 +384,14 @@ paths:
         - $ref: "#/components/parameters/View"
         - $ref: "#/components/parameters/ViewPlaylists"
         - $ref: "#/components/parameters/ViewSongs"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/SortPlaylists"
+        - $ref: "#/components/parameters/FilterGenres"
         - $ref: "#/components/parameters/LimitTracks"
       responses:
         "200":
-          description: Matching playlists
+          description: Matching playlists or playlist list
           content:
             application/json:
               schema:
@@ -574,116 +589,6 @@ paths:
         "404":
           $ref: "#/components/responses/Error"
 
-  /list/songs:
-    get:
-      tags: [List]
-      summary: List songs
-      operationId: listSongs
-      parameters:
-        - $ref: "#/components/parameters/Lang"
-        - $ref: "#/components/parameters/IncludeAll"
-        - $ref: "#/components/parameters/View"
-        - $ref: "#/components/parameters/ViewSongs"
-        - $ref: "#/components/parameters/ViewAlbums"
-        - $ref: "#/components/parameters/ViewArtists"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/Offset"
-        - $ref: "#/components/parameters/SortSongs"
-        - $ref: "#/components/parameters/FilterGenres"
-        - $ref: "#/components/parameters/LimitAlbums"
-        - $ref: "#/components/parameters/LimitArtists"
-      responses:
-        "200":
-          description: Song list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SongListResponse"
-        "400":
-          $ref: "#/components/responses/Error"
-
-  /list/albums:
-    get:
-      tags: [List]
-      summary: List albums
-      operationId: listAlbums
-      parameters:
-        - $ref: "#/components/parameters/Lang"
-        - $ref: "#/components/parameters/IncludeAll"
-        - $ref: "#/components/parameters/View"
-        - $ref: "#/components/parameters/ViewAlbums"
-        - $ref: "#/components/parameters/ViewArtists"
-        - $ref: "#/components/parameters/ViewSongs"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/Offset"
-        - $ref: "#/components/parameters/SortAlbums"
-        - $ref: "#/components/parameters/FilterGenres"
-        - $ref: "#/components/parameters/LimitArtists"
-        - $ref: "#/components/parameters/LimitTracks"
-      responses:
-        "200":
-          description: Album list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AlbumListResponse"
-        "400":
-          $ref: "#/components/responses/Error"
-
-  /list/artists:
-    get:
-      tags: [List]
-      summary: List artists
-      operationId: listArtists
-      parameters:
-        - $ref: "#/components/parameters/Lang"
-        - $ref: "#/components/parameters/IncludeAll"
-        - $ref: "#/components/parameters/View"
-        - $ref: "#/components/parameters/ViewArtists"
-        - $ref: "#/components/parameters/ViewAlbums"
-        - $ref: "#/components/parameters/ViewSongs"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/Offset"
-        - $ref: "#/components/parameters/SortArtists"
-        - $ref: "#/components/parameters/FilterGenres"
-        - $ref: "#/components/parameters/LimitAlbums"
-        - $ref: "#/components/parameters/LimitSongs"
-      responses:
-        "200":
-          description: Artist list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ArtistListResponse"
-        "400":
-          $ref: "#/components/responses/Error"
-
-  /list/playlists:
-    get:
-      tags: [List]
-      summary: List playlists
-      operationId: listPlaylists
-      parameters:
-        - $ref: "#/components/parameters/Lang"
-        - $ref: "#/components/parameters/IncludeAll"
-        - $ref: "#/components/parameters/View"
-        - $ref: "#/components/parameters/ViewPlaylists"
-        - $ref: "#/components/parameters/ViewSongs"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/Offset"
-        - $ref: "#/components/parameters/SortPlaylists"
-        - $ref: "#/components/parameters/FilterGenres"
-        - $ref: "#/components/parameters/LimitTracks"
-      responses:
-        "200":
-          description: Playlist list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PlaylistListResponse"
-        "400":
-          $ref: "#/components/responses/Error"
-
   /search:
     get:
       tags: [Search]
@@ -840,7 +745,7 @@ components:
     Lang:
       name: lang
       in: query
-      description: Preferred language. Falls back to en-US if omitted or unavailable.
+      description: Preferred locale string such as en-US. Implementations may ignore localization, but en-US is the recommended default and fallback.
       schema:
         type: string
         default: en-US
@@ -1723,7 +1628,6 @@ components:
                 - stations
                 - sort
                 - lyrics
-                - list
               properties:
                 info:
                   type: boolean
@@ -1757,8 +1661,6 @@ components:
                   type: boolean
                   description: Sort by date_released, date_added or name
                 lyrics:
-                  type: boolean
-                list:
                   type: boolean
 
     SingleResourceResponse_Info:

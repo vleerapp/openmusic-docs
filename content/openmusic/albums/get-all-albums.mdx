@@ -1,14 +1,17 @@
 ---
-title: List Albums
-description: Browse albums with pagination, sorting, and genre filtering.
+title: Get All Albums
+description: Browse albums from the albums endpoint.
 icon: pixelarticons:toke-square
 ---
 
 ## Endpoint
 
-`GET` `/list/albums`
+`GET` `/albums`
 
-Endpoint reference: [`listAlbums`](/openmusic/endpoints/listAlbums)
+Endpoint reference: [`getAlbums`](/openmusic/endpoints/getAlbums)
+
+Use this form when you want to browse albums instead of looking them up by
+`ids`, `omm_ids`, or `upc`.
 
 ## Query Parameters
 
@@ -16,7 +19,7 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Name | Values | Required |
 | ---- | ------ | -------- |
-| `lang` | locale string | `false` |
+| `lang` | locale string like `en-US` | `false` |
 | `include` | `artists`, `tracks` | `false` |
 | `view` | `minimal` | `false` |
 | `view[albums]` | `minimal` | `false` |
@@ -33,5 +36,5 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`ListAlbumsResponse`](/openmusic/list/responses#listalbumsresponse) |
+| `200 OK` | `application/json` | [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse) |
 | `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

@@ -1,14 +1,17 @@
 ---
-title: List Artists
-description: Browse artists with pagination, sorting, and genre filtering.
+title: Get All Artists
+description: Browse artists from the artists endpoint.
 icon: pixelarticons:toke-square
 ---
 
 ## Endpoint
 
-`GET` `/list/artists`
+`GET` `/artists`
 
-Endpoint reference: [`listArtists`](/openmusic/endpoints/listArtists)
+Endpoint reference: [`getArtists`](/openmusic/endpoints/getArtists)
+
+Use this form when you want to browse artists instead of looking them up by
+`ids` or `omm_ids`.
 
 ## Query Parameters
 
@@ -16,7 +19,7 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Name | Values | Required |
 | ---- | ------ | -------- |
-| `lang` | locale string | `false` |
+| `lang` | locale string like `en-US` | `false` |
 | `include` | `albums`, `songs` | `false` |
 | `view` | `minimal` | `false` |
 | `view[artists]` | `minimal` | `false` |
@@ -33,5 +36,5 @@ Scoped parameters like `view[...]` and `limit[...]` can shape included relations
 
 | Status | Content Type | Response |
 | ------ | ------------ | -------- |
-| `200 OK` | `application/json` | [`ListArtistsResponse`](/openmusic/list/responses#listartistsresponse) |
+| `200 OK` | `application/json` | [`ArtistListResponse`](/openmusic/artists/responses#artistlistresponse) |
 | `400 Bad Request` | `application/json` | [`ErrorResponse`](/openmusic/responses#errorresponse) |

@@ -67,7 +67,6 @@ capability flags.
 | [`stations`](#station)   | Optional | Expose generated stations               |
 | `sort`                   | Optional | Support `sort` query params             |
 | `lyrics`                 | Optional | Expose lyrics data                      |
-| `list`                   | Optional | Expose paginated catalog listings       |
 
 When relationship capabilities are unavailable (for example `artists` or
 `albums`), fallback display fields can be used in attributes:
@@ -114,11 +113,6 @@ Current endpoint families in the spec:
     /popular:
       /rel:
         /tracks:
-  /list:
-    /songs: # sortable
-    /albums: # sortable
-    /artists: # sortable
-    /playlists: # sortable
   /search:
     /: # bucketed search
     /songs: # sortable

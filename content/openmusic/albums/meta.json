@@ -3,6 +3,7 @@
   "icon": "pixelarticons:bulletlist-sharp",
   "pages": [
     "get-an-album",
+    "get-all-albums",
     "get-album-relationships",
     "get-multiple-albums-by-id",
     "get-multiple-albums-by-omm-id",
