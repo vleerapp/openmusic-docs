@@ -46,9 +46,9 @@ Standard error envelope returned by OpenMusic endpoints.
 ```ts
 interface ErrorResponse {
   error: {
-    code: string;
+    code: number;
     title: string;
-    description: string;
+    message: string;
     trace_id: string | null;
   };
 }

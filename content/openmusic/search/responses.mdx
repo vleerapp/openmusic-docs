@@ -9,7 +9,18 @@ icon: pixelarticons:menu-square
 ```ts
 type SearchTopResponse = {
   data: {
-    top?: (Song | BaseSong)[];
+    top?: (
+      | Song
+      | BaseSong
+      | Album
+      | BaseAlbum
+      | Artist
+      | BaseArtist
+      | Playlist
+      | BasePlaylist
+      | Station
+      | BaseStation
+    )[];
     songs?: (Song | BaseSong)[];
     albums?: (Album | BaseAlbum)[];
     artists?: (Artist | BaseArtist)[];
@@ -48,9 +59,9 @@ type SearchPlaylistsResponse = PlaylistPaginatedResponse;
 ```ts
 type ErrorResponse = {
   error: {
-    code: string;
+    code: number;
     title: string;
-    description: string;
+    message: string;
     trace_id: string | null;
   };
 };

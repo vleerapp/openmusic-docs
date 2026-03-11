@@ -18,9 +18,9 @@ type InfoResponse = SingleResourceResponse<Info>;
 ```ts
 type ErrorResponse = {
   error: {
-    code: string;
+    code: number;
     title: string;
-    description: string;
+    message: string;
     trace_id: string | null;
   };
 };

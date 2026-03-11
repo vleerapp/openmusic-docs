@@ -1817,7 +1817,7 @@ components:
         message:
           type: string
         trace_id:
-          type: [integer, "null"]
+          type: [string, "null"]
 
     ErrorResponse:
       type: object
