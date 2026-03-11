@@ -144,6 +144,17 @@ Many endpoints share the same query concepts.
 
 `omm_ids` is only supported on lookup endpoints (`/songs`, `/albums`, `/artists`).
 
+## Language
+
+`lang` should use a locale string such as `en-US`, `de-CH`, or `ja-JP`.
+
+OpenMusic implementations do not have to provide localized data at all.
+If an implementation does support localization, `en-US` is the recommended
+default locale.
+
+If `lang` is omitted or the requested locale is unavailable, the implementation
+should fall back to `en-US` when possible.
+
 Scoped parameters apply to included relationships.
 
 Examples:
