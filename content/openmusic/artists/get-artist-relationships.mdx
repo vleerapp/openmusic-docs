@@ -4,7 +4,7 @@ description: Fetch an artist's albums or songs.
 icon: pixelarticons:toke-square
 ---
 
-Artist relationships are the first place where pagination and sorting matter heavily.
+Artist relationships are the only ones where pagination and sorting is used.
 
 Endpoint references:
 
@@ -15,8 +15,8 @@ Endpoint references:
 
 | Relationship | Endpoint | Response |
 | ------------ | -------- | -------- |
-| Albums | `GET /artists/{id}/rel/albums` | [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse) |
-| Songs | `GET /artists/{id}/rel/songs` | [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse) |
+| Albums | `GET /artists/{id}/rel/albums` | [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse) |
+| Songs | `GET /artists/{id}/rel/songs` | [`SongListResponse`](/openmusic/songs/responses#songlistresponse) |
 
 ## Shared Parameters
 
@@ -26,6 +26,7 @@ Both relationship endpoints support:
 - `view`
 - `limit`
 - `offset`
+- `sort`
 
 ### Artist Albums
 
@@ -55,6 +56,6 @@ Extra controls:
 
 ## Responses
 
-- Albums: [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
-- Songs: [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
+- Albums: [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse)
+- Songs: [`SongListResponse`](/openmusic/songs/responses#songlistresponse)
 - Errors: [`ErrorResponse`](/openmusic/responses#errorresponse)

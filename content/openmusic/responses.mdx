@@ -16,22 +16,12 @@ interface SingleResourceResponse<T> {
 
 ## ListResourceResponse
 
-Wrapper used when an endpoint returns a non-paginated list in `data`.
+Wrapper used when an endpoint returns a list in `data`.
 
 ```ts
 interface ListResourceResponse<T> {
   data: T[];
-}
-```
-
-## PaginatedResourceResponse
-
-Wrapper used for paginated list endpoints, including paging metadata.
-
-```ts
-interface PaginatedResourceResponse<T> {
-  data: T[];
-  page: {
+  meta: {
     limit: number;
     offset: number;
     has_next_page: boolean;

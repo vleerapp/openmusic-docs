@@ -24,17 +24,7 @@ type ArtistListResponse = ListResourceResponse<Artist | BaseArtist>;
 - [`Artist`](/openmusic/artists/models#artist)
 - [`BaseArtist`](/openmusic/artists/models#baseartist)
 
-## ArtistPaginatedResponse
-
-```ts
-type ArtistPaginatedResponse = PaginatedResourceResponse<Artist | BaseArtist>;
-```
-
-- [`PaginatedResourceResponse`](/openmusic/responses#paginatedresourceresponse)
-- [`Artist`](/openmusic/artists/models#artist)
-- [`BaseArtist`](/openmusic/artists/models#baseartist)
-
 ## Related Responses
 
-- `/artists/{id}/rel/albums` -> [`AlbumPaginatedResponse`](/openmusic/albums/responses#albumpaginatedresponse)
-- `/artists/{id}/rel/songs` -> [`SongPaginatedResponse`](/openmusic/songs/responses#songpaginatedresponse)
+- `/artists/{id}/rel/albums` -> [`AlbumListResponse`](/openmusic/albums/responses#albumlistresponse)
+- `/artists/{id}/rel/songs` -> [`SongListResponse`](/openmusic/songs/responses#songlistresponse)

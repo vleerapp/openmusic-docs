@@ -29,7 +29,6 @@ It is the implementation used to validate and evolve the spec.
   />
 </Cards>
 
-
 ## Core Model
 
 An OpenMusic server exposes resource objects such as:
@@ -132,16 +131,16 @@ Current endpoint families in the spec:
 
 Many endpoints share the same query concepts.
 
-| Name             | Description                       | Type                                          | Example                            |
-| ---------------- | --------------------------------- | --------------------------------------------- | ---------------------------------- |
-| `lang`           | Preferred language                | `string`                                      | `lang=en-US`                       |
-| `omm_ids`        | Lookup by OpenMusicMetadata IDs   | `string`                                      | `omm_ids=tz4a98xxat96iws9zmbrgj3a` |
-| `view`           | Return the minimal resource form  | `"minimal"`                                   | `view=minimal`                     |
-| `include`        | Include direct relationships      | `string`                                      | `include=artists,albums`           |
-| `limit`          | Page size for paginated endpoints | `number`                                      | `limit=10`                         |
-| `offset`         | Number of items to skip           | `number`                                      | `offset=10`                        |
-| `sort`           | Sort ascending or descending      | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released`              |
-| `filter[genres]` | Filter by genre                   | `string`                                      | `filter[genres]=pop,rock`          |
+| Name             | Description                      | Type                                          | Example                            |
+| ---------------- | -------------------------------- | --------------------------------------------- | ---------------------------------- |
+| `lang`           | Preferred language               | `string`                                      | `lang=en-US`                       |
+| `omm_ids`        | Lookup by OpenMusicMetadata IDs  | `string`                                      | `omm_ids=tz4a98xxat96iws9zmbrgj3a` |
+| `view`           | Return the minimal resource form | `"minimal"`                                   | `view=minimal`                     |
+| `include`        | Include direct relationships     | `string`                                      | `include=artists,albums`           |
+| `limit`          | Response list size               | `number`                                      | `limit=10`                         |
+| `offset`         | Number of items to skip          | `number`                                      | `offset=10`                        |
+| `sort`           | Sort ascending or descending     | `"-?date_released"\|"-?date_added"\|"-?name"` | `sort=-date_released`              |
+| `filter[genres]` | Filter by genre                  | `string`                                      | `filter[genres]=pop,rock`          |
 
 `omm_ids` is only supported on lookup endpoints (`/songs`, `/albums`, `/artists`).
 
@@ -243,7 +242,6 @@ The common wrappers used throughout the spec are:
 
 - single resource response
 - list resource response
-- paginated resource response
 - error response
 
 See [`Responses`](/openmusic/responses) for the shared envelope types.

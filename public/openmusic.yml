@@ -329,7 +329,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AlbumPaginatedResponse"
+                $ref: "#/components/schemas/AlbumListResponse"
         "404":
           $ref: "#/components/responses/Error"
 
@@ -357,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SongPaginatedResponse"
+                $ref: "#/components/schemas/SongListResponse"
         "404":
           $ref: "#/components/responses/Error"
 
@@ -598,7 +598,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SongPaginatedResponse"
+                $ref: "#/components/schemas/SongListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -626,7 +626,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AlbumPaginatedResponse"
+                $ref: "#/components/schemas/AlbumListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -654,7 +654,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArtistPaginatedResponse"
+                $ref: "#/components/schemas/ArtistListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -680,7 +680,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PlaylistPaginatedResponse"
+                $ref: "#/components/schemas/PlaylistListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -738,7 +738,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SongPaginatedResponse"
+                $ref: "#/components/schemas/SongListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -767,7 +767,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AlbumPaginatedResponse"
+                $ref: "#/components/schemas/AlbumListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -796,7 +796,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArtistPaginatedResponse"
+                $ref: "#/components/schemas/ArtistListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -823,7 +823,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PlaylistPaginatedResponse"
+                $ref: "#/components/schemas/PlaylistListResponse"
         "400":
           $ref: "#/components/responses/Error"
 
@@ -1581,50 +1581,60 @@ components:
 
     ListResourceResponse_Song:
       type: object
-      required: [data]
+      required: [data, meta]
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/SongResource"
+        meta:
+          $ref: "#/components/schemas/ListMeta"
 
     ListResourceResponse_Album:
       type: object
-      required: [data]
+      required: [data, meta]
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/AlbumResource"
+        meta:
+          $ref: "#/components/schemas/ListMeta"
 
     ListResourceResponse_Artist:
       type: object
-      required: [data]
+      required: [data, meta]
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/ArtistResource"
+        meta:
+          $ref: "#/components/schemas/ListMeta"
 
     ListResourceResponse_Playlist:
       type: object
-      required: [data]
+      required: [data, meta]
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/PlaylistResource"
+        meta:
+          $ref: "#/components/schemas/ListMeta"
 
     ListResourceResponse_Station:
       type: object
-      required: [data]
+      required: [data, meta]
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/StationResource"
+        meta:
+          $ref: "#/components/schemas/ListMeta"
 
-    Page:
+    ListMeta:
       type: object
       required: [limit, offset, has_next_page]
       properties:
@@ -1634,54 +1644,6 @@ components:
           type: integer
         has_next_page:
           type: boolean
-
-    PaginatedResourceResponse_Song:
-      type: object
-      required: [data, page]
-      properties:
-        data:
-          type: array
-          maxItems: 25
-          items:
-            $ref: "#/components/schemas/SongResource"
-        page:
-          $ref: "#/components/schemas/Page"
-
-    PaginatedResourceResponse_Album:
-      type: object
-      required: [data, page]
-      properties:
-        data:
-          type: array
-          maxItems: 25
-          items:
-            $ref: "#/components/schemas/AlbumResource"
-        page:
-          $ref: "#/components/schemas/Page"
-
-    PaginatedResourceResponse_Artist:
-      type: object
-      required: [data, page]
-      properties:
-        data:
-          type: array
-          maxItems: 25
-          items:
-            $ref: "#/components/schemas/ArtistResource"
-        page:
-          $ref: "#/components/schemas/Page"
-
-    PaginatedResourceResponse_Playlist:
-      type: object
-      required: [data, page]
-      properties:
-        data:
-          type: array
-          maxItems: 25
-          items:
-            $ref: "#/components/schemas/PlaylistResource"
-        page:
-          $ref: "#/components/schemas/Page"
 
     SearchData:
       type: object
@@ -1832,17 +1794,11 @@ components:
     SongListResponse:
       $ref: "#/components/schemas/ListResourceResponse_Song"
 
-    SongPaginatedResponse:
-      $ref: "#/components/schemas/PaginatedResourceResponse_Song"
-
     AlbumResponse:
       $ref: "#/components/schemas/SingleResourceResponse_Album"
 
     AlbumListResponse:
       $ref: "#/components/schemas/ListResourceResponse_Album"
-
-    AlbumPaginatedResponse:
-      $ref: "#/components/schemas/PaginatedResourceResponse_Album"
 
     ArtistResponse:
       $ref: "#/components/schemas/SingleResourceResponse_Artist"
@@ -1850,17 +1806,11 @@ components:
     ArtistListResponse:
       $ref: "#/components/schemas/ListResourceResponse_Artist"
 
-    ArtistPaginatedResponse:
-      $ref: "#/components/schemas/PaginatedResourceResponse_Artist"
-
     PlaylistResponse:
       $ref: "#/components/schemas/SingleResourceResponse_Playlist"
 
     PlaylistListResponse:
       $ref: "#/components/schemas/ListResourceResponse_Playlist"
-
-    PlaylistPaginatedResponse:
-      $ref: "#/components/schemas/PaginatedResourceResponse_Playlist"
 
     StationResponse:
       $ref: "#/components/schemas/SingleResourceResponse_Station"
